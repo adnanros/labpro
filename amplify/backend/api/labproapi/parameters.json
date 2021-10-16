@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "labproapi",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authlabproawsa624a94d",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
