@@ -1,11 +1,15 @@
-import React from 'react'
-import {Auth, Hub} from 'aws-amplify';
+import React  from 'react'
+import Amplify, {Auth, Hub} from 'aws-amplify';
 import './App.css';
 import Home from './pages/Home';
 import HomeAdmin from './pages/HomeAdmin';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import Header from './components/Header';
+import awsconfig from './aws-exports';
+import { HubPayload } from '@aws-amplify/core';
+Amplify.configure(awsconfig);
+
 
 ///export to another file 
 export enum SigninStatus {
@@ -32,9 +36,28 @@ class App extends React.Component<IProps,IState> {
     }
     //as we will pass this function to childs, 
     //we need to bind them to the App class.
-    this.handleClick = this.handleClick.bind(this)
+    this.handleClick = this.handleClick.bind(this);
+    this.onAuthEvent = this.onAuthEvent.bind(this);
+    Hub.listen('auth', (data) => {
+      const { payload } = data;
+      this.onAuthEvent(payload);           
+      //console.log('A new auth event has happened: ', data.payload.data.username + ' has ' + data.payload.event);
+    });
   }
 
+  onAuthEvent(payload: HubPayload) {
+    const event = payload.event.toLowerCase();
+    //console.log("auth event...",event);
+      if(event=== SigninStatus.signOut.toLowerCase()){
+        //console.log("xxxxx sign out");
+        this.setState({
+          signinStatus: SigninStatus.signOut
+        })
+      }
+      else if(event=== SigninStatus.signIn){
+        this.checkAdmin();
+      } 
+  }
   async componentDidMount() {
     try{
       await Auth.currentAuthenticatedUser().then(user=> {
@@ -48,18 +71,6 @@ class App extends React.Component<IProps,IState> {
         signinStatus: SigninStatus.signUp
       });
     }
-
-  Hub.listen('auth',(data)=> {
-    const event = data.payload.event;
-    if(event=== SigninStatus.signOut){
-      this.setState({
-        signinStatus: SigninStatus.signOut
-      })
-    }
-    else if(event=== SigninStatus.signIn){
-      this.checkAdmin();
-    } 
-  });
   }
 
   checkAdmin(){
@@ -67,7 +78,10 @@ class App extends React.Component<IProps,IState> {
       Auth.currentSession().then(session=> {
         let idToken = session.getIdToken();
         let jwt = idToken.getJwtToken();
-        console.log(jwt);
+        console.log("xxxxxx",jwt);
+        this.setState({
+          signinStatus: SigninStatus.signInAdmin
+        });
       })
     }
     catch(ex){
@@ -77,8 +91,14 @@ class App extends React.Component<IProps,IState> {
     }
   }
   render(){
+    
     if(this.state.signinStatus === SigninStatus.doSignIn){
-      return (<SignIn />);
+      const routeComponentPropsMock = {
+        history: {} as any,
+        location: {} as any,
+        match: {} as any,
+      }
+      return (<SignIn {...routeComponentPropsMock} />);
     }
     if (this.state.signinStatus === SigninStatus.doSignUp){
       return (<SignUp />);

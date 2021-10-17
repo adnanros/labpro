@@ -9,12 +9,12 @@ type HeaderProps = {
 }
 
 export default class Header extends React.Component<HeaderProps> {
-
+    
 
     render() {
         if(this.props.signinStatus === SigninStatus.signIn || this.props.signinStatus === SigninStatus.signInAdmin)
         {
-            return (<div>Header <button onClick={()=>{Auth.signOut()}}>sign-out</button></div>);
+            return (<div>Header <button onClick={()=>{this.signOut()}}>sign-out</button></div>);
 
         }
 
@@ -28,6 +28,14 @@ export default class Header extends React.Component<HeaderProps> {
         }
 
         return(<div>Header</div>);
+    }
+
+    async signOut() {
+        try {
+            await Auth.signOut();
+        } catch (error) {
+            console.log('error signing out: ', error);
+        }
     }
 }
 
