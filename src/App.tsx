@@ -49,7 +49,7 @@ class App extends React.Component<IProps,IState> {
     const event = payload.event.toLowerCase();
     //console.log("auth event...",event);
       if(event=== SigninStatus.signOut.toLowerCase()){
-        //console.log("xxxxx sign out");
+        
         this.setState({
           signinStatus: SigninStatus.signOut
         })
@@ -58,10 +58,11 @@ class App extends React.Component<IProps,IState> {
         this.checkAdmin();
       } 
   }
+
   async componentDidMount() {
     try{
       await Auth.currentAuthenticatedUser().then(user=> {
-        console.log(user);
+        //console.log(user);
         this.checkAdmin();
       })
     }
@@ -77,8 +78,9 @@ class App extends React.Component<IProps,IState> {
     try{
       Auth.currentSession().then(session=> {
         let idToken = session.getIdToken();
-        let jwt = idToken.getJwtToken();
-        console.log("xxxxxx",jwt);
+        let cg = idToken.payload['cognito:groups'] as string[];
+        
+        console.log("xxxxxx",cg);
         this.setState({
           signinStatus: SigninStatus.signInAdmin
         });
