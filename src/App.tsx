@@ -74,13 +74,25 @@ class App extends React.Component<IProps,IState> {
     }
   }
 
-  checkAdmin(){
+  checkAdmin(){// user is signed in now and we want to check wheather user belongs to admin group
     try{
       Auth.currentSession().then(session=> {
         let idToken = session.getIdToken();
-        let cg = idToken.payload['cognito:groups'] as string[];
+        let groups = idToken.payload['cognito:groups'];
+        if(Array.isArray(groups)){
+          // let cg = idToken.payload['cognito:groups'] as string[];
+          if(groups.includes('PackagesAdmin')){
+            this.setState({
+              signinStatus: SigninStatus.signInAdmin
+            });
+          } else {
+            this.setState({
+              signinStatus: SigninStatus.signIn
+            });
+          }
+        }
         
-        console.log("xxxxxx",cg);
+        // console.log("xxxxxx",cg);
         this.setState({
           signinStatus: SigninStatus.signInAdmin
         });
