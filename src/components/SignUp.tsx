@@ -1,6 +1,5 @@
 import React from 'react';
 import {Auth} from 'aws-amplify';
-import { Component } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -57,7 +56,7 @@ export default class SignUp extends React.Component<Props, State> {
     });
   }
 
-  handleRegister(formValue: { username: string; email: string; password: string }) {
+  async handleRegister(formValue: { username: string; email: string; password: string }) {
     const { username, email, password } = formValue;
 
     this.setState({
@@ -65,32 +64,22 @@ export default class SignUp extends React.Component<Props, State> {
       successful: false
     });
 
-    
-    AuthService.register(
-      username,
-      email,
-      password
-    ).then(
-      response => {
-        this.setState({
-          message: response.data.message,
-          successful: true
-        });
-      },
-      error => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
 
-        this.setState({
-          successful: false,
-          message: resMessage
+
+    try {
+        const { user } = await Auth.signUp({
+            username,
+            password,
+            attributes: {
+                email,          // optional
+            }
         });
-      }
-    );
+        console.log(user);
+    } catch (error) {
+        console.log('error signing up:', error);
+    }
+    
+    
   }
 
   render() {

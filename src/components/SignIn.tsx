@@ -1,14 +1,12 @@
 import React from "react";
 import {Auth} from 'aws-amplify';
-import { RouteComponentProps } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-interface RouterProps {
-    //history: string;
+interface Props {
+  onSignInErrorHandler: (error: string, username: string)=> void;
   }
   
-  type Props = RouteComponentProps<RouterProps>;
   
   type State = {
     username: string,
@@ -65,13 +63,16 @@ interface RouterProps {
       //     });
       //   }
       // );
-
       try {
               const user = await Auth.signIn(username, password);
               console.log(user);
           } 
-      catch (error) {
-              console.log('error signing in', error);
+      catch (error: any) {
+              console.log('error signing in', error.name);
+              //detect if user is already registered but not confirmed
+              if(error.name === "UserNotConfirmedException") {
+                this.props.onSignInErrorHandler('UserNotConfirmedException', username);
+              }
           }
     }
 

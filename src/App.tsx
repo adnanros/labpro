@@ -8,6 +8,7 @@ import SignUp from './components/SignUp';
 import Header from './components/Header';
 import awsconfig from './aws-exports';
 import { HubPayload } from '@aws-amplify/core';
+import ConfirmSignUp from './components/ConfirmSignUp';
 Amplify.configure(awsconfig);
 
 
@@ -20,24 +21,29 @@ export enum SigninStatus {
   signInAdmin= 'signin_admin',
   doSignIn= 'do_sign_in',
   doSignUp= 'do_sign_up',
+  confirmSignUp= 'confirm_sign_up'
 };
 
 interface IProps {
 
 }
 interface IState {
-  signinStatus: SigninStatus
+  signinStatus: SigninStatus, 
+  username: string,
 }
 class App extends React.Component<IProps,IState> {
   constructor(props: IProps){
     super(props);
     this.state = {
-      signinStatus: SigninStatus.loading
+      signinStatus: SigninStatus.loading,
+      username: ''
     }
     //as we will pass this function to childs, 
     //we need to bind them to the App class.
     this.handleClick = this.handleClick.bind(this);
     this.onAuthEvent = this.onAuthEvent.bind(this);
+    this.onSignInError = this.onSignInError.bind(this);
+    this.onSignUpConfirmStatusChange= this.onSignUpConfirmStatusChange.bind(this);
     Hub.listen('auth', (data) => {
       const { payload } = data;
       this.onAuthEvent(payload);           
@@ -47,7 +53,7 @@ class App extends React.Component<IProps,IState> {
 
   onAuthEvent(payload: HubPayload) {
     const event = payload.event.toLowerCase();
-    //console.log("auth event...",event);
+    console.log("auth event...",event);
       if(event=== SigninStatus.signOut.toLowerCase()){
         
         this.setState({
@@ -56,6 +62,10 @@ class App extends React.Component<IProps,IState> {
       }
       else if(event=== SigninStatus.signIn){
         this.checkAdmin();
+      }else if (event === SigninStatus.signUp.toLowerCase()){
+        this.setState({
+          signinStatus: SigninStatus.confirmSignUp
+        })
       } 
   }
 
@@ -79,7 +89,7 @@ class App extends React.Component<IProps,IState> {
       Auth.currentSession().then(session=> {
         let idToken = session.getIdToken();
         let groups = idToken.payload['cognito:groups'];
-        if(Array.isArray(groups)){
+        if(groups!= null && Array.isArray(groups)){
           // let cg = idToken.payload['cognito:groups'] as string[];
           if(groups.includes('PackagesAdmin')){
             this.setState({
@@ -90,12 +100,12 @@ class App extends React.Component<IProps,IState> {
               signinStatus: SigninStatus.signIn
             });
           }
+        }else{
+          // console.log("xxxxxx",cg);
+          this.setState({
+            signinStatus: SigninStatus.signIn
+          });
         }
-        
-        // console.log("xxxxxx",cg);
-        this.setState({
-          signinStatus: SigninStatus.signInAdmin
-        });
       })
     }
     catch(ex){
@@ -104,18 +114,36 @@ class App extends React.Component<IProps,IState> {
       });
     }
   }
+
+onSignInError(error: string, username: string){
+  if(error === 'UserNotConfirmedException'){
+    this.setState({
+      signinStatus: SigninStatus.confirmSignUp,
+      username: username
+    });
+  }
+}
+
+onSignUpConfirmStatusChange(status:string){
+  if(status === 'success'){
+    this.setState({
+      signinStatus: SigninStatus.doSignIn
+    });
+  }
+}
+
+
   render(){
     
     if(this.state.signinStatus === SigninStatus.doSignIn){
-      const routeComponentPropsMock = {
-        history: {} as any,
-        location: {} as any,
-        match: {} as any,
-      }
-      return (<SignIn {...routeComponentPropsMock} />);
+      
+      return (<SignIn onSignInErrorHandler= {this.onSignInError} />);
     }
     if (this.state.signinStatus === SigninStatus.doSignUp){
       return (<SignUp />);
+    }
+    if(this.state.signinStatus === SigninStatus.confirmSignUp){
+      return (<ConfirmSignUp username= {this.state.username} confirmStatusHandler={this.onSignUpConfirmStatusChange} />);
     }
     return(<div>
       {
