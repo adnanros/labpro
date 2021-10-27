@@ -1,16 +1,115 @@
-import React  from 'react'
-import Amplify, {Auth, Hub} from 'aws-amplify';
-import './App.css';
-import Home from './pages/Home';
-import HomeAdmin from './pages/HomeAdmin';
-import SignIn from './components/SignIn';
-import SignUp from './components/SignUp';
-import Header from './components/Header';
-import awsconfig from './aws-exports';
-import { HubPayload } from '@aws-amplify/core';
-import ConfirmSignUp from './components/ConfirmSignUp';
-Amplify.configure(awsconfig);
+// import Amplify, {Auth, Hub} from 'aws-amplify';
+// import './App.css';
+// import Home from './pages/Home';
+// import HomeAdmin from './pages/HomeAdmin';
+// import SignIn from './components/SignIn';
+// import SignUp from './components/SignUp';
+// import Header from './components/Header';
+// import awsconfig from './aws-exports';
+// import { HubPayload } from '@aws-amplify/core';
+// import ConfirmSignUp from './components/ConfirmSignUp';
+// import Login from './components/login';
 
+
+
+
+import React, { useEffect } from 'react'
+import { HashRouter, Route, Switch } from 'react-router-dom'
+import { history } from './_helpers';
+import './scss/style.scss'
+import { connect, ConnectedProps } from 'react-redux';
+import awsconfig from './aws-exports';
+import Amplify  from 'aws-amplify';
+import { alertActions } from './_actions';
+
+Amplify.configure(awsconfig);
+const loading = (
+  <div className="pt-3 text-center">
+    <div className="sk-spinner sk-spinner-pulse"></div>
+  </div>
+)
+
+// Containers
+const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
+
+// Pages
+const Login = React.lazy(() =>
+  import('./pages')
+    .then(({ LoginPage }) => ({ default: LoginPage })),
+);
+
+const Register = React.lazy(() =>
+import('./pages')
+  .then(({ RegisterPage }) => ({ default: RegisterPage })),
+);
+const Page404 = React.lazy(() => import('./pages/page404'))
+const Page500 = React.lazy(() => import('./pages/page500'))
+
+
+
+interface IProps {
+  message: string,
+  type: string
+}
+
+//state of redux, is an object containing authentication, registration and alert. see index.tsx of reducer.
+const mapStateToProps = (state: any, props: IProps) => {
+  return {
+    message: state.alert.message,
+    type: state.alert.type
+  }
+};
+
+const mapDispatchToProps  = {
+  clearAlerts: alertActions.clear
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+export type Props = PropsFromRedux & IProps;
+
+const App: React.FC<Props> = (props) => {
+     useEffect(() => {
+      history.listen((location, action) => {
+        // clear alert on location change
+        props.clearAlerts();
+    });
+   }, [props]);
+   const alert = props;
+ return (
+          <div className="jumbotron">
+            <div className="container">
+              <div className="col-sm-8 col-sm-offset-2">
+                  {alert.message &&
+                      <div className={`alert ${alert.type}`}>{alert.message}</div>
+                  }
+                  <HashRouter>
+                    <React.Suspense fallback={loading}>
+                      <Switch>
+
+                        <Route exact path="/login"  component={Login} />
+                        <Route exact path="/register" component={Register} />
+                        <Route exact path="/404"  render={(props) => <Page404  />} />
+                        <Route exact path="/500"  render={(props) => <Page500  />} />
+                        <Route path="/"  render={(props) => <DefaultLayout  />} />
+                      </Switch>
+                    </React.Suspense>
+                  </HashRouter>
+              </div>
+          </div>
+        </div>
+    )
+}
+
+App.defaultProps = {
+
+}
+
+
+const connectedApp = connector(App);
+export { connectedApp as App };
+
+/*
 
 ///export to another file 
 export enum SigninStatus {
@@ -136,8 +235,8 @@ onSignUpConfirmStatusChange(status:string){
   render(){
     
     if(this.state.signinStatus === SigninStatus.doSignIn){
-      
-      return (<SignIn onSignInErrorHandler= {this.onSignInError} />);
+      return(<Login/>);
+      //return (<SignIn onSignInErrorHandler= {this.onSignInError} />);
     }
     if (this.state.signinStatus === SigninStatus.doSignUp){
       return (<SignUp />);
@@ -184,3 +283,4 @@ onSignUpConfirmStatusChange(status:string){
 
 
 export default App;
+*/
