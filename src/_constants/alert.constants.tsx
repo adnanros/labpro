@@ -3,3 +3,8 @@ export const alertConstants = {
     ERROR: 'ALERT_ERROR',
     CLEAR: 'ALERT_CLEAR'
 };
+
+export interface IAlertState {
+    type: string,
+    message: string
+}

@@ -32,7 +32,6 @@ interface IState {
 }
 
 const mapStateToProps = (state: any, props: IProps) => {
-  console.log('xxxxx',state);
   return {
     //we have 3 fields in redux state. authentication, registration and alert. see index.tsx of reducers.
     isLoggingIn: state.authentication.isLoggingIn
@@ -40,8 +39,7 @@ const mapStateToProps = (state: any, props: IProps) => {
 };
 
 const mapDispatchToProps  = {
-  login: userActions.login,
-  logout: userActions.logout
+  login: userActions.login
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -58,7 +56,7 @@ const LoginPage: React.FC<Props> = (props) => {
       .email('Email is invalid'),
     password: Yup.string()
       .required('Password is required')
-      .min(6, 'Password must be at least 6 characters')
+      .min(8, 'Password must be at least 6 characters')
       .max(40, 'Password must not exceed 40 characters')
   });
   

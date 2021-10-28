@@ -1,7 +1,12 @@
 import { AnyAction } from 'redux';
-import { alertConstants } from '../_constants';
+import { alertConstants, IAlertState } from '../_constants';
 
-export function alert(state = {}, action: AnyAction) {
+const initialState: IAlertState = {
+  type : '',
+  message : ''
+}
+
+export function alert(state = initialState, action: AnyAction) {
   switch (action.type) {
     case alertConstants.SUCCESS:
       return {

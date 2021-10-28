@@ -5,7 +5,6 @@ const initialState: IUserAuthenticationState =  {
   isLoggingIn: false,
   isSignedIn: false,
   isSignedInUserPackageAdmin: false,
-  userName: '',
   email: ''
 };
 
@@ -21,14 +20,12 @@ export function authentication(state = initialState, action: AnyAction) {
         isLoggingIn: true,
         isSignedIn: true,
         isSignedInUserPackageAdmin: false,
-        userName: action.userName,
         email: action.email
       };
       case userConstants.LOGIN_SUCCESS_Admin:
       return {
         isSignedIn: true,
         isSignedInUserPackageAdmin: true,
-        userName: action.userName,
         email: action.email
       }
     case userConstants.LOGIN_FAILURE:

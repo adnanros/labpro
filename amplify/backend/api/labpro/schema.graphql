@@ -1,0 +1,282 @@
+type LocalUser @model @key(fields: ["email"]) 
+@auth(rules: [
+  { allow: owner, operations: [create, update, read]},
+  { allow: groups, groups: ["AllowDelete"], operations: [delete]}
+])      
+{
+  email: AWSEmail!
+  name: String!
+  addressPart1: String!
+  addressPart2: String!
+  contactNumber: AWSPhone!
+  profileImageLink: String!
+  country: String!
+  city: String!
+  postalCode: String!
+  company: String!
+  orders: [Order] @connection(keyName: "byLocalUser", fields: ["email"])
+}
+
+type SampleCategory @model 
+@auth(
+rules: [
+ { allow: private, provider: userPools, operations: [read] }
+ { allow: groups, groups: ["PackagesAdmin"], operations: [create, read, update, delete] }
+ { allow: public, provider: iam, operations: [read] }
+]
+ )
+{
+  id: ID!
+  name: String!
+  description: String!
+  testGroups: [TestGroup] @connection(keyName: "inSampleCategory", fields: ["id"])
+}
+
+type TestGroup @model 
+@auth(
+rules: [
+ { allow: private, provider: userPools, operations: [read] }
+ { allow: groups, groups: ["PackagesAdmin"], operations: [create, read, update, delete] }
+ { allow: public, provider: iam, operations: [read] }
+]
+ )
+ @key(name: "inSampleCategory", fields: ["sampleCategoryId"])
+{
+  id: ID!
+  name: String!
+  description: String!
+  includedTestsDesc: String
+  includedReportsDesc: String
+  sampleCategoryId: ID!
+  testGroupTestPack: [TestGroupTestPack] @connection (keyName: "inTestGroup", fields: ["id"])
+}
+
+type TestGroupTestPack @model 
+@auth(
+rules: [
+ { allow: private, provider: userPools, operations: [read] }
+ { allow: groups, groups: ["PackagesAdmin"], operations: [create, read, update, delete] }
+ { allow: public, provider: iam, operations: [read] }
+]
+ )
+ @key(name:"inTestGroup", fields:["testGroupId", "testPackId"])
+ @key(name:"byTestPack", fields:["testPackId", "testGroupId"])
+
+{
+  id: ID!
+  testPackId: ID!
+  testGroupId: ID!
+  testpack: TestPack! @connection(fields:["testPackId"])
+  testgroup: TestGroup! @connection(fields:["testGroupId"])
+}
+
+type TestPack @model 
+@auth(
+rules: [
+ { allow: private, provider: userPools, operations: [read] }
+ { allow: groups, groups: ["PackagesAdmin"], operations: [create, read, update, delete] }
+ { allow: public, provider: iam, operations: [read] }
+]
+ )
+ @key(name: "inTestPack", fields:["id"])
+{
+  id: ID!
+  name: String!
+  description: String!
+  testGroupTestPack: [TestGroupTestPack] @connection (keyName: "byTestPack", fields: ["id"])
+  testPackChemicalAnalysis: [TestPackChemicalAnalysis] @connection (keyName:"inTestPack", fields:["id"])
+}
+
+type ChemicalAnalysis @model 
+@auth(
+rules: [
+ { allow: private, provider: userPools, operations: [read] }
+ { allow: groups, groups: ["PackagesAdmin"], operations: [create, read, update, delete] }
+ { allow: public, provider: iam, operations: [read] }
+]
+ )
+ @key(name:"byChemicalAnalysis", fields:["id"])
+{
+  id: ID!
+  name: String!
+  price: String!
+  discount: String!
+  description: String!
+  testPackChemicalAnalysis: [TestPackChemicalAnalysis] @connection (keyName:"byChemicalAnalysis", fields:["id"])
+  chemicalAnalysisChemical: [ChemicalAnalysisChemical] @connection(keyName:"chemicalInChemicalAnalysis", fields:["id"])
+  chemicalAnalysisOrder: [ChemicalAnalysisOrder] @connection(keyName: "chemicalAnalysisInOrder", fields: ["id"])
+}
+
+type TestPackChemicalAnalysis @model 
+@auth(
+rules: [
+ { allow: private, provider: userPools, operations: [read] }
+ { allow: groups, groups: ["PackagesAdmin"], operations: [create, read, update, delete] }
+ { allow: public, provider: iam, operations: [read] }
+]
+ )
+ @key(name:"inTestPack", fields:["testPackId", "chemicalAnalysisId"])
+ @key(name:"byChemicalAnalysis", fields:["chemicalAnalysisId", "testPackId"])
+
+{
+  id: ID!
+  testPackId: ID!
+  chemicalAnalysisId: ID!
+  testpack: TestPack! @connection(fields:["testPackId"])
+  chemicalAnalysis: ChemicalAnalysis! @connection(fields:["chemicalAnalysisId"])
+}
+
+type Chemical @model 
+@auth(
+rules: [
+ { allow: private, provider: userPools, operations: [read] }
+ { allow: groups, groups: ["PackagesAdmin"], operations: [create, read, update, delete] }
+ { allow: public, provider: iam, operations: [read] }
+]
+ )
+{
+  id: ID!
+  name: String!
+  description: String!
+  chemicalAnalysisChemical: [ChemicalAnalysisChemical] @connection(keyName:"chemicalAnalysisByChemical", fields:["id"])
+  chemicalImpacts: [ChemicalImpact] @connection(keyName: "chemicalInImpact", fields: ["id"])
+}
+
+type ChemicalAnalysisChemical @model 
+@auth(
+rules: [
+ { allow: private, provider: userPools, operations: [read] }
+ { allow: groups, groups: ["PackagesAdmin"], operations: [create, read, update, delete] }
+ { allow: public, provider: iam, operations: [read] }
+]
+ )
+ @key(name:"chemicalAnalysisByChemical", fields:["chemicalId", "chemicalAnalysisId"])
+ @key(name:"chemicalInChemicalAnalysis", fields:["chemicalAnalysisId", "chemicalId"])
+{
+  id: ID!
+  chemicalId: ID!
+  chemicalAnalysisId: ID!
+  chemical: Chemical! @connection(fields:["chemicalId"])
+  chemicalAnalysis: ChemicalAnalysis! @connection(fields:["chemicalAnalysisId"])
+}
+
+type ImpactCategory @model 
+@auth(
+rules: [
+ { allow: private, provider: userPools, operations: [read] }
+ { allow: groups, groups: ["PackagesAdmin"], operations: [create, read, update, delete] }
+ { allow: public, provider: iam, operations: [read] }
+]
+ )
+{
+  id: ID!
+  name: String!
+  description: String!
+  iconLink: String
+  impacts: [Impact] @connection(keyName: "inCategoryImpacts", fields: ["id"])
+}
+
+type Impact @model 
+@auth(
+rules: [
+ { allow: private, provider: userPools, operations: [read] }
+ { allow: groups, groups: ["PackagesAdmin"], operations: [create, read, update, delete] }
+ { allow: public, provider: iam, operations: [read] }
+]
+ )
+@key(name: "inCategoryImpacts", fields: ["impactCategoryId"])
+{
+  id: ID!
+  name: String!
+  description: String!
+  iconLink: String
+  impactCategoryId: ID!
+  chemicalImpacts: [ChemicalImpact] @connection(keyName: "impactByChemical", fields: ["id"])
+}
+
+type ChemicalImpact @model 
+@auth(
+rules: [
+ { allow: private, provider: userPools, operations: [read] }
+ { allow: groups, groups: ["PackagesAdmin"], operations: [create, read, update, delete] }
+ { allow: public, provider: iam, operations: [read] }
+]
+ )
+ @key(name:"impactByChemical", fields:["impactId", "chemicalId"])
+ @key(name:"chemicalInImpact", fields:["chemicalId", "impactId"])
+{
+  id: ID!
+  chemicalId: ID!
+  impactId: ID!
+  chemical: Chemical! @connection(fields:["chemicalId"])
+  impact: Impact! @connection(fields:["impactId"])
+}
+
+type Order @model 
+@auth(
+rules: [
+  { allow: owner, operations: [create, read]},
+  { allow: groups, groups: ["AllowDelete"], operations: [delete]}
+]
+ )
+ @key(name: "byLocalUser", fields: ["localUserId"])
+{
+  id: ID!
+  localUserId: AWSEmail!
+  count: Int!
+  purchasedDate: AWSDate!
+  samplingDate: AWSDate!
+  resultDate: AWSDate!
+  orderStatus: String!
+  paymentStatus: String!
+  email: AWSEmail!
+  name: String!
+  addressPart1: String!
+  addressPart2: String!
+  contactNumber: AWSPhone!
+  profileImageLink: String!
+  country: String!
+  city: String!
+  postalCode: String!
+  company: String!
+  chemicalAnalysisOrder: [ChemicalAnalysisOrder] @connection(keyName: "ordersContainChemicalAnalysis", fields: ["id"])
+}
+
+type ChemicalAnalysisOrder @model 
+@auth(
+rules: [
+ { allow: private, provider: userPools, operations: [read] }
+ { allow: groups, groups: ["PackagesAdmin"], operations: [create, read, update, delete] }
+ { allow: public, provider: iam, operations: [read] }
+]
+ )
+ @key(name:"ordersContainChemicalAnalysis", fields:["orderId", "chemicalAnalysisId"])
+ @key(name:"chemicalAnalysisInOrder", fields:["chemicalAnalysisId", "orderId"])
+{
+  id: ID!
+  orderId: ID!
+  chemicalAnalysisId: ID!
+  order: Order! @connection(fields:["orderId"])
+  chemicalAnalysis: ChemicalAnalysis! @connection(fields:["chemicalAnalysisId"])
+  chemicalAnalysisResults: [ChemicalAnalysisResult] @connection(keyName: "byChemicalAnalysisOrder", fields: ["id"])
+}
+
+
+type ChemicalAnalysisResult @model 
+@auth(
+rules: [
+ { allow: private, provider: userPools, operations: [read] }
+ { allow: groups, groups: ["PackagesAdmin"], operations: [create, read, update, delete] }
+ { allow: public, provider: iam, operations: [read] }
+]
+ )
+ @key(name: "byChemicalAnalysisOrder", fields: ["chemicalAnalysisOrderId"])
+{
+  id: ID!
+  chemicalAnalysisOrderId: ID!
+  chemicalId: ID!
+  chemical: Chemical @connection(fields: ["chemicalId"])
+  detection: Float!
+  resultType: String!
+}
+

@@ -17,7 +17,6 @@ export interface IUserAuthenticationState {
     isLoggingIn: boolean,
     isSignedIn: boolean,
     isSignedInUserPackageAdmin: boolean,
-    userName: string,
     email: string
 }
 
