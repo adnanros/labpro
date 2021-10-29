@@ -1,19 +1,19 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-labproaws-dev-203454-authRole",
-      "UnauthRoleArn": "arn:aws:iam::670277671745:role/amplify-labproaws-dev-203454-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::670277671745:role/amplify-labproaws-dev-203454-authRole",
+      "AuthRoleName": "amplify-labpro-dev-63116-authRole",
+      "UnauthRoleArn": "arn:aws:iam::670277671745:role/amplify-labpro-dev-63116-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::670277671745:role/amplify-labpro-dev-63116-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-labproaws-dev-203454-deployment",
-      "UnauthRoleName": "amplify-labproaws-dev-203454-unauthRole",
-      "StackName": "amplify-labproaws-dev-203454",
-      "StackId": "arn:aws:cloudformation:us-east-1:670277671745:stack/amplify-labproaws-dev-203454/a2ac7720-fde2-11eb-9459-12909bffa46d",
-      "AmplifyAppId": "d3ftx10ipkzt4f"
+      "DeploymentBucketName": "amplify-labpro-dev-63116-deployment",
+      "UnauthRoleName": "amplify-labpro-dev-63116-unauthRole",
+      "StackName": "amplify-labpro-dev-63116",
+      "StackId": "arn:aws:cloudformation:us-east-1:670277671745:stack/amplify-labpro-dev-63116/667b4ce0-37f3-11ec-a932-0a86ab779153",
+      "AmplifyAppId": "d1i7ikthsrnb59"
     },
     "categories": {
       "auth": {
-        "labproawsa624a94d": {}
+        "labpro767d1598": {}
       }
     }
   }
