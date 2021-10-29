@@ -6,26 +6,53 @@ import {Auth} from 'aws-amplify';
 export const userActions = {
     login,
     logout,
-    register
+    register,
+    confirmRegister,
+    resendConfirmationCode,
+    fetchAthStatus
 };
+
+function fetchAthStatus() {
+    return (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) =>  {
+        dispatch(request());
+        Auth.currentSession().then(
+            session => {
+                let idToken = session.getIdToken();
+                if(isPackageAdmin()){
+                    dispatch(success(idToken.payload.email,true));
+                }else {
+                    dispatch(success(idToken.payload.email,false));
+                }
+            },
+            error => {
+                dispatch(failure(error.toString()));
+            }
+        )
+    };
+
+    function request() { return { type: userConstants.AUTH_STATE_REQUEST } }
+    function success(username: string,isSignedInUserPackageAdmin: boolean) { return { type: userConstants.AUTH_STATE_SUCCESS_LOGEDIN, username,isSignedInUserPackageAdmin } }
+    function failure(error: string) { return { type: userConstants.AUTH_STATE_SUCCESS_LOGEDOUT, error } }
+}
 
 function login(username: string, password: string) {
 
     return (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
-        dispatch(request({ username }));
+        dispatch(request());
 
         Auth.signIn(username, password).then(
             user => {
                 if(isPackageAdmin()){
-                    dispatch(successPackageAdmin(user));
+                    dispatch(success(username,true));
                 }else {
-                    dispatch(success(user));
+                    dispatch(success(username,false));
                 }
                 history.push('/');
             },
             error => {
                 if(error.name === 'UserNotConfirmedException') {
-                    dispatch(failureNonConfirmedUser(error.toString()));
+                    dispatch(failureNonConfirmedUser(username ,error.toString()));
+                    history.push('/ConfirmRegister');
                 }else {
                     dispatch(failure(error.toString()));
                 }
@@ -34,11 +61,11 @@ function login(username: string, password: string) {
         );
     };
 
-    function request(user: any) { return { type: userConstants.LOGIN_REQUEST, user } }
-    function success(user: any) { return { type: userConstants.LOGIN_SUCCESS, user } }
-    function successPackageAdmin(user: any) { return { type: userConstants.LOGIN_SUCCESS_Admin, user } }
+    function request() { return { type: userConstants.LOGIN_REQUEST } }
+    function success(username: string,isSignedInUserPackageAdmin: boolean) { return { type: userConstants.LOGIN_SUCCESS, username,isSignedInUserPackageAdmin } }
     function failure(error: string) { return { type: userConstants.LOGIN_FAILURE, error } }
-    function failureNonConfirmedUser(error: string) { return { type: userConstants.LOGIN_FAILURE_NON_CONFIRMED_USER, error } }
+    //we send email to be used by confirm register page.
+    function failureNonConfirmedUser(email:string, error: string) { return { type: userConstants.LOGIN_FAILURE_NON_CONFIRMED_USER, email, error } }
 }
 
 function logout() {
@@ -61,14 +88,14 @@ function logout() {
 
 function register(username: string, password: string) {
     return (dispatch: (arg0: { type: string; user?: any; message?: string; error?: any; }) => void) => {
-        dispatch(request(username));
+        dispatch(request());
         Auth.signUp({
             username,
             password,
         }).then(
             user => { 
-                    dispatch(success(user));
-                    history.push('/login');
+                    dispatch(success(username));
+                    history.push('/ConfirmRegister');
                     dispatch(alertActions.success('Registration successful'));
                 },
             error => {
@@ -78,7 +105,52 @@ function register(username: string, password: string) {
             );
     };
 
-    function request(user: any) { return { type: userConstants.REGISTER_REQUEST, user } }
-    function success(user: any) { return { type: userConstants.REGISTER_SUCCESS, user } }
+    function request() { return { type: userConstants.REGISTER_REQUEST } }
+    function success(email: string) { return { type: userConstants.REGISTER_SUCCESS, email } }
     function failure(error: any) { return { type: userConstants.REGISTER_FAILURE, error } }
+}
+
+function confirmRegister(username: string, code: string) {
+    return (dispatch: (arg0: { type: string; user?: any; message?: string; error?: any; }) => void) => {
+        dispatch(request());
+        Auth.confirmSignUp(
+            username,
+            code,
+        ).then(
+            user => { 
+                    dispatch(success());
+                    history.push('/login');
+                    dispatch(alertActions.success('Registration confirmed successfully'));
+                },
+            error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    function request() { return { type: userConstants.CONFIRM_REGISTER_REQUEST } }
+    function success() { return { type: userConstants.CONFIRM_REGISTER_SUCCESS } }
+    function failure(error: any) { return { type: userConstants.CONFIRM_REGISTER_FAILURE, error } }
+}
+
+function resendConfirmationCode(username: string) {
+    
+    return (dispatch: (arg0: { type: string; message?: string; error?: any; }) => void) => {
+        dispatch(request());
+        Auth.resendSignUp(username).then(
+            user => { 
+                    dispatch(success());
+                    dispatch(alertActions.success('Code sent successfully. please check your email at: ' + username));
+                },
+            error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    function request() { return { type: userConstants.RESEND_REGISTER_CODE_REQUEST } }
+    function success() { return { type: userConstants.RESEND_REGISTER_CODE_SUCCESS } }
+    function failure(error: any) { return { type: userConstants.RESEND_REGISTER_CODE_FAILURE, error } }
 }

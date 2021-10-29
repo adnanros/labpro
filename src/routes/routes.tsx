@@ -1,5 +1,8 @@
 // import React from 'react'
 
+import  SampleCategory from "../components/homeadmin/data/SampleCategory"
+
+
 // const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 // const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 // const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
@@ -95,5 +98,9 @@
 //   { path: '/widgets', name: 'Widgets', component: Widgets },
 // ]
 
+const routes = [
+  { path: '/', exact: true, name: 'Home' },
+  { path: '/col', name: 'xxxx', component: SampleCategory },
+]
 // export default routes
-export {}
+export default routes

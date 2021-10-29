@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "labproawsa624a94d_identitypool_a624a94d",
-    "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "labproa624a94d",
-    "userPoolName": "labproawsa624a94d_userpool_a624a94d",
+    "identityPoolName": "labpro767d1598_identitypool_767d1598",
+    "allowUnauthenticatedIdentities": false,
+    "resourceNameTruncated": "labpro767d1598",
+    "userPoolName": "labpro767d1598_userpool_767d1598",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -20,9 +20,7 @@
     "requiredAttributes": [
         "email"
     ],
-    "aliasAttributes": [
-        "email"
-    ],
+    "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
@@ -31,10 +29,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "labproa624a94d_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "labpro767d1598_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "a624a94d",
-    "resourceName": "labproawsa624a94d",
+    "sharedId": "767d1598",
+    "resourceName": "labpro767d1598",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -48,24 +46,24 @@
             "Arn"
         ]
     },
-    "useDefault": "manual",
-    "userPoolGroupList": [],
+    "useDefault": "default",
+    "usernameAttributes": [
+        "email"
+    ],
+    "triggers": "{}",
+    "userPoolGroupList": [
+        "PackagesAdmin"
+    ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "dependsOn": [],
-    "thirdPartyAuth": false,
-    "userPoolGroups": false,
-    "adminQueries": false,
-    "triggers": "{}",
-    "hostedUI": true,
-    "hostedUIDomainName": "labpro",
-    "authProvidersUserPool": [],
-    "hostedUIProviderMeta": "[]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://heeralab.netlify.app/\"],\"LogoutURLs\":[\"https://heeralab.netlify.app/\"]}",
     "parentStack": {
         "Ref": "AWS::StackId"
     },
     "breakCircularDependency": true,
     "permissions": [],
+    "dependsOn": [],
+    "userPoolGroups": true,
+    "adminQueries": false,
+    "hostedUI": false,
     "authProviders": []
 }

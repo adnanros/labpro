@@ -1,12 +1,12 @@
 {
   "auth": {
-    "labproawsa624a94d": {
+    "labpro767d1598": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false,
       "frontendAuthConfig": {
-        "loginMechanism": [
+        "loginMechanisms": [
           "EMAIL"
         ],
         "signupAttributes": [
@@ -19,12 +19,31 @@
         "mfaConfiguration": "OFF",
         "mfaTypes": [
           "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
         ]
       }
+    },
+    "userPoolGroups": {
+      "service": "Cognito-UserPool-Groups",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "labpro767d1598",
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ]
+        }
+      ]
     }
   },
   "api": {
-    "labproapi": {
+    "labpro": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
@@ -32,7 +51,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authlabproawsa624a94d"
+              "userPoolId": "authlabpro767d1598"
             }
           },
           "additionalAuthenticationProviders": [

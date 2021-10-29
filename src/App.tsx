@@ -13,14 +13,16 @@
 
 
 
-import React, { useEffect } from 'react'
-import { HashRouter, Route, Switch } from 'react-router-dom'
+import React, { Component, useEffect } from 'react'
+import { Route, Router, Switch } from 'react-router-dom'
 import { history } from './_helpers';
 import './scss/style.scss'
 import { connect, ConnectedProps } from 'react-redux';
 import awsconfig from './aws-exports';
 import Amplify  from 'aws-amplify';
-import { alertActions } from './_actions';
+import { alertActions, userActions } from './_actions';
+import { ConfirmRegisterRoute, HomePackageAdminRoute, HomeRoute } from './routes';
+import { HomeAdminPage, HomePage } from './pages';
 
 Amplify.configure(awsconfig);
 const loading = (
@@ -30,7 +32,7 @@ const loading = (
 )
 
 // Containers
-const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
+//const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 
 // Pages
 const Login = React.lazy(() =>
@@ -42,6 +44,11 @@ const Register = React.lazy(() =>
 import('./pages')
   .then(({ RegisterPage }) => ({ default: RegisterPage })),
 );
+
+const ConfirmRegister = React.lazy(() =>
+import('./pages')
+  .then(({ ConfirmRegisterPage }) => ({ default: ConfirmRegisterPage })),
+);
 const Page404 = React.lazy(() => import('./pages/page404'))
 const Page500 = React.lazy(() => import('./pages/page500'))
 
@@ -49,60 +56,78 @@ const Page500 = React.lazy(() => import('./pages/page500'))
 
 interface IProps {
   message: string,
-  type: string
+  type: string,
+  isLoadingAuthStatus: boolean
 }
 
 //state of redux, is an object containing authentication, registration and alert. see index.tsx of reducer.
 const mapStateToProps = (state: any, props: IProps) => {
   return {
     message: state.alert.message,
-    type: state.alert.type
+    type: state.alert.type,
+    isLoadingAuthStatus: state.authentication.isLoadingAuthState
   }
 };
 
 const mapDispatchToProps  = {
-  clearAlerts: alertActions.clear
+  clearAlerts: alertActions.clear,
+  fetchAuthStatus: userActions.fetchAthStatus
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 export type Props = PropsFromRedux & IProps;
 
-const App: React.FC<Props> = (props) => {
-     useEffect(() => {
-      history.listen((location, action) => {
-        // clear alert on location change
-        props.clearAlerts();
+
+class App extends Component<Props, any> {
+  constructor(props: Props){
+    super(props);
+  }
+
+  componentDidMount() {
+    this.props.fetchAuthStatus();
+    history.listen((location, action) => {
+      // clear alert on location change
+      this.props.clearAlerts();
     });
-   }, [props]);
-   const alert = props;
- return (
-          <div className="jumbotron">
-            <div className="container">
-              <div className="col-sm-8 col-sm-offset-2">
-                  {alert.message &&
-                      <div className={`alert ${alert.type}`}>{alert.message}</div>
-                  }
-                  <HashRouter>
-                    <React.Suspense fallback={loading}>
-                      <Switch>
+  }
+  
+  render() {
 
-                        <Route exact path="/login"  component={Login} />
-                        <Route exact path="/register" component={Register} />
-                        <Route exact path="/404"  render={(props) => <Page404  />} />
-                        <Route exact path="/500"  render={(props) => <Page500  />} />
-                        <Route path="/"  render={(props) => <DefaultLayout  />} />
-                      </Switch>
-                    </React.Suspense>
-                  </HashRouter>
-              </div>
+    return(
+      <div className="jumbotron">
+        <div className="container">
+          <div className="col-sm-8 col-sm-offset-2">
+              {
+              this.props.message &&
+                  <div className={`alert ${this.props.type}`}>{this.props.message}</div>
+              }
+              {
+                this.props.isLoadingAuthStatus && loading
+              }
+              {
+                !this.props.isLoadingAuthStatus &&
+                <div>
+                  <Router history={history}>
+                  <React.Suspense fallback={loading}>
+                    <Switch>
+                      <Route exact path="/login"  component={Login} />
+                      <Route exact path="/register" component={Register} />
+                      <ConfirmRegisterRoute exact path="/ConfirmRegister" component={ConfirmRegister} />
+                      <Route exact path="/404"  render={(props) => <Page404  />} />
+                      <Route exact path="/500"  render={(props) => <Page500  />} />
+                      <HomePackageAdminRoute exact path="/homeAdmin" component={HomePage} />
+                      <HomeRoute path="/" component={HomeAdminPage} />
+                    </Switch>
+                  </React.Suspense>
+                  </Router>
+                </div>
+              }
           </div>
-        </div>
-    )
+      </div>
+    </div>
+)
 }
-
-App.defaultProps = {
-
 }
 
 

@@ -18,6 +18,7 @@ import { userActions } from '../_actions';
 import { connect, ConnectedProps } from 'react-redux';
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Link } from 'react-router-dom'
 
 interface IProps {
   isRegistering: boolean
@@ -114,6 +115,11 @@ const RegisterPage: React.FC<Props> = (props) => {
                   <div className="d-grid">
                     <CButton color="success" type='submit' disabled={isRegistering}>Create Account</CButton>
                   </div>
+                  <Link to="/login">
+                    <CButton color="link" className="px-0" disabled={isRegistering}>
+                            Already have an account? Log in
+                    </CButton>
+                  </Link>
                 </CForm>
               </CCardBody>
             </CCard>
