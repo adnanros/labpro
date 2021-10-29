@@ -13,7 +13,7 @@
 
 
 
-import React, { Component, useEffect } from 'react'
+import React, { Component } from 'react'
 import { Route, Router, Switch } from 'react-router-dom'
 import { history } from './_helpers';
 import './scss/style.scss'
@@ -82,14 +82,15 @@ export type Props = PropsFromRedux & IProps;
 class App extends Component<Props, any> {
   constructor(props: Props){
     super(props);
-  }
-
-  componentDidMount() {
-    this.props.fetchAuthStatus();
     history.listen((location, action) => {
       // clear alert on location change
       this.props.clearAlerts();
     });
+  }
+
+  componentDidMount() {
+    this.props.fetchAuthStatus();
+    
   }
   
   render() {
