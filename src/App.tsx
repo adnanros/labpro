@@ -23,8 +23,10 @@ import Amplify  from 'aws-amplify';
 import { alertActions, userActions } from './_actions';
 import { ConfirmRegisterRoute, HomePackageAdminRoute, HomeRoute } from './routes';
 import { HomeAdminPage, HomePage } from './pages';
+import { LoginRoute } from './routes/loginRoute';
 
 Amplify.configure(awsconfig);
+
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -90,7 +92,6 @@ class App extends Component<Props, any> {
 
   componentDidMount() {
     this.props.fetchAuthStatus();
-    
   }
   
   render() {
@@ -98,7 +99,7 @@ class App extends Component<Props, any> {
     return(
       <div className="jumbotron">
         <div className="container">
-          <div className="col-sm-8 col-sm-offset-2">
+          <div className="col-sm-12">
               {
               this.props.message &&
                   <div className={`alert ${this.props.type}`}>{this.props.message}</div>
@@ -112,9 +113,9 @@ class App extends Component<Props, any> {
                   <Router history={history}>
                   <React.Suspense fallback={loading}>
                     <Switch>
-                      <Route exact path="/login"  component={Login} />
+                      <LoginRoute exact path="/login"  component={Login} />
                       <Route exact path="/register" component={Register} />
-                      <ConfirmRegisterRoute exact path="/ConfirmRegister" component={ConfirmRegister} />
+                      <ConfirmRegisterRoute exact path="/confirmRegister" component={ConfirmRegister} />
                       <Route exact path="/404"  render={(props) => <Page404  />} />
                       <Route exact path="/500"  render={(props) => <Page500  />} />
                       <HomePackageAdminRoute exact path="/homeAdmin" component={HomePage} />

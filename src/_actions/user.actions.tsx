@@ -52,7 +52,7 @@ function login(username: string, password: string) {
             error => {
                 if(error.name === 'UserNotConfirmedException') {
                     dispatch(failureNonConfirmedUser(username ,error.toString()));
-                    history.push('/ConfirmRegister');
+                    history.push('/confirmRegister');
                 }else {
                     dispatch(failure(error.toString()));
                 }

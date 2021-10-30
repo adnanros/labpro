@@ -24,7 +24,7 @@ export function authentication(state = initialState, action: AnyAction) {
     case userConstants.AUTH_STATE_SUCCESS_LOGEDIN:
       return {
         isLoadingAuthState: false,
-        isLoggingIn: true,
+        isLoggingIn: false,
         isSignedIn: true,
         isSignedInUserPackageAdmin: action.isSignedInUserPackageAdmin,
         email: action.email//we receive username from success action.
@@ -57,7 +57,7 @@ export function authentication(state = initialState, action: AnyAction) {
     case userConstants.LOGIN_SUCCESS:
       return {
         isLoadingAuthState: false,
-        isLoggingIn: true,
+        isLoggingIn: false,
         isSignedIn: true,
         isSignedInUserPackageAdmin: action.isSignedInUserPackageAdmin,
         email: action.email//we receive username from success action.
