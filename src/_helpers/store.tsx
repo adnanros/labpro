@@ -12,3 +12,5 @@ export const store = createStore(
         loggerMiddleware
     )
 );
+
+export type AppState = ReturnType<typeof rootReducer>;

@@ -31,7 +31,7 @@ function fetchAthStatus() {
     };
 
     function request() { return { type: userConstants.AUTH_STATE_REQUEST } }
-    function success(username: string,isSignedInUserPackageAdmin: boolean) { return { type: userConstants.AUTH_STATE_SUCCESS_LOGEDIN, username,isSignedInUserPackageAdmin } }
+    function success(email: string,isSignedInUserPackageAdmin: boolean) { return { type: userConstants.AUTH_STATE_SUCCESS_LOGEDIN, email,isSignedInUserPackageAdmin } }
     function failure(error: string) { return { type: userConstants.AUTH_STATE_SUCCESS_LOGEDOUT, error } }
 }
 
@@ -62,7 +62,7 @@ function login(username: string, password: string) {
     };
 
     function request() { return { type: userConstants.LOGIN_REQUEST } }
-    function success(username: string,isSignedInUserPackageAdmin: boolean) { return { type: userConstants.LOGIN_SUCCESS, username,isSignedInUserPackageAdmin } }
+    function success(email: string,isSignedInUserPackageAdmin: boolean) { return { type: userConstants.LOGIN_SUCCESS, email,isSignedInUserPackageAdmin } }
     function failure(error: string) { return { type: userConstants.LOGIN_FAILURE, error } }
     //we send email to be used by confirm register page.
     function failureNonConfirmedUser(email:string, error: string) { return { type: userConstants.LOGIN_FAILURE_NON_CONFIRMED_USER, email, error } }

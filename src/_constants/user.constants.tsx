@@ -26,6 +26,7 @@ export const userConstants = {
 };
 
 export interface IUserAuthenticationState {
+    isLogingout: boolean,
     isLoadingAuthState: boolean,
     isLoggingIn: boolean,
     isSignedIn: boolean,
@@ -37,6 +38,8 @@ export interface IUserRegisterationState {
     isRegistering: boolean,
     email: string
 }
+
+
 
 export interface IUserConfirmRegisterationState {
     isConfirming: boolean

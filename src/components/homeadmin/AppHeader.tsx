@@ -1,34 +1,24 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
 import {
   CContainer,
   CHeader,
   CHeaderDivider,
   CHeaderNav,
-  CHeaderToggler,
   CNavLink,
   CNavItem,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilMenu } from '@coreui/icons'
 
 import {AppHeaderDropdown}  from './header/index'
+import { AppState } from '../../_helpers'
+import { useSelector } from 'react-redux'
 
 
 const AppHeader = () => {
-  const dispatch = useDispatch()
-  const sidebarShow = useSelector((state: any) => state.sidebarShow)
-
+  const isSignedIn = useSelector((state: AppState) => state.authentication.isSignedIn);
   return (
     <CHeader position="sticky" className="mb-4">
       <CContainer fluid>
-        <CHeaderToggler
-          className="ps-1"
-          onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
-        >
-          <CIcon icon={cilMenu} size="lg" />
-        </CHeaderToggler>
         
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>
@@ -37,8 +27,25 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>
         </CHeaderNav>
+
         <CHeaderNav className="ms-3">
-          <AppHeaderDropdown />
+          {
+            isSignedIn && <AppHeaderDropdown />
+          }
+          {
+            !isSignedIn && <CHeaderNav className="d-none d-md-flex me-auto">
+            <CNavItem>
+              <CNavLink to="/login" component={NavLink} className="active">
+                Login
+              </CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink to="/register" component={NavLink} className="active">
+                Register
+              </CNavLink>
+            </CNavItem>
+          </CHeaderNav>
+          }
         </CHeaderNav>
       </CContainer>
       <CHeaderDivider />

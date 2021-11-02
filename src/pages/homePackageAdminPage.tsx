@@ -7,8 +7,8 @@ import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/home
 export default class HomeAdminPage extends React.Component {
     render(){
         return (
-            <div>
-            <AppSidebar />
+            <div className='d-flex'>
+            {/* <AppSidebar /> */}
             <div className="wrapper d-flex flex-column min-vh-100 bg-light">
               <AppHeader />
               <div className="body flex-grow-1 px-3">

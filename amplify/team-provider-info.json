@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "labpro767d1598": {}
+        "labpro767d1598": {},
+        "userPoolGroups": {}
       }
     }
   }

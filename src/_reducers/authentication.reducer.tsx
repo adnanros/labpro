@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { IUserAuthenticationState, userConstants } from '../_constants';
 
 const initialState: IUserAuthenticationState =  {
+  isLogingout: false,
   isLoadingAuthState: true,
   isLoggingIn: false,
   isSignedIn: false,
@@ -15,6 +16,7 @@ export function authentication(state = initialState, action: AnyAction) {
 
     case userConstants.AUTH_STATE_REQUEST:
       return {
+        isLogingout: false,
         isLoadingAuthState: true,
         isLoggingIn: false,
         isSignedIn: false,
@@ -23,6 +25,7 @@ export function authentication(state = initialState, action: AnyAction) {
       }
     case userConstants.AUTH_STATE_SUCCESS_LOGEDIN:
       return {
+        isLogingout: false,
         isLoadingAuthState: false,
         isLoggingIn: false,
         isSignedIn: true,
@@ -31,6 +34,7 @@ export function authentication(state = initialState, action: AnyAction) {
       };
     case userConstants.AUTH_STATE_SUCCESS_LOGEDOUT:
       return {
+        isLogingout: false,
         isLoadingAuthState: false,
         isLoggingIn: false,
         isSignedIn: false,
@@ -39,6 +43,7 @@ export function authentication(state = initialState, action: AnyAction) {
       }
     case userConstants.AUTH_STATE_FAILURE:
         return {
+          isLogingout: false,
           isLoadingAuthState: false,
           isLoggingIn: false,
           isSignedIn: false,
@@ -48,6 +53,7 @@ export function authentication(state = initialState, action: AnyAction) {
     case userConstants.LOGIN_REQUEST:
       //we need no data from action
       return {
+        isLogingout: false,
         isLoadingAuthState: false,
         isLoggingIn: true,
         isSignedIn: false,
@@ -56,6 +62,7 @@ export function authentication(state = initialState, action: AnyAction) {
       };
     case userConstants.LOGIN_SUCCESS:
       return {
+        isLogingout: false,
         isLoadingAuthState: false,
         isLoggingIn: false,
         isSignedIn: true,
@@ -66,6 +73,7 @@ export function authentication(state = initialState, action: AnyAction) {
       return initialState;
     case userConstants.LOGIN_FAILURE_NON_CONFIRMED_USER:
         return {
+          isLogingout: false,
           isLoadingAuthState: false,
           isLoggingIn: false,
           isSignedIn: false,
@@ -74,6 +82,7 @@ export function authentication(state = initialState, action: AnyAction) {
         }
     case userConstants.LOGOUT:
       return {
+        isLogingout: true,
         isLoadingAuthState: false,
         isLoggingIn: false,
         isSignedIn: false,
