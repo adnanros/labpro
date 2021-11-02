@@ -1,14 +1,16 @@
-import React from "react";
+import React, { Component } from "react";
 //import { userActions } from '../_actions';
 import { connect } from 'react-redux';
 
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/homeadmin/index';
+import { AppState } from "../_helpers";
 
-export default class HomeAdminPage extends React.Component {
+class HomePackageAdminPage extends Component<any,any> {
+
     render(){
         return (
             <div className='d-flex'>
-            {/* <AppSidebar /> */}
+            <AppSidebar />
             <div className="wrapper d-flex flex-column min-vh-100 bg-light">
               <AppHeader />
               <div className="body flex-grow-1 px-3">
@@ -21,14 +23,14 @@ export default class HomeAdminPage extends React.Component {
     }
 }
 
-function mapState(state: any) {
-    const { users, authentication } = state;
-    const { user } = authentication;
-    return { user, users };
+function mapState(state: AppState) {
+  return {
+    auth: state.authentication
+  }
 }
 
 const actionCreators = {
+
 }
 
-const connectedHomeAdminPage = connect(mapState, actionCreators)(HomeAdminPage);
-export { connectedHomeAdminPage as HomeAdminPage };
+export default connect(mapState, actionCreators)(HomePackageAdminPage);

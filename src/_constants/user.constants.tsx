@@ -39,8 +39,6 @@ export interface IUserRegisterationState {
     email: string
 }
 
-
-
 export interface IUserConfirmRegisterationState {
     isConfirming: boolean
 }

@@ -1,3 +1,6 @@
-export * from './homeRoute';
-export * from './homePackageAdminRoute';
-export * from './confirmRegisterRoute';
+import ConfirmRegisterRoute from './confirmRegisterRoute'
+import HomePackageAdminRoute from './homePackageAdminRoute'
+import HomeRoute from './homeRoute'
+import LoginRoute from './loginRoute'
+
+export { ConfirmRegisterRoute,HomePackageAdminRoute,HomeRoute,LoginRoute}

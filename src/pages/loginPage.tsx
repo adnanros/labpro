@@ -19,35 +19,17 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect } from 'react-redux';
 import { userActions } from '../_actions';
-
-interface IProps {
-  isLoggingIn: boolean
-}
+import { AppState } from '../_helpers';
 
 interface IState {
   email: string;
   password: string;
 }
 
-const mapStateToProps = (state: any, props: IProps) => {
-  return {
-    //we have 3 fields in redux state. authentication, registration and alert. see index.tsx of reducers.
-    isLoggingIn: state.authentication.isLoggingIn
-  };
-};
-
-const mapDispatchToProps  = {
-  login: userActions.login
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type Props = PropsFromRedux & IProps;
-
-const LoginPage: React.FC<Props> = (props) => {
-  console.log('rendered with props:',props);
+const LoginPage: React.FC<any> = (props) => {
+  //console.log('rendered with props:',props);
   const  loggingIn: boolean  = props.isLoggingIn;
 
   const validationSchema = Yup.object().shape({
@@ -145,6 +127,15 @@ const LoginPage: React.FC<Props> = (props) => {
   )
 }
 
-//const connectedLoginPage = connect(mapStateToProps, mapDispatchToProps )(LoginPage);
-const connectedLoginPage = connector(LoginPage);
-export { connectedLoginPage as LoginPage };
+const mapStateToProps = (state: AppState) => {
+  return {
+    //we have 3 fields in redux state. authentication, registration and alert. see index.tsx of reducers.
+    isLoggingIn: state.authentication.isLoggingIn
+  };
+};
+
+const mapDispatchToProps  = {
+  login: userActions.login
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(LoginPage);

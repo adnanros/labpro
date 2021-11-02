@@ -19,7 +19,7 @@ export function alert(state = initialState, action: AnyAction) {
         message: action.message
       };
     case alertConstants.CLEAR:
-      return {};
+      return initialState;
     default:
       return state
   }

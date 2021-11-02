@@ -15,14 +15,11 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked } from '@coreui/icons'
 import { userActions } from '../_actions';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Link } from 'react-router-dom'
-
-interface IProps {
-  isRegistering: boolean
-}
+import { AppState } from '../_helpers'
 
 interface IState {
   email: string;
@@ -30,22 +27,7 @@ interface IState {
   passwordConfirmation: string;
 }
 
-const mapStateToProps = (state: any, props: IProps) => {
-  return {
-    //we have 3 fields in redux state. authentication, registration and alert. see index.tsx of reducers.
-    isRegistering: state.authentication.isRegistering
-  };
-};
-
-const mapDispatchToProps  = {
-  register: userActions.register
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type Props = PropsFromRedux & IProps;
-
-const RegisterPage: React.FC<Props> = (props) => {
+const RegisterPage: React.FC<any> = (props) => {
 
   const isRegistering = props.isRegistering;
   const validationSchema = Yup.object().shape({
@@ -130,5 +112,15 @@ const RegisterPage: React.FC<Props> = (props) => {
   )
 }
 
-const connectedRegisterPage = connector(RegisterPage);
-export { connectedRegisterPage as RegisterPage };
+const mapStateToProps = (state: AppState) => {
+  return {
+    //we have 3 fields in redux state. authentication, registration and alert. see index.tsx of reducers.
+    isRegistering: state.registration.isRegistering
+  };
+};
+
+const mapDispatchToProps  = {
+  register: userActions.register
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(RegisterPage)

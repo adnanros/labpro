@@ -15,15 +15,15 @@
 
 import React, { Component } from 'react'
 import { Route, Router, Switch } from 'react-router-dom'
-import { history } from './_helpers';
+import { AppState, history } from './_helpers'
 import './scss/style.scss'
-import { connect, ConnectedProps } from 'react-redux';
-import awsconfig from './aws-exports';
-import Amplify  from 'aws-amplify';
-import { alertActions, userActions } from './_actions';
-import { ConfirmRegisterRoute, HomePackageAdminRoute, HomeRoute } from './routes';
-import { HomeAdminPage, HomePage } from './pages';
-import { LoginRoute } from './routes/loginRoute';
+import { connect } from 'react-redux'
+import awsconfig from './aws-exports'
+import Amplify  from 'aws-amplify'
+import { alertActions, userActions } from './_actions'
+import HomePage from './pages/homePage'
+import HomePackageAdminPage from './pages/homePackageAdminPage'
+import { HomeRoute,ConfirmRegisterRoute, HomePackageAdminRoute, LoginRoute } from './routes'
 
 Amplify.configure(awsconfig);
 
@@ -37,15 +37,9 @@ const loading = (
 //const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 
 // Pages
-const Login = React.lazy(() =>
-  import('./pages')
-    .then(({ LoginPage }) => ({ default: LoginPage })),
-);
+const Login =  React.lazy(() => import('./pages/loginPage'))
 
-const Register = React.lazy(() =>
-import('./pages')
-  .then(({ RegisterPage }) => ({ default: RegisterPage })),
-);
+const Register = React.lazy(() => import('./pages/registerPage'))
 
 const ConfirmRegister = React.lazy(() =>
 import('./pages')
@@ -56,33 +50,8 @@ const Page500 = React.lazy(() => import('./pages/page500'))
 
 
 
-interface IProps {
-  message: string,
-  type: string,
-  isLoadingAuthStatus: boolean
-}
-
-//state of redux, is an object containing authentication, registration and alert. see index.tsx of reducer.
-const mapStateToProps = (state: any, props: IProps) => {
-  return {
-    message: state.alert.message,
-    type: state.alert.type,
-    isLoadingAuthStatus: state.authentication.isLoadingAuthState
-  }
-};
-
-const mapDispatchToProps  = {
-  clearAlerts: alertActions.clear,
-  fetchAuthStatus: userActions.fetchAthStatus
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-export type Props = PropsFromRedux & IProps;
-
-
-class App extends Component<Props, any> {
-  constructor(props: Props){
+class App extends Component<any,any> {
+  constructor(props: any){
     super(props);
     history.listen((location, action) => {
       // clear alert on location change
@@ -91,6 +60,7 @@ class App extends Component<Props, any> {
   }
 
   componentDidMount() {
+
     this.props.fetchAuthStatus();
   }
   
@@ -119,7 +89,7 @@ class App extends Component<Props, any> {
                       <Route exact path="/404"  render={(props) => <Page404  />} />
                       <Route exact path="/500"  render={(props) => <Page500  />} />
                       <HomePackageAdminRoute exact path="/homeAdmin" component={HomePage} />
-                      <HomeRoute path="/" component={HomeAdminPage} />
+                      <HomeRoute path="/" component={HomePackageAdminPage} />
                     </Switch>
                   </React.Suspense>
                   </Router>
@@ -132,9 +102,21 @@ class App extends Component<Props, any> {
 }
 }
 
+//state of redux, is an object containing authentication, registration and alert. see index.tsx of reducer.
+const mapStateToProps = (state: AppState) => {
+  return {
+    message: state.alert.message,
+    type: state.alert.type,
+    isLoadingAuthStatus: state.authentication.isLoadingAuthState
+  }
+};
 
-const connectedApp = connector(App);
-export { connectedApp as App };
+const mapDispatchToProps  = {
+  clearAlerts: alertActions.clear,
+  fetchAuthStatus: userActions.fetchAthStatus
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);
 
 /*
 

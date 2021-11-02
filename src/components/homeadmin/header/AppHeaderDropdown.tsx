@@ -1,7 +1,6 @@
 import React from 'react'
 import {
   //CAvatar,
-  CBadge,
   CButton,
   CDropdown,
   CDropdownDivider,

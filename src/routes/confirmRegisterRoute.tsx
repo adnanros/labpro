@@ -1,27 +1,9 @@
 import React from 'react'
-import { Route, Redirect,RouteProps } from 'react-router-dom'
-import { connect, ConnectedProps } from 'react-redux'
+import { Route, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { AppState } from '../_helpers';
 
-interface IProps {
-    component:any;
-    rest?:any
-  }
-  
-  const mapStateToProps = (state: any) => {
-    return {
-      //we have 3 fields in redux state. authentication, registration and alert. see index.tsx of reducers.
-      userAuthenticationStatus: state.authentication,
-      userRegisterationStatus: state.registeration,
-      userConfirmRegistrationStatus: state.confirm_registartion
-    };
-  };
-  
-  
-  const connector = connect(mapStateToProps);
-  type PropsFromRedux = ConnectedProps<typeof connector>;
-  type Props = PropsFromRedux & IProps & RouteProps;
-
-const ConfirmRegisterR: React.FC<Props> = (props) => (
+const ConfirmRegisterRoute: React.FC<any> = (props) => (
     <Route {...props.rest} render={() => (
         //we may be redirected here either by login or register pages. on either case, we need the email
         //check isNullOrEMpty... only go to this page if email is provided via authentication or registeration...
@@ -32,5 +14,13 @@ const ConfirmRegisterR: React.FC<Props> = (props) => (
     )} />
 )
 
-const connectedConfirmRegisterRoute = connector(ConfirmRegisterR);
-export { connectedConfirmRegisterRoute as ConfirmRegisterRoute };
+const mapStateToProps = (state: AppState) => {
+  return {
+    //we have 3 fields in redux state. authentication, registration and alert. see index.tsx of reducers.
+    userAuthenticationStatus: state.authentication,
+    userRegisterationStatus: state.registration,
+    userConfirmRegistrationStatus: state.confirm_registartion
+  };
+};
+
+export default connect(mapStateToProps)(ConfirmRegisterRoute)
