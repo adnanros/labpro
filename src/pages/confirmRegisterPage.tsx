@@ -15,39 +15,16 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked } from '@coreui/icons'
 import { userActions } from '../_actions';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Link } from 'react-router-dom'
-
-interface IProps {
-  isConfirming: boolean,
-  email: string
-}
+import { AppState } from '../_helpers'
 
 interface IState {
-  code: string;
+  code: string
 }
-
-const mapStateToProps = (state: any, props: IProps) => {
-  return {
-    //we have 3 fields in redux state. authentication, registration and alert. see index.tsx of reducers.
-    isConfirming: state.confirm_registartion.isConfirming,
-    //we are here either from login page or from register page.
-    email: (typeof state.authentication?.email !='undefined' && state.authentication?.email) ? state.authentication?.email : state.registeration?.email
-  };
-};
-
-const mapDispatchToProps  = {
-  confirmRegister: userActions.confirmRegister,
-  resendConfirmationCode: userActions.resendConfirmationCode
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type Props = PropsFromRedux & IProps;
-
-const ConfirmRegisterPage: React.FC<Props> = (props) => {
+const ConfirmRegisterPage: React.FC<any> = (props) => {
 
   const isConfirming = props.isConfirming;
   const validationSchema = Yup.object().shape({
@@ -106,5 +83,18 @@ const ConfirmRegisterPage: React.FC<Props> = (props) => {
   )
 }
 
-const connectedCinfirmRegisterPage = connector(ConfirmRegisterPage);
-export { connectedCinfirmRegisterPage as ConfirmRegisterPage };
+const mapStateToProps = (state: AppState) => {
+  return {
+    //we have 3 fields in redux state. authentication, registration and alert. see index.tsx of reducers.
+    isConfirming: state.confirm_registartion.isConfirming,
+    //we are here either from login page or from register page.
+    email: (typeof state.authentication.email !='undefined' && state.authentication?.email) ? state.authentication.email : state.registration.email
+  };
+};
+
+const mapDispatchToProps  = {
+  confirmRegister: userActions.confirmRegister,
+  resendConfirmationCode: userActions.resendConfirmationCode
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(ConfirmRegisterPage);

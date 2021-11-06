@@ -100,7 +100,7 @@ import  SampleCategory from "../components/homeadmin/data/SampleCategory"
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/col', name: 'xxxx', component: SampleCategory },
+  { path: '/samplecategory', name: 'SampleCategory', component: SampleCategory },
 ]
 // export default routes
 export default routes

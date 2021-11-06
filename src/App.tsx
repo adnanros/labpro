@@ -21,7 +21,7 @@ import { connect } from 'react-redux'
 import awsconfig from './aws-exports'
 import Amplify  from 'aws-amplify'
 import { alertActions, userActions } from './_actions'
-import HomePage from './pages/homePage'
+import HomePage from './pages/HomePage'
 import HomePackageAdminPage from './pages/homePackageAdminPage'
 import { HomeRoute,ConfirmRegisterRoute, HomePackageAdminRoute, LoginRoute } from './routes'
 
@@ -41,10 +41,8 @@ const Login =  React.lazy(() => import('./pages/loginPage'))
 
 const Register = React.lazy(() => import('./pages/registerPage'))
 
-const ConfirmRegister = React.lazy(() =>
-import('./pages')
-  .then(({ ConfirmRegisterPage }) => ({ default: ConfirmRegisterPage })),
-);
+const ConfirmRegister = React.lazy(() => import('./pages/confirmRegisterPage'))
+
 const Page404 = React.lazy(() => import('./pages/page404'))
 const Page500 = React.lazy(() => import('./pages/page500'))
 
