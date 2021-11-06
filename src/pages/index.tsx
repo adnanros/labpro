@@ -1,5 +1,5 @@
 export * from './homePackageAdminPage';
-export * from './homePage'
+export * from './HomePage'
 export * from './loginPage';
 export * from './registerPage';
 export * from './confirmRegisterPage';

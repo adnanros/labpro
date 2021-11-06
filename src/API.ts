@@ -3199,14 +3199,14 @@ export type GetSampleCategoryQuery = {
   } | null,
 };
 
-export type ListSampleCategoriesQueryVariables = {
+export type ListSampleCategorysQueryVariables = {
   filter?: ModelSampleCategoryFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListSampleCategoriesQuery = {
-  listSampleCategories?:  {
+export type ListSampleCategorysQuery = {
+  listSampleCategorys?:  {
     __typename: "ModelSampleCategoryConnection",
     items?:  Array< {
       __typename: "SampleCategory",
@@ -3489,14 +3489,14 @@ export type GetChemicalAnalysisQuery = {
   } | null,
 };
 
-export type ListChemicalAnalysesQueryVariables = {
+export type ListChemicalAnalysissQueryVariables = {
   filter?: ModelChemicalAnalysisFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListChemicalAnalysesQuery = {
-  listChemicalAnalyses?:  {
+export type ListChemicalAnalysissQuery = {
+  listChemicalAnalysiss?:  {
     __typename: "ModelChemicalAnalysisConnection",
     items?:  Array< {
       __typename: "ChemicalAnalysis",
@@ -3577,14 +3577,14 @@ export type GetTestPackChemicalAnalysisQuery = {
   } | null,
 };
 
-export type ListTestPackChemicalAnalysesQueryVariables = {
+export type ListTestPackChemicalAnalysissQueryVariables = {
   filter?: ModelTestPackChemicalAnalysisFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListTestPackChemicalAnalysesQuery = {
-  listTestPackChemicalAnalyses?:  {
+export type ListTestPackChemicalAnalysissQuery = {
+  listTestPackChemicalAnalysiss?:  {
     __typename: "ModelTestPackChemicalAnalysisConnection",
     items?:  Array< {
       __typename: "TestPackChemicalAnalysis",
@@ -3806,14 +3806,14 @@ export type GetImpactCategoryQuery = {
   } | null,
 };
 
-export type ListImpactCategoriesQueryVariables = {
+export type ListImpactCategorysQueryVariables = {
   filter?: ModelImpactCategoryFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListImpactCategoriesQuery = {
-  listImpactCategories?:  {
+export type ListImpactCategorysQuery = {
+  listImpactCategorys?:  {
     __typename: "ModelImpactCategoryConnection",
     items?:  Array< {
       __typename: "ImpactCategory",

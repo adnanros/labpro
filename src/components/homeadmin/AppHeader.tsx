@@ -33,18 +33,19 @@ const AppHeader = () => {
             isSignedIn && <AppHeaderDropdown />
           }
           {
-            !isSignedIn && <CHeaderNav className="d-none d-md-flex me-auto">
-            <CNavItem>
-              <CNavLink to="/login" component={NavLink} className="active">
-                Login
-              </CNavLink>
-            </CNavItem>
-            <CNavItem>
-              <CNavLink to="/register" component={NavLink} className="active">
-                Register
-              </CNavLink>
-            </CNavItem>
-          </CHeaderNav>
+            !isSignedIn && 
+            <CHeaderNav className="d-md-flex me-auto">
+              <CNavItem>
+                <CNavLink to="/login" component={NavLink} className="active">
+                  Login
+                </CNavLink>
+              </CNavItem>
+              <CNavItem>
+                <CNavLink to="/register" component={NavLink} className="active">
+                  Register
+                </CNavLink>
+              </CNavItem>
+            </CHeaderNav>
           }
         </CHeaderNav>
       </CContainer>

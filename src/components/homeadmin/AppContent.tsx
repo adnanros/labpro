@@ -7,7 +7,7 @@ import routes from '../../routes/routes'
 
 const AppContent = React.memo(() => {
   return (
-    <CContainer lg>
+    <CContainer>
       <Suspense fallback={<CSpinner color="primary" />}>
         <Switch>
           {routes.map((route: any, idx: any) => {

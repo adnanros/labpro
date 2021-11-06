@@ -9,7 +9,7 @@ class HomePackageAdminPage extends Component<any,any> {
 
     render(){
         return (
-            <div className='d-flex'>
+          <div className=''>
             <AppSidebar />
             <div className="wrapper d-flex flex-column min-vh-100 bg-light">
               <AppHeader />
