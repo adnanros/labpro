@@ -13,8 +13,9 @@ function getDataList(query: string){
         try{
             const result: any = await API.graphql(
                 {query: query}
-            ) as {}
-            console.log('List-result', result);
+            ) as Promise<any>
+            console.log('List-result',result.data);
+            
             dispatch(success(result));
         } catch(error: any)
         {
