@@ -3,7 +3,7 @@ import { alertActions } from ".";
 import { dataAdminConstants } from "../_constants";
 
 export const admindataActions = {
-    getDataList
+    getDataList, deleteItem,
 };
 
 function getDataList(query: string){
@@ -28,5 +28,31 @@ function getDataList(query: string){
     function request() { return { type: dataAdminConstants.DATA_LIST_REQUEST } }
     function success(result: any) { return { type: dataAdminConstants.DATA_LIST_SUCCESS, result } }
     function failure(error: string) { return { type: dataAdminConstants.DATA_LIST_FAILURE, error } }
+
+}
+
+function deleteItem(mutation: string, id: string, dataListQuery: string){
+    console.log('deleting:', id);
+    return async (dispatch: (arg0: { type: string; error?: string; }) => void) => {
+        dispatch(request());
+        try{
+            const ids = {
+                id:id,
+            };
+            await API.graphql({ query: mutation, variables: {input: ids}});
+            
+            dispatch(success());
+            //HERE++++++++++++ getDataList(dataListQuery);
+        } catch(error: any)
+        {
+            console.log(error);
+            dispatch(failure(error.toString()))
+            dispatch(alertActions.error(error.toString()));
+        }
+    };
+
+    function request() { return { type: dataAdminConstants.ITEM_DELETE_REQUEST } }
+    function success() { return { type: dataAdminConstants.ITEM_DELETE_SUCCESS } }
+    function failure(error: string) { return { type: dataAdminConstants.ITEM_DELETE_FAILURE, error } }
 
 }
