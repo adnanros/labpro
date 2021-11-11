@@ -10,9 +10,17 @@ export const dataAdminConstants = {
 
 }
 
-export interface IPackageAdminState {
+export interface DataListState{
     isLoadingData: boolean,
     data: any,
+}
 
+export interface DataDeleteState{
     isDeletingItem: boolean,
+    deletedId: string
+}
+
+export interface IPackageAdminState {
+    dataListState: DataListState
+    dataDeleteState: DataDeleteState
 }

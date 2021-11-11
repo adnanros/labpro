@@ -2,10 +2,15 @@ import { dataAdminConstants, IPackageAdminState } from "../_constants"
 import { AnyAction } from 'redux';
 
 const initialState: IPackageAdminState = {
-    isLoadingData: false,
-    data: null,
-
-    isDeletingItem: false
+    dataListState: {
+      isLoadingData: false,
+      data: null,
+    },
+    dataDeleteState:
+    {
+      isDeletingItem: false,
+      deletedId: ''
+    }
   }
   
   export function data_admin(state = initialState, action: AnyAction) {
@@ -14,39 +19,61 @@ const initialState: IPackageAdminState = {
       case dataAdminConstants.DATA_LIST_REQUEST:
         return { 
           ...state,
-          isLoadingData : true,
-          data : null
+          dataListState:
+          {
+            isLoadingData : true,
+            data : null
+          }
          }
       
       case dataAdminConstants.DATA_LIST_SUCCESS: 
+      const items = Object.values(action.result.data)[0] as any;
          return {
           ...state,
-           isLoadingData : false,
-           data: action.result
+           dataListState: {
+            isLoadingData : false,
+            data: items.items
+           }
          }
 
       case dataAdminConstants.DATA_LIST_FAILURE: 
         return {
           ...state,
-          isLoadingData: false,
-          data: null
+          dataListState: {
+            isLoadingData: false,
+            data: null
+          }
         }   
         case dataAdminConstants.ITEM_DELETE_REQUEST: 
           return {
             ...state,
-            isDeletingItem: true,
+            dataDeleteState: {
+              isDeletingItem: true,
+              deletedId: ''
+            }
           }
 
         case dataAdminConstants.ITEM_DELETE_SUCCESS:
+          const deletedId = action.deletedId;
+          const data = state.dataListState.data?.filter((x: any) => x.id !== deletedId);
           return {
-            ...state,
-            isDeletingItem: false,
+            dataListState: {
+              isLoadingData: state.dataListState.isLoadingData,
+              data: data
+            },
+            dataDeleteState: {
+              isDeletingItem: false,
+              deletedId: ''
+            }
           }  
 
         case dataAdminConstants.ITEM_DELETE_FAILURE:
           return {
             ...state,
-            isDeletingItem: false
+            dataDeleteState: {
+              isDeletingItem: false,
+              deletedId: ''
+            }
           }  
       default:
         return state

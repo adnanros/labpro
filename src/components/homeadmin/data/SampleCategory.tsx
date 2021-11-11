@@ -44,7 +44,7 @@ class SampleCategory extends Component<any,IState> {
                     <div>
                       <button onClick={()=>{this.setState({showDetail: true})}} disabled={this.props.isDeletingItem}>Edit</button>
                       <button onClick={()=>{this.setState({showEdit: true})}} disabled={this.props.isDeletingItem}>Detail</button>
-                      <button onClick={()=>{this.setState({toBeDeletedId: item.id, showDeleteAlert: true})}} disabled={this.props.isDeletingItem}>Delete</button>
+                      888888888888888888888888888888888888<button onClick={()=>{this.setState({toBeDeletedId: item.id, showDeleteAlert: true})}} disabled={this.props.isDeletingItem}>Delete</button>
                     </div>
                   </div>)
                 )}
@@ -62,7 +62,8 @@ class SampleCategory extends Component<any,IState> {
               <CModalBody>Modal body text goes here.</CModalBody>
               <CModalFooter>
                 <CButton onClick={()=>{this.setState({showDeleteAlert: false})}} color="secondary">Close</CButton>
-                <CButton onClick={()=>{this.props.deleteItem(deleteSampleCategory,this.state.toBeDeletedId,listSampleCategorys)}} color="primary">Ok</CButton>
+                <CButton onClick={()=>{
+                  this.props.deleteItem(deleteSampleCategory,this.state.toBeDeletedId,listSampleCategorys); this.setState({showDeleteAlert: false})} } color="primary">Ok</CButton>
               </CModalFooter>
             </CModal>
 
@@ -74,10 +75,11 @@ class SampleCategory extends Component<any,IState> {
 
   const mapStateToProps = (state: AppState) => {
     return {
-      isDataLoading: state.package_admin.isLoadingData,
-      data: state.package_admin.data?.data?.listSampleCategorys.items as Array<any>,
+      isDataLoading: state.package_admin.dataListState.isLoadingData,
+      data: state.package_admin.dataListState.data,
 
-      isDeletingItem: state.package_admin.isDeletingItem,
+      isDeletingItem: state.package_admin.dataDeleteState.isDeletingItem,
+      deletedId: state.package_admin.dataDeleteState.deletedId
     }
   };
   

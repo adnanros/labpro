@@ -41,7 +41,7 @@ function deleteItem(mutation: string, id: string, dataListQuery: string){
             };
             await API.graphql({ query: mutation, variables: {input: ids}});
             
-            dispatch(success());
+            dispatch(success(id));
             //HERE++++++++++++ getDataList(dataListQuery);
         } catch(error: any)
         {
@@ -52,7 +52,7 @@ function deleteItem(mutation: string, id: string, dataListQuery: string){
     };
 
     function request() { return { type: dataAdminConstants.ITEM_DELETE_REQUEST } }
-    function success() { return { type: dataAdminConstants.ITEM_DELETE_SUCCESS } }
+    function success(deletedId: string) { return { type: dataAdminConstants.ITEM_DELETE_SUCCESS, deletedId } }
     function failure(error: string) { return { type: dataAdminConstants.ITEM_DELETE_FAILURE, error } }
 
 }
