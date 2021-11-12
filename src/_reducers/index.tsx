@@ -11,7 +11,7 @@ export interface ReduxState {
   authentication: IUserAuthenticationState,
   registeration: IUserRegisterationState,
   alert: IAlertState,
-  package_admin: IPackageAdminState
+  package_admin: IPackageAdminState,
 }
 
 const rootReducer = combineReducers(

@@ -8,6 +8,11 @@ export const dataAdminConstants = {
     ITEM_DELETE_SUCCESS: 'ITEM_DELETE_SUCCESS',
     ITEM_DELETE_FAILURE: 'ITEM_DELETE_FAILURE',
 
+    ITEM_CREATE_REQUEST: 'ITEM_CREATE_REQUEST',
+    ITEM_CREATE_SUCCESS: 'ITEM_CREATE_SUCCESS',
+    ITEM_CREATE_FAILURE: 'ITEM_CREATE_FAILURE',
+
+
 }
 
 export interface DataListState{
@@ -20,7 +25,14 @@ export interface DataDeleteState{
     deletedId: string
 }
 
+export interface DataCreateState {
+    isCreatingItem: boolean,
+    isCreatedSuccessfully: boolean,
+    createdItemData: any,
+}
+
 export interface IPackageAdminState {
-    dataListState: DataListState
-    dataDeleteState: DataDeleteState
+    dataListState: DataListState,
+    dataDeleteState: DataDeleteState,
+    dataCreateState: DataCreateState
 }

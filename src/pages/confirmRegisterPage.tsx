@@ -34,7 +34,6 @@ const ConfirmRegisterPage: React.FC<any> = (props) => {
   
   const onSubmit = (data: IState) => {
     props.confirmRegister(props.email,data.code);
-    console.log('xxxx',data.code);
   };
   
   const {
