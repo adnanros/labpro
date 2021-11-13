@@ -25,9 +25,9 @@ import { connect } from 'react-redux';
 import { Component } from "react"
 import { AppState } from '../../../_helpers';
 import { admindataActions} from '../../../_actions';
-import { listSampleCategorys,  } from '../../../graphql/queries';
+import { listSampleCategorys, listTestGroups,  } from '../../../graphql/queries';
 import React from 'react';
-import { createSampleCategory, deleteSampleCategory } from '../../../graphql/mutations';
+import { createTestGroup, deleteTestGroup } from '../../../graphql/mutations';
 
 
 // in class component we cannot use useState functionality
@@ -39,7 +39,7 @@ interface IState {
   showDeleteAlert: boolean,
   toBeDeletedId: string
 }
-class SampleCategory extends Component<any,IState> {
+class TestGroup extends Component<any,IState> {
   
     constructor(props: any){
       super(props);
@@ -53,8 +53,10 @@ class SampleCategory extends Component<any,IState> {
     }
 
     componentDidMount(){
-      this.props.getDataList(listSampleCategorys);
+      this.props.getDataList(listTestGroups);
+      this.props.getDataList2(listSampleCategorys);
     }
+    
     render() {
       return (
         <div>
@@ -88,7 +90,7 @@ class SampleCategory extends Component<any,IState> {
               <CModalFooter>
                 <CButton onClick={()=>{this.setState({showDeleteAlert: false})}} color="secondary">Close</CButton>
                 <CButton onClick={()=>{
-                  this.props.deleteItem(deleteSampleCategory,this.state.toBeDeletedId,listSampleCategorys); this.setState({showDeleteAlert: false})} } color="primary">Ok</CButton>
+                  this.props.deleteItem(deleteTestGroup,this.state.toBeDeletedId,listTestGroups); this.setState({showDeleteAlert: false})} } color="primary">Ok</CButton>
               </CModalFooter>
             </CModal>
 
@@ -99,7 +101,7 @@ class SampleCategory extends Component<any,IState> {
             portal={false}
             visible= {this.state.showCreate}
             >
-              <CreateSampleCategoryComponent onclick={()=> this.setState({showCreate: false})}/>
+              <CreateTestGroupComponent onclick={()=> this.setState({showCreate: false})}/>
             </CModal>
 
         </div>
@@ -124,11 +126,12 @@ class SampleCategory extends Component<any,IState> {
   
   const mapDispatchToProps  = {
     getDataList: admindataActions.getDataList,
+    getDataList2: admindataActions.getDataList2,
     deleteItem: admindataActions.deleteItem,
     createItem: admindataActions.createItem,
   };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SampleCategory)
+export default connect(mapStateToProps, mapDispatchToProps)(TestGroup)
 
 
 interface IState2 {
@@ -145,7 +148,9 @@ const mapDispatchToProps2  = {
     createItem: admindataActions.createItem,
 };
 
-  const CreateSampleCategoryComponent: React.FC<any> = connect(mapStateToProps2,mapDispatchToProps2)((props: any) => {
+  const CreateTestGroupComponent: React.FC<any> = connect(mapStateToProps2,mapDispatchToProps2)((props: any) => {
+    
+
     //console.log('rendered with props:',props);
     const  isCreatingItem: boolean  = props.isCreatingItem;
   
@@ -161,7 +166,7 @@ const mapDispatchToProps2  = {
         name: data.name,
         description: data.description
       } 
-      props.createItem(createSampleCategory,inputData);
+      props.createItem(createTestGroup,inputData);
       props.onclick();
     };
     
@@ -182,8 +187,8 @@ const mapDispatchToProps2  = {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm className="needs-validation" onSubmit={handleSubmit(onSubmit)} >
-                    <h1>Sample Category</h1>
-                    <p className="text-medium-emphasis">Create a new Sample Category</p>
+                    <h1>Test Group</h1>
+                    <p className="text-medium-emphasis">Create a new Test Group</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />

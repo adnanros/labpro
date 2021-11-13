@@ -1,6 +1,7 @@
 // import React from 'react'
 
 import  SampleCategory from "../components/homeadmin/data/SampleCategory"
+import  TestGroup from "../components/homeadmin/data/TestGroup"
 
 
 // const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
@@ -101,6 +102,7 @@ import  SampleCategory from "../components/homeadmin/data/SampleCategory"
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/samplecategory', name: 'SampleCategory', component: SampleCategory },
+  { path: '/testgroup', name: 'TestGroup', component: TestGroup },
 ]
 // export default routes
 export default routes

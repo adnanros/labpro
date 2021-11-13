@@ -2,10 +2,18 @@ import { dataAdminConstants, IPackageAdminState } from "../_constants"
 import { AnyAction } from 'redux';
 
 const initialState: IPackageAdminState = {
-    dataListState: {
-      isLoadingData: false,
-      data: null,
-    },
+  dataListState: {
+    isLoadingData: false,
+    data: null,
+  },
+  dataList2State: {
+    isLoadingData: false,
+    data: null,
+  },
+  dataList3State: {
+    isLoadingData: false,
+    data: null,
+  },
     dataDeleteState:
     {
       isDeletingItem: false,
@@ -49,6 +57,66 @@ const initialState: IPackageAdminState = {
             data: null
           }
         }   
+
+        case dataAdminConstants.DATA_LIST2_REQUEST:
+        return { 
+          ...state,
+          dataList2State:
+          {
+            isLoadingData : true,
+            data : null
+          }
+         }
+      
+      case dataAdminConstants.DATA_LIST2_SUCCESS: 
+      const items2 = Object.values(action.result.data)[0] as any;
+         return {
+          ...state,
+           dataList2State: {
+            isLoadingData : false,
+            data: items2.items
+           }
+         }
+
+      case dataAdminConstants.DATA_LIST2_FAILURE: 
+        return {
+          ...state,
+          dataList2State: {
+            isLoadingData: false,
+            data: null
+          }
+        }   
+
+        case dataAdminConstants.DATA_LIST3_REQUEST:
+        return { 
+          ...state,
+          dataList3State:
+          {
+            isLoadingData : true,
+            data : null
+          }
+         }
+      
+      case dataAdminConstants.DATA_LIST3_SUCCESS: 
+      const items3 = Object.values(action.result.data)[0] as any;
+         return {
+          ...state,
+           dataList3State: {
+            isLoadingData : false,
+            data: items3.items
+           }
+         }
+
+      case dataAdminConstants.DATA_LIST3_FAILURE: 
+        return {
+          ...state,
+          dataList3State: {
+            isLoadingData: false,
+            data: null
+          }
+        }   
+
+        
         case dataAdminConstants.ITEM_DELETE_REQUEST: 
           return {
             ...state,

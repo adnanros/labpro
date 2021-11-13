@@ -12,6 +12,14 @@ export const dataAdminConstants = {
     ITEM_CREATE_SUCCESS: 'ITEM_CREATE_SUCCESS',
     ITEM_CREATE_FAILURE: 'ITEM_CREATE_FAILURE',
 
+    DATA_LIST2_REQUEST: 'DATA_LIST2_REQUEST',
+    DATA_LIST2_SUCCESS: 'DATA_LIST2_SUCCESS',
+    DATA_LIST2_FAILURE: 'DATA_LIST2_FAILURE',
+
+    DATA_LIST3_REQUEST: 'DATA_LIST3_REQUEST',
+    DATA_LIST3_SUCCESS: 'DATA_LIST3_SUCCESS',
+    DATA_LIST3_FAILURE: 'DATA_LIST3_FAILURE',
+
 
 }
 
@@ -33,6 +41,10 @@ export interface DataCreateState {
 
 export interface IPackageAdminState {
     dataListState: DataListState,
+    dataList2State: DataListState,
+    dataList3State: DataListState,
     dataDeleteState: DataDeleteState,
-    dataCreateState: DataCreateState
+    dataCreateState: DataCreateState,
+
+
 }
