@@ -10,11 +10,16 @@ const initialState: IPackageAdminState = {
     {
       isDeletingItem: false,
       deletedId: ''
+    },
+    dataCreateState:
+    {
+      isCreatingItem: false,
+      isCreatedSuccessfully: false,
+      createdItemData: null
     }
   }
   
   export function data_admin(state = initialState, action: AnyAction) {
-    console.log('state:', state);
     switch (action.type) {
       case dataAdminConstants.DATA_LIST_REQUEST:
         return { 
@@ -57,6 +62,7 @@ const initialState: IPackageAdminState = {
           const deletedId = action.deletedId;
           const data = state.dataListState.data?.filter((x: any) => x.id !== deletedId);
           return {
+            ...state,
             dataListState: {
               isLoadingData: state.dataListState.isLoadingData,
               data: data
@@ -74,7 +80,51 @@ const initialState: IPackageAdminState = {
               isDeletingItem: false,
               deletedId: ''
             }
-          }  
+          }
+        
+        case dataAdminConstants.ITEM_CREATE_REQUEST: 
+          return {
+            ...state,
+            dataCreateState: {
+              isCreatingItem: true,
+              isCreatedSuccessfully: false,
+              createdItemData: null
+            }
+          }
+        case dataAdminConstants.ITEM_CREATE_SUCCESS: 
+          const newItem = Object.values(action.createdItemData.data)[0] as any;
+          var itemsData = state.dataListState.data;
+          
+          if(itemsData===null)
+          {
+            itemsData = [];
+          }
+         // console.log('yyyy',newItem);
+          itemsData?.push(newItem);
+          
+          console.log('xxxx',itemsData);
+          return {
+            ...state,
+            dataListState:{
+              isLoadingData : state.dataListState.isLoadingData,
+              data: itemsData
+            },
+            dataCreateState: {
+              isCreatingItem: false,
+              isCreatedSuccessfully: true,
+              createdItemData: action.createdItemData
+            }
+          }
+        case dataAdminConstants.ITEM_CREATE_FAILURE:
+          return {
+            ...state,
+            dataCreateState: {
+              isCreatingItem: false,
+              isCreatedSuccessfully: false,
+              createdItemData: null
+            }
+          }
+          
       default:
         return state
     }

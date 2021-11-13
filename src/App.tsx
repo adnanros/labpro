@@ -207,7 +207,7 @@ class App extends React.Component<IProps,IState> {
             });
           }
         }else{
-          // console.log("xxxxxx",cg);
+          
           this.setState({
             signinStatus: SigninStatus.signIn
           });

@@ -11,6 +11,7 @@ export const store = createStore(
         thunkMiddleware,
         loggerMiddleware
     )
+    
 );
 
 export type AppState = ReturnType<typeof rootReducer>;
