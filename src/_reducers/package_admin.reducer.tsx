@@ -99,10 +99,9 @@ const initialState: IPackageAdminState = {
           {
             itemsData = [];
           }
-         // console.log('yyyy',newItem);
+
           itemsData?.push(newItem);
           
-          console.log('xxxx',itemsData);
           return {
             ...state,
             dataListState:{
