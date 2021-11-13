@@ -92,15 +92,30 @@ const initialState: IPackageAdminState = {
             }
           }
         case dataAdminConstants.ITEM_CREATE_SUCCESS: 
+          const newItem = Object.values(action.createdItemData.data)[0] as any;
+          var itemsData = state.dataListState.data;
+          
+          if(itemsData===null)
+          {
+            itemsData = [];
+          }
+         // console.log('yyyy',newItem);
+          itemsData?.push(newItem);
+          
+          console.log('xxxx',itemsData);
           return {
             ...state,
+            dataListState:{
+              isLoadingData : state.dataListState.isLoadingData,
+              data: itemsData
+            },
             dataCreateState: {
               isCreatingItem: false,
               isCreatedSuccessfully: true,
               createdItemData: action.createdItemData
             }
           }
-        case dataAdminConstants.ITEM_DELETE_FAILURE:
+        case dataAdminConstants.ITEM_CREATE_FAILURE:
           return {
             ...state,
             dataCreateState: {

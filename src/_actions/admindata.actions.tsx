@@ -58,14 +58,14 @@ function deleteItem(mutation: string, id: string, dataListQuery: string){
 }
 
 function createItem(mutation: string, inputData: any){
-    console.log('xxxxInputData:', inputData);
+    
     return async (dispatch: (arg0: { type: string; error?: string; }) => void) => {
         dispatch(request());
         try{
             
             const createdItemData: any = await API.graphql({ query: mutation, variables: {input: inputData}});
             
-            dispatch(success(createdItemData));
+            dispatch(success(createdItemData.data));
         } catch(error: any)
         {
             console.log(error);

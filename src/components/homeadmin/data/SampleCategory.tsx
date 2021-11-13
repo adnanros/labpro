@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
 import {
   CButton,
   CCard,
@@ -55,17 +54,11 @@ class SampleCategory extends Component<any,IState> {
 
     componentDidMount(){
       this.props.getDataList(listSampleCategorys);
-
     }
     render() {
-
-      if(this.props.isCreatedSuccessfully){
-        this.setState({showCreate: false})
-      }
-
       return (
         <div>
-              <CButton onClick= {()=> {this.setState({showCreate: true})}} disabled={this.state.showCreate}>Create</CButton>
+              ***********************************************<CButton onClick= {()=> {this.setState({showCreate: true})}} disabled={this.state.showCreate}>Create</CButton>
               <React.Fragment>
               {this.props.data &&
                 this.props.data.map((item: any, index:any) => (
@@ -98,14 +91,15 @@ class SampleCategory extends Component<any,IState> {
                   this.props.deleteItem(deleteSampleCategory,this.state.toBeDeletedId,listSampleCategorys); this.setState({showDeleteAlert: false})} } color="primary">Ok</CButton>
               </CModalFooter>
             </CModal>
+
             <CModal
             className="show d-block position-static"
             backdrop={false}
             keyboard={false}
             portal={false}
-            visible= {this.state.showDeleteAlert}
+            visible= {this.state.showCreate}
             >
-              <CreateSampleCategoryComponent/>
+              <CreateSampleCategoryComponent onclick={()=> this.setState({showCreate: false})}/>
             </CModal>
 
         </div>
@@ -124,7 +118,7 @@ class SampleCategory extends Component<any,IState> {
 
       isCreatingItem: state.package_admin.dataCreateState.isCreatingItem,
       isCreatedSuccessfully: state.package_admin.dataCreateState.isCreatedSuccessfully,
-      createdItemData: state.package_admin.dataCreateState.createdItemData,
+      // createdItemData: state.package_admin.dataCreateState.createdItemData,
     }
   };
   
@@ -134,48 +128,54 @@ class SampleCategory extends Component<any,IState> {
     createItem: admindataActions.createItem,
   };
 
-  export default connect(mapStateToProps, mapDispatchToProps)(SampleCategory)
+export default connect(mapStateToProps, mapDispatchToProps)(SampleCategory)
 
-  interface IState2 {
-    name: string,
-    description: string
+
+interface IState2 {
+    name: string;
+    description: string;
   }
-  class CreateSampleCategoryComponent0 extends React.Component<any, IState2> {
-    constructor(props: any){
-      super(props);
-      this.state= {
-        name: '',
-        description: ''
-      }
+  
+const mapStateToProps2 = (state: AppState) => {
+    return {
+      isCreatingItem: state.package_admin.dataCreateState.isCreatingItem,
     }
-    render() {
+  };
+const mapDispatchToProps2  = {
+    createItem: admindataActions.createItem,
+};
 
-      const validationSchema = Yup.object().shape({
-        name: Yup.string()
-          .required('Name is required'),
-        description: Yup.string()
-          .required('Description is required')
-      });
-      
-      const onSubmit = (data: IState2) => {
-       const inputData= {
-         name: data.name,
-         description: data.description
-       } 
-       this.props.createItem(createSampleCategory,inputData);
-      };
-      
-      const {
-        register,
-        handleSubmit,
-        formState: { errors }
-      } = useForm<IState2>({
-        resolver: yupResolver(validationSchema)
-      });
-
-      return(
-        <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
-      <CContainer>
+  const CreateSampleCategoryComponent: React.FC<any> = connect(mapStateToProps2,mapDispatchToProps2)((props: any) => {
+    //console.log('rendered with props:',props);
+    const  isCreatingItem: boolean  = props.isCreatingItem;
+  
+    const validationSchema = Yup.object().shape({
+      name: Yup.string()
+        .required('Name is required'),
+      description: Yup.string()
+        .required('DEscription is required')
+    });
+    
+    const onSubmit = (data: IState2) => {
+      const inputData= {
+        name: data.name,
+        description: data.description
+      } 
+      props.createItem(createSampleCategory,inputData);
+      props.onclick();
+    };
+    
+    const {
+      register,
+      handleSubmit,
+      formState: { errors }
+    } = useForm<IState2>({
+      resolver: yupResolver(validationSchema)
+    });
+  
+    return (
+      <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+        <CContainer>
         <CRow className="justify-content-center">
           <CCol md={8}>
             <CCardGroup>
@@ -207,7 +207,7 @@ class SampleCategory extends Component<any,IState> {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4" type='submit' disabled={this.props.isCreatingItem}>
+                        <CButton color="primary" className="px-4" type='submit' disabled={isCreatingItem}>
                           Create
                         </CButton>
                       </CCol>
@@ -220,18 +220,6 @@ class SampleCategory extends Component<any,IState> {
           </CCol>
         </CRow>
       </CContainer>
-    </div>
-      );
-    }
-  }
-
-  const mapStateToProps2 = (state: AppState) => {
-    return {
-      isCreatingItem: state.package_admin.dataCreateState.isCreatingItem,
-    }
-  };
-const mapDispatchToProps2  = {
-    createItem: admindataActions.createItem,
-  };
-
-  const CreateSampleCategoryComponent = connect(mapStateToProps2,mapDispatchToProps2)(CreateSampleCategoryComponent0)
+      </div>
+    )
+  });
