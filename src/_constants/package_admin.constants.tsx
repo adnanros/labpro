@@ -25,6 +25,8 @@ export const dataAdminConstants = {
 
 export interface DataListState{
     isLoadingData: boolean,
+    isLoadedSuccessfully: boolean,
+    isLoadingFailed: boolean,
     data: any,
 }
 

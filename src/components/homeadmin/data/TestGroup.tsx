@@ -10,6 +10,7 @@ import {
   CContainer,
   CForm,
   CFormInput,
+  CFormSelect,
   CInputGroup,
   CInputGroupText,
   CModal,
@@ -22,7 +23,7 @@ import {
 import CIcon from '@coreui/icons-react';
 import { cilLockLocked, cilUser } from '@coreui/icons';
 import { connect } from 'react-redux';
-import { Component } from "react"
+import { Component, useState } from "react"
 import { AppState } from '../../../_helpers';
 import { admindataActions} from '../../../_actions';
 import { listSampleCategorys, listTestGroups,  } from '../../../graphql/queries';
@@ -60,9 +61,11 @@ class TestGroup extends Component<any,IState> {
     render() {
       return (
         <div>
+              {(this.props.isLoadingFailed1 || this.props.isLoadingFailed2) && <CButton onClick={()=>{this.props.getDataList(listSampleCategorys)}}>Refresh</CButton>}
+
               ***********************************************<CButton onClick= {()=> {this.setState({showCreate: true})}} disabled={this.state.showCreate}>Create</CButton>
               <React.Fragment>
-              {this.props.data &&
+              {this.props.data && this.props.data2 &&
                 this.props.data.map((item: any, index:any) => (
                   <div key={index}>
                     <div>
@@ -113,7 +116,11 @@ class TestGroup extends Component<any,IState> {
   const mapStateToProps = (state: AppState) => {
     return {
       isDataLoading: state.package_admin.dataListState.isLoadingData,
+      isLoadingFailed1: state.package_admin.dataListState.isLoadingFailed,
+      isLoadingFailed2: state.package_admin.dataList2State.isLoadingFailed,
       data: state.package_admin.dataListState.data,
+      data2: state.package_admin.dataList2State.data,
+
 
       isDeletingItem: state.package_admin.dataDeleteState.isDeletingItem,
       deletedId: state.package_admin.dataDeleteState.deletedId,
@@ -142,6 +149,7 @@ interface IState2 {
 const mapStateToProps2 = (state: AppState) => {
     return {
       isCreatingItem: state.package_admin.dataCreateState.isCreatingItem,
+      sampleCategoryList: state.package_admin.dataList2State.data,
     }
   };
 const mapDispatchToProps2  = {
@@ -154,6 +162,13 @@ const mapDispatchToProps2  = {
     //console.log('rendered with props:',props);
     const  isCreatingItem: boolean  = props.isCreatingItem;
   
+    const [SampleCategoryId, setSampleCategoryId] = useState('');
+    
+    const handleChange = (event: React.FormEvent<HTMLSelectElement>) => {
+      setSampleCategoryId(event.currentTarget.value);
+      console.log(`Option selected:`, event.currentTarget.value);
+    }
+
     const validationSchema = Yup.object().shape({
       name: Yup.string()
         .required('Name is required'),
@@ -164,8 +179,10 @@ const mapDispatchToProps2  = {
     const onSubmit = (data: IState2) => {
       const inputData= {
         name: data.name,
-        description: data.description
+        description: data.description,
+        sampleCategoryId: SampleCategoryId,
       } 
+      
       props.createItem(createTestGroup,inputData);
       props.onclick();
     };
@@ -177,7 +194,8 @@ const mapDispatchToProps2  = {
     } = useForm<IState2>({
       resolver: yupResolver(validationSchema)
     });
-  
+
+    
     return (
       <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
         <CContainer>
@@ -193,7 +211,9 @@ const mapDispatchToProps2  = {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput className={`form-control ${errors.name ? 'is-invalid' : ''}`} {...register('name')} type="text" placeholder="name" autoComplete="text" required />
+                      <CFormInput 
+                      className={`form-control ${errors.name ? 'is-invalid' : ''}`} 
+                      {...register('name')} type="text" placeholder="name" autoComplete="text" required />
                       <div className="invalid-feedback">{errors.name?.message}</div>
                     </CInputGroup>
                     <CInputGroup className="mb-4">
@@ -210,6 +230,16 @@ const mapDispatchToProps2  = {
                       />
                       <div className="invalid-feedback">{errors.description?.message}</div>
                     </CInputGroup>
+                    <CFormSelect aria-label="Default select example" 
+                   
+                    onChange={handleChange}
+                    >
+                      {
+                        props.sampleCategoryList.map((item: any, index:any) => (
+                          <option value={item.id} key={index}>{item.name}</option>
+                        ))
+                      }
+                    </CFormSelect>
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4" type='submit' disabled={isCreatingItem}>

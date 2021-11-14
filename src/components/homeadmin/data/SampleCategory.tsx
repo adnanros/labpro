@@ -58,7 +58,9 @@ class SampleCategory extends Component<any,IState> {
     render() {
       return (
         <div>
+          {this.props.isLoadingFailed && <CButton onClick={()=>{this.props.getDataList(listSampleCategorys)}}>Refresh</CButton>}
               ***********************************************<CButton onClick= {()=> {this.setState({showCreate: true})}} disabled={this.state.showCreate}>Create</CButton>
+
               <React.Fragment>
               {this.props.data &&
                 this.props.data.map((item: any, index:any) => (
@@ -111,6 +113,7 @@ class SampleCategory extends Component<any,IState> {
   const mapStateToProps = (state: AppState) => {
     return {
       isDataLoading: state.package_admin.dataListState.isLoadingData,
+      isLoadingFailed:state.package_admin.dataListState.isLoadingFailed,
       data: state.package_admin.dataListState.data,
 
       isDeletingItem: state.package_admin.dataDeleteState.isDeletingItem,
