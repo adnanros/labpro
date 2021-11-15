@@ -2,10 +2,24 @@ import { dataAdminConstants, IPackageAdminState } from "../_constants"
 import { AnyAction } from 'redux';
 
 const initialState: IPackageAdminState = {
-    dataListState: {
-      isLoadingData: false,
-      data: null,
-    },
+  dataListState: {
+    isLoadingData: false,
+    isLoadedSuccessfully: false,
+    isLoadingFailed: false,
+    data: null,
+  },
+  dataList2State: {
+    isLoadingData: false,
+    isLoadedSuccessfully: false,
+    isLoadingFailed: false,
+    data: null,
+  },
+  dataList3State: {
+    isLoadingData: false,
+    isLoadedSuccessfully: false,
+    isLoadingFailed: false,
+    data: null,
+  },
     dataDeleteState:
     {
       isDeletingItem: false,
@@ -27,6 +41,8 @@ const initialState: IPackageAdminState = {
           dataListState:
           {
             isLoadingData : true,
+            isLoadedSuccessfully: false,
+            isLoadingFailed: false,    
             data : null
           }
          }
@@ -37,6 +53,8 @@ const initialState: IPackageAdminState = {
           ...state,
            dataListState: {
             isLoadingData : false,
+            isLoadedSuccessfully: true,
+            isLoadingFailed: false,    
             data: items.items
            }
          }
@@ -46,9 +64,83 @@ const initialState: IPackageAdminState = {
           ...state,
           dataListState: {
             isLoadingData: false,
+            isLoadedSuccessfully: false,
+            isLoadingFailed: true,
             data: null
           }
         }   
+
+        case dataAdminConstants.DATA_LIST2_REQUEST:
+        return { 
+          ...state,
+          dataList2State:
+          {
+            isLoadingData : true,
+            isLoadedSuccessfully: false,
+            isLoadingFailed: false,
+            data : null
+          }
+         }
+      
+      case dataAdminConstants.DATA_LIST2_SUCCESS: 
+      const items2 = Object.values(action.result.data)[0] as any;
+         return {
+          ...state,
+           dataList2State: {
+            isLoadingData : false,
+            isLoadedSuccessfully: true,
+            isLoadingFailed: false,
+            data: items2.items
+           }
+         }
+
+      case dataAdminConstants.DATA_LIST2_FAILURE: 
+        return {
+          ...state,
+          dataList2State: {
+            isLoadingData: false,
+            isLoadedSuccessfully: false,
+            isLoadingFailed: true,
+            data: null
+          }
+        }   
+
+        case dataAdminConstants.DATA_LIST3_REQUEST:
+        return { 
+          ...state,
+          dataList3State:
+          {
+            isLoadingData : true,
+            isLoadedSuccessfully: false,
+            isLoadingFailed: false,
+            data : null
+          }
+         }
+      
+      case dataAdminConstants.DATA_LIST3_SUCCESS: 
+      const items3 = Object.values(action.result.data)[0] as any;
+         return {
+          ...state,
+           dataList3State: {
+            isLoadingData : false,
+            isLoadedSuccessfully: true,
+            isLoadingFailed: false,
+            data: items3.items
+           }
+         }
+
+      case dataAdminConstants.DATA_LIST3_FAILURE: 
+        return {
+          ...state,
+          dataList3State: {
+            isLoadingData: false,
+            isLoadedSuccessfully: false,
+            isLoadingFailed: true,
+            data: null
+          }
+        }   
+
+        
         case dataAdminConstants.ITEM_DELETE_REQUEST: 
           return {
             ...state,
@@ -65,6 +157,8 @@ const initialState: IPackageAdminState = {
             ...state,
             dataListState: {
               isLoadingData: state.dataListState.isLoadingData,
+              isLoadedSuccessfully: state.dataListState.isLoadedSuccessfully,
+              isLoadingFailed: state.dataListState.isLoadingFailed,
               data: data
             },
             dataDeleteState: {
@@ -92,7 +186,9 @@ const initialState: IPackageAdminState = {
             }
           }
         case dataAdminConstants.ITEM_CREATE_SUCCESS: 
-          const newItem = Object.values(action.createdItemData.data)[0] as any;
+          console.log('yyyy',action.createdItemData)
+          const newItem = Object.values(action.createdItemData)[0] as any;
+          console.log('xxxx',newItem)
           var itemsData = state.dataListState.data;
           
           if(itemsData===null)
@@ -106,6 +202,8 @@ const initialState: IPackageAdminState = {
             ...state,
             dataListState:{
               isLoadingData : state.dataListState.isLoadingData,
+              isLoadedSuccessfully: state.dataListState.isLoadedSuccessfully,
+              isLoadingFailed: state.dataListState.isLoadingFailed,
               data: itemsData
             },
             dataCreateState: {

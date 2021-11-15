@@ -10,6 +10,7 @@ import {
   CContainer,
   CForm,
   CFormInput,
+  CFormSelect,
   CInputGroup,
   CInputGroupText,
   CModal,
@@ -22,12 +23,12 @@ import {
 import CIcon from '@coreui/icons-react';
 import { cilLockLocked, cilUser } from '@coreui/icons';
 import { connect } from 'react-redux';
-import { Component } from "react"
+import { Component, useState } from "react"
 import { AppState } from '../../../_helpers';
 import { admindataActions} from '../../../_actions';
-import { listSampleCategorys,  } from '../../../graphql/queries';
+import { listSampleCategorys, listTestGroups,  } from '../../../graphql/queries';
 import React from 'react';
-import { createSampleCategory, deleteSampleCategory } from '../../../graphql/mutations';
+import { createTestGroup, deleteTestGroup } from '../../../graphql/mutations';
 
 
 // in class component we cannot use useState functionality
@@ -39,7 +40,7 @@ interface IState {
   showDeleteAlert: boolean,
   toBeDeletedId: string
 }
-class SampleCategory extends Component<any,IState> {
+class TestGroup extends Component<any,IState> {
   
     constructor(props: any){
       super(props);
@@ -53,16 +54,18 @@ class SampleCategory extends Component<any,IState> {
     }
 
     componentDidMount(){
-      this.props.getDataList(listSampleCategorys);
+      this.props.getDataList(listTestGroups);
+      this.props.getDataList2(listSampleCategorys);
     }
+    
     render() {
       return (
         <div>
-          {this.props.isLoadingFailed && <CButton onClick={()=>{this.props.getDataList(listSampleCategorys)}}>Refresh</CButton>}
-              ***********************************************<CButton onClick= {()=> {this.setState({showCreate: true})}} disabled={this.state.showCreate}>Create</CButton>
+              {(this.props.isLoadingFailed1 || this.props.isLoadingFailed2) && <CButton onClick={()=>{this.props.getDataList(listSampleCategorys)}}>Refresh</CButton>}
 
+              ***********************************************<CButton onClick= {()=> {this.setState({showCreate: true})}} disabled={this.state.showCreate}>Create</CButton>
               <React.Fragment>
-              {this.props.data &&
+              {this.props.data && this.props.data2 &&
                 this.props.data.map((item: any, index:any) => (
                   <div key={index}>
                     <div>
@@ -90,7 +93,7 @@ class SampleCategory extends Component<any,IState> {
               <CModalFooter>
                 <CButton onClick={()=>{this.setState({showDeleteAlert: false})}} color="secondary">Close</CButton>
                 <CButton onClick={()=>{
-                  this.props.deleteItem(deleteSampleCategory,this.state.toBeDeletedId,listSampleCategorys); this.setState({showDeleteAlert: false})} } color="primary">Ok</CButton>
+                  this.props.deleteItem(deleteTestGroup,this.state.toBeDeletedId,listTestGroups); this.setState({showDeleteAlert: false})} } color="primary">Ok</CButton>
               </CModalFooter>
             </CModal>
 
@@ -101,7 +104,7 @@ class SampleCategory extends Component<any,IState> {
             portal={false}
             visible= {this.state.showCreate}
             >
-              <CreateSampleCategoryComponent onclick={()=> this.setState({showCreate: false})}/>
+              <CreateTestGroupComponent onclick={()=> this.setState({showCreate: false})}/>
             </CModal>
 
         </div>
@@ -113,8 +116,11 @@ class SampleCategory extends Component<any,IState> {
   const mapStateToProps = (state: AppState) => {
     return {
       isDataLoading: state.package_admin.dataListState.isLoadingData,
-      isLoadingFailed:state.package_admin.dataListState.isLoadingFailed,
+      isLoadingFailed1: state.package_admin.dataListState.isLoadingFailed,
+      isLoadingFailed2: state.package_admin.dataList2State.isLoadingFailed,
       data: state.package_admin.dataListState.data,
+      data2: state.package_admin.dataList2State.data,
+
 
       isDeletingItem: state.package_admin.dataDeleteState.isDeletingItem,
       deletedId: state.package_admin.dataDeleteState.deletedId,
@@ -127,11 +133,12 @@ class SampleCategory extends Component<any,IState> {
   
   const mapDispatchToProps  = {
     getDataList: admindataActions.getDataList,
+    getDataList2: admindataActions.getDataList2,
     deleteItem: admindataActions.deleteItem,
     createItem: admindataActions.createItem,
   };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SampleCategory)
+export default connect(mapStateToProps, mapDispatchToProps)(TestGroup)
 
 
 interface IState2 {
@@ -142,29 +149,42 @@ interface IState2 {
 const mapStateToProps2 = (state: AppState) => {
     return {
       isCreatingItem: state.package_admin.dataCreateState.isCreatingItem,
+      sampleCategoryList: state.package_admin.dataList2State.data,
     }
   };
 const mapDispatchToProps2  = {
     createItem: admindataActions.createItem,
 };
 
-  const CreateSampleCategoryComponent: React.FC<any> = connect(mapStateToProps2,mapDispatchToProps2)((props: any) => {
+  const CreateTestGroupComponent: React.FC<any> = connect(mapStateToProps2,mapDispatchToProps2)((props: any) => {
+    
+
     //console.log('rendered with props:',props);
     const  isCreatingItem: boolean  = props.isCreatingItem;
   
+    const [SampleCategoryId, setSampleCategoryId] = useState('');
+    
+    const handleChange = (event: React.FormEvent<HTMLSelectElement>) => {
+      setSampleCategoryId(event.currentTarget.value);
+      console.log(`Option selected:`, event.currentTarget.value);
+    }
+
     const validationSchema = Yup.object().shape({
       name: Yup.string()
         .required('Name is required'),
-      description: Yup.string()
-        .required('DEscription is required')
+      description: Yup.mixed()
+        .required('DEscription is required'),
+      sampleCategoryId: Yup.string().ensure().required('Sample-category-Id is required'),  
     });
     
     const onSubmit = (data: IState2) => {
       const inputData= {
         name: data.name,
-        description: data.description
+        description: data.description,
+        sampleCategoryId: SampleCategoryId,
       } 
-      props.createItem(createSampleCategory,inputData);
+      
+      props.createItem(createTestGroup,inputData);
       props.onclick();
     };
     
@@ -172,10 +192,11 @@ const mapDispatchToProps2  = {
       register,
       handleSubmit,
       formState: { errors }
-    } = useForm<IState2>({
+    } = useForm({
       resolver: yupResolver(validationSchema)
     });
-  
+
+    
     return (
       <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
         <CContainer>
@@ -185,13 +206,15 @@ const mapDispatchToProps2  = {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm className="needs-validation" onSubmit={handleSubmit(onSubmit)} >
-                    <h1>Sample Category</h1>
-                    <p className="text-medium-emphasis">Create a new Sample Category</p>
+                    <h1>Test Group</h1>
+                    <p className="text-medium-emphasis">Create a new Test Group</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput className={`form-control ${errors.name ? 'is-invalid' : ''}`} {...register('name')} type="text" placeholder="name" autoComplete="text" required />
+                      <CFormInput 
+                      className={`form-control ${errors.name ? 'is-invalid' : ''}`} 
+                      {...register('name')} type="text" placeholder="name" autoComplete="text" required />
                       <div className="invalid-feedback">{errors.name?.message}</div>
                     </CInputGroup>
                     <CInputGroup className="mb-4">
@@ -208,6 +231,19 @@ const mapDispatchToProps2  = {
                       />
                       <div className="invalid-feedback">{errors.description?.message}</div>
                     </CInputGroup>
+                    <CFormSelect aria-label="Default select example" 
+                    {...register('sampleCategoryId')}
+                    onChange={handleChange}
+                    required
+                    >
+                      <option value='' selected>Choose One:</option>
+                      {
+                        props.sampleCategoryList.map((item: any, index:any) => (
+                          <option value={item.id} key={index}>{item.name}</option>
+                        ))
+                      }
+                    </CFormSelect>
+                    <div className="invalid-feedback">{errors.sampleCategoryId?.message}</div>
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4" type='submit' disabled={isCreatingItem}>

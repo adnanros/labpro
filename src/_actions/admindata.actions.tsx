@@ -3,7 +3,11 @@ import { alertActions } from ".";
 import { dataAdminConstants } from "../_constants";
 
 export const admindataActions = {
-    getDataList, deleteItem, createItem
+    getDataList,
+    getDataList2,
+    getDataList3,
+     deleteItem, 
+     createItem
 };
 
 function getDataList(query: string){
@@ -30,6 +34,57 @@ function getDataList(query: string){
     function failure(error: string) { return { type: dataAdminConstants.DATA_LIST_FAILURE, error } }
 
 }
+
+function getDataList2(query: string){
+
+    return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
+        dispatch(request());
+        try{
+            const result: any = await API.graphql(
+                {query: query}
+            ) as Promise<any>
+            console.log('List-result',result.data);
+            
+            dispatch(success(result));
+        } catch(error: any)
+        {
+            console.log(error);
+            dispatch(failure('load list failed'));
+            dispatch(alertActions.error(error.toString()));
+        }
+    };
+
+    function request() { return { type: dataAdminConstants.DATA_LIST2_REQUEST } }
+    function success(result: any) { return { type: dataAdminConstants.DATA_LIST2_SUCCESS, result } }
+    function failure(error: string) { return { type: dataAdminConstants.DATA_LIST2_FAILURE, error } }
+
+}
+
+function getDataList3(query: string){
+
+    return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
+        dispatch(request());
+        try{
+            const result: any = await API.graphql(
+                {query: query}
+            ) as Promise<any>
+            console.log('List-result',result.data);
+            
+            dispatch(success(result));
+        } catch(error: any)
+        {
+            console.log(error);
+            dispatch(failure('load list failed'));
+            dispatch(alertActions.error(error.toString()));
+        }
+    };
+
+    function request() { return { type: dataAdminConstants.DATA_LIST3_REQUEST } }
+    function success(result: any) { return { type: dataAdminConstants.DATA_LIST3_SUCCESS, result } }
+    function failure(error: string) { return { type: dataAdminConstants.DATA_LIST3_FAILURE, error } }
+
+}
+
 
 function deleteItem(mutation: string, id: string, dataListQuery: string){
     console.log('deleting:', id);
