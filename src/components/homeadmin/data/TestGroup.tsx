@@ -172,8 +172,9 @@ const mapDispatchToProps2  = {
     const validationSchema = Yup.object().shape({
       name: Yup.string()
         .required('Name is required'),
-      description: Yup.string()
-        .required('DEscription is required')
+      description: Yup.mixed()
+        .required('DEscription is required'),
+      sampleCategoryId: Yup.string().ensure().required('Sample-category-Id is required'),  
     });
     
     const onSubmit = (data: IState2) => {
@@ -191,7 +192,7 @@ const mapDispatchToProps2  = {
       register,
       handleSubmit,
       formState: { errors }
-    } = useForm<IState2>({
+    } = useForm({
       resolver: yupResolver(validationSchema)
     });
 
@@ -231,15 +232,18 @@ const mapDispatchToProps2  = {
                       <div className="invalid-feedback">{errors.description?.message}</div>
                     </CInputGroup>
                     <CFormSelect aria-label="Default select example" 
-                   
+                    {...register('sampleCategoryId')}
                     onChange={handleChange}
+                    required
                     >
+                      <option value='' selected>Choose One:</option>
                       {
                         props.sampleCategoryList.map((item: any, index:any) => (
                           <option value={item.id} key={index}>{item.name}</option>
                         ))
                       }
                     </CFormSelect>
+                    <div className="invalid-feedback">{errors.sampleCategoryId?.message}</div>
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4" type='submit' disabled={isCreatingItem}>
