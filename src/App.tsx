@@ -65,9 +65,8 @@ class App extends Component<any,any> {
   render() {
 
     return(
-      <div className="jumbotron">
-        <div className="container">
-          <div className="col-sm-12">
+     
+            <div>
               {
               this.props.message &&
                   <div className={`alert ${this.props.type}`}>{this.props.message}</div>
@@ -93,9 +92,7 @@ class App extends Component<any,any> {
                   </Router>
                 </div>
               }
-          </div>
-      </div>
-    </div>
+     </div>
 )
 }
 }
