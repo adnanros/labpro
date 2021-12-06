@@ -18,6 +18,12 @@ import {
   CModalHeader,
   CModalTitle,
   CRow,
+  CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { cilLockLocked, cilUser } from '@coreui/icons';
@@ -37,7 +43,8 @@ interface IState {
   showEdit: boolean,
   showCreate: boolean,
   showDeleteAlert: boolean,
-  toBeDeletedId: string
+  toBeDeletedId: string,
+  toBeDeletedName: string
 }
 class SampleCategory extends Component<any,IState> {
   
@@ -48,7 +55,8 @@ class SampleCategory extends Component<any,IState> {
         showEdit: false,
         showCreate: false,
         showDeleteAlert: false,
-        toBeDeletedId: ''
+        toBeDeletedId: '',
+        toBeDeletedName: ''
       }
     }
 
@@ -59,34 +67,48 @@ class SampleCategory extends Component<any,IState> {
       return (
         <div>
           {this.props.isLoadingFailed && <CButton onClick={()=>{this.props.getDataList(listSampleCategorys)}}>Refresh</CButton>}
-              ***********************************************<CButton onClick= {()=> {this.setState({showCreate: true})}} disabled={this.state.showCreate}>Create</CButton>
-
-              <React.Fragment>
-              {this.props.data &&
-                this.props.data.map((item: any, index:any) => (
-                  <div key={index}>
-                    <div>
-                    **************************** {item.name}
-                    </div>
-                    <div>
-                      <button onClick={()=>{this.setState({showDetail: true})}} disabled={this.props.isDeletingItem}>Edit</button>
-                      <button onClick={()=>{this.setState({showEdit: true})}} disabled={this.props.isDeletingItem}>Detail</button>
-                      888888888888888888888888888888888888<button onClick={()=>{this.setState({toBeDeletedId: item.id, showDeleteAlert: true})}} disabled={this.props.isDeletingItem}>Delete</button>
-                    </div>
-                  </div>)
-                )}
-            </React.Fragment>
+              
+              <CTable>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">
+                     <CButton onClick= {()=> {this.setState({showCreate: true})}} disabled={this.state.showCreate}>Create</CButton>
+                    </CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {
+                    this.props.data &&
+                    this.props.data.map((item: any, index:any) => (
+                      <CTableRow key={index}>
+                        <CTableHeaderCell scope="row">{index+1}</CTableHeaderCell>
+                        <CTableDataCell>{item.name}</CTableDataCell>
+                        <CTableDataCell>
+                        <div>
+                          <CButton className='primary' color="link" onClick={()=>{this.setState({showDetail: true})}} disabled={this.props.isDeletingItem}>Edit</CButton>
+                          <CButton className='primary' color="link" onClick={()=>{this.setState({showEdit: true})}} disabled={this.props.isDeletingItem}>Detail</CButton>
+                          <CButton className='danger' color="link" onClick={()=>{this.setState({toBeDeletedId: item.id,toBeDeletedName:item.name, showDeleteAlert: true})}} disabled={this.props.isDeletingItem}>Delete</CButton>
+                        </div>
+                        </CTableDataCell>
+                    </CTableRow>
+                    ))
+                  }
+                </CTableBody>
+              </CTable>
             <CModal
-              className="show d-block position-static"
+              
               backdrop={false}
               keyboard={false}
               portal={false}
               visible= {this.state.showDeleteAlert}
+              onClose = {()=> this.setState({showDeleteAlert: false})}
             >
               <CModalHeader>
-                <CModalTitle>Modal title</CModalTitle>
+                <CModalTitle>Delete Item?</CModalTitle>
               </CModalHeader>
-              <CModalBody>Modal body text goes here.</CModalBody>
+              <CModalBody>Are you sure you want to delete {this.state.toBeDeletedName} ?</CModalBody>
               <CModalFooter>
                 <CButton onClick={()=>{this.setState({showDeleteAlert: false})}} color="secondary">Close</CButton>
                 <CButton onClick={()=>{
@@ -95,20 +117,23 @@ class SampleCategory extends Component<any,IState> {
             </CModal>
 
             <CModal
-            className="show d-block position-static"
             backdrop={false}
             keyboard={false}
             portal={false}
             visible= {this.state.showCreate}
+            onClose = {()=> this.setState({showCreate: false})}
             >
-              <CreateSampleCategoryComponent onclick={()=> this.setState({showCreate: false})}/>
+              <CModalHeader>
+                <CModalTitle>Create Sample Category</CModalTitle>
+              </CModalHeader>
+              <CModalBody>
+                <CreateSampleCategoryComponent onclick={()=> this.setState({showCreate: false})}/>
+              </CModalBody>
             </CModal>
-
         </div>
       );
     }
   };
-
 
   const mapStateToProps = (state: AppState) => {
     return {
@@ -177,7 +202,7 @@ const mapDispatchToProps2  = {
     });
   
     return (
-      <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+      <div className="bg-light min-vh-50 d-flex flex-row align-items-center">
         <CContainer>
         <CRow className="justify-content-center">
           <CCol md={8}>
@@ -185,19 +210,11 @@ const mapDispatchToProps2  = {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm className="needs-validation" onSubmit={handleSubmit(onSubmit)} >
-                    <h1>Sample Category</h1>
-                    <p className="text-medium-emphasis">Create a new Sample Category</p>
                     <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilUser} />
-                      </CInputGroupText>
                       <CFormInput className={`form-control ${errors.name ? 'is-invalid' : ''}`} {...register('name')} type="text" placeholder="name" autoComplete="text" required />
                       <div className="invalid-feedback">{errors.name?.message}</div>
                     </CInputGroup>
                     <CInputGroup className="mb-4">
-                      <CInputGroupText>
-                        <CIcon icon={cilLockLocked} />
-                      </CInputGroupText>
                       <CFormInput
                         {...register('description')}
                         className={`form-control ${errors.description ? 'is-invalid' : ''}`}
@@ -214,7 +231,6 @@ const mapDispatchToProps2  = {
                           Create
                         </CButton>
                       </CCol>
-                      
                     </CRow>
                   </CForm>
                 </CCardBody>

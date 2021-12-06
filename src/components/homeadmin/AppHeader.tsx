@@ -32,9 +32,11 @@ const AppHeader = () => {
           {
             isSignedIn && <AppHeaderDropdown />
           }
+        </CHeaderNav>
+
           {
             !isSignedIn && 
-            <CHeaderNav className="d-md-flex me-auto">
+            <CHeaderNav className="">
               <CNavItem>
                 <CNavLink to="/login" component={NavLink} className="active">
                   Login
@@ -47,7 +49,6 @@ const AppHeader = () => {
               </CNavItem>
             </CHeaderNav>
           }
-        </CHeaderNav>
       </CContainer>
       <CHeaderDivider />
     </CHeader>
