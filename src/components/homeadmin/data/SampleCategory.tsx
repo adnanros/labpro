@@ -30,7 +30,7 @@ import React from 'react';
 import { createSampleCategory, deleteSampleCategory } from '../../../graphql/mutations';
 
 
-// in class component we cannot use useState functionality
+/// in class component we cannot use useState functionality
 
 interface IState {
   showDetail: boolean,
