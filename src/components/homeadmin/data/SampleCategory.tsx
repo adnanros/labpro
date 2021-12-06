@@ -11,7 +11,6 @@ import {
   CForm,
   CFormInput,
   CInputGroup,
-  CInputGroupText,
   CModal,
   CModalBody,
   CModalFooter,
@@ -25,8 +24,6 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react';
-import CIcon from '@coreui/icons-react';
-import { cilLockLocked, cilUser } from '@coreui/icons';
 import { connect } from 'react-redux';
 import { Component } from "react"
 import { AppState } from '../../../_helpers';
