@@ -7,7 +7,8 @@ export const admindataActions = {
     getDataList2,
     getDataList3,
      deleteItem, 
-     createItem
+     createItem,
+     updateItem,
 };
 
 function getDataList(query: string){
@@ -132,5 +133,28 @@ function createItem(mutation: string, inputData: any){
     function request() { return { type: dataAdminConstants.ITEM_CREATE_REQUEST} }
     function success(createdItemData: any) { return { type: dataAdminConstants.ITEM_CREATE_SUCCESS, createdItemData } }
     function failure(error: string) { return { type: dataAdminConstants.ITEM_CREATE_FAILURE, error } }
+}
+
+
+function updateItem(mutation: string, inputData: any){
+    
+    return async (dispatch: (arg0: { type: string; error?: string; }) => void) => {
+        dispatch(request());
+        try{
+            
+            const updatedItemData: any = await API.graphql({ query: mutation, variables: {input: inputData}});
+            
+            dispatch(success(updatedItemData.data));
+        } catch(error: any)
+        {
+            console.log(error);
+            dispatch(failure(error.toString()))
+            dispatch(alertActions.error(error.toString()));
+        }
+    };
+
+    function request() { return { type: dataAdminConstants.ITEM_UPDATE_REQUEST} }
+    function success(updatedItemData: any) { return { type: dataAdminConstants.ITEM_UPDATE_SUCCESS, updatedItemData } }
+    function failure(error: string) { return { type: dataAdminConstants.ITEM_UPDATE_FAILURE, error } }
 }
 

@@ -30,7 +30,7 @@ import { AppState } from '../../../_helpers';
 import { admindataActions} from '../../../_actions';
 import { listSampleCategorys,  } from '../../../graphql/queries';
 import React from 'react';
-import { createSampleCategory, deleteSampleCategory } from '../../../graphql/mutations';
+import { createSampleCategory, deleteSampleCategory, updateSampleCategory } from '../../../graphql/mutations';
 
 
 /// in class component we cannot use useState functionality
@@ -41,7 +41,8 @@ interface IState {
   showCreate: boolean,
   showDeleteAlert: boolean,
   toBeDeletedId: string,
-  toBeDeletedName: string
+  toBeDeletedName: string,
+  toBeUpdatedId: string,
 }
 class SampleCategory extends Component<any,IState> {
   
@@ -53,7 +54,8 @@ class SampleCategory extends Component<any,IState> {
         showCreate: false,
         showDeleteAlert: false,
         toBeDeletedId: '',
-        toBeDeletedName: ''
+        toBeDeletedName: '',
+        toBeUpdatedId: '',
       }
     }
 
@@ -84,8 +86,8 @@ class SampleCategory extends Component<any,IState> {
                         <CTableDataCell>{item.name}</CTableDataCell>
                         <CTableDataCell>
                         <div>
-                          <CButton className='primary' color="link" onClick={()=>{this.setState({showDetail: true})}} disabled={this.props.isDeletingItem}>Edit</CButton>
-                          <CButton className='primary' color="link" onClick={()=>{this.setState({showEdit: true})}} disabled={this.props.isDeletingItem}>Detail</CButton>
+                          <CButton className='primary' color="link" onClick={()=>{this.setState({showDetail: true})}} disabled={this.props.isDeletingItem}>Detail</CButton>
+                          <CButton className='primary' color="link" onClick={()=>{this.setState({toBeUpdatedId: item.id ,showEdit: true})}} disabled={this.props.isUpdatingItem}>Edit</CButton>
                           <CButton className='danger' color="link" onClick={()=>{this.setState({toBeDeletedId: item.id,toBeDeletedName:item.name, showDeleteAlert: true})}} disabled={this.props.isDeletingItem}>Delete</CButton>
                         </div>
                         </CTableDataCell>
@@ -127,6 +129,22 @@ class SampleCategory extends Component<any,IState> {
                 <CreateSampleCategoryComponent onclick={()=> this.setState({showCreate: false})}/>
               </CModalBody>
             </CModal>
+
+            <CModal
+            backdrop={false}
+            keyboard={false}
+            portal={false}
+            visible= {this.state.showEdit}
+            onClose = {()=> this.setState({showEdit: false})}
+            >
+              <CModalHeader>
+                <CModalTitle>Create Sample Category</CModalTitle>
+              </CModalHeader>
+              <CModalBody>
+                <UpdateSampleCategoryComponent onclick={()=> this.setState({showEdit: false})} toBeUpdatedItem={this.state.toBeUpdatedId}/>
+              </CModalBody>
+            </CModal>
+
         </div>
       );
     }
@@ -144,6 +162,9 @@ class SampleCategory extends Component<any,IState> {
       isCreatingItem: state.package_admin.dataCreateState.isCreatingItem,
       isCreatedSuccessfully: state.package_admin.dataCreateState.isCreatedSuccessfully,
       // createdItemData: state.package_admin.dataCreateState.createdItemData,
+
+      isUpdatingItem: state.package_admin.dataUpdateState.isUpdatingItem,
+      isUpdatedSuccessfully: state.package_admin.dataUpdateState.isUpdatedSuccessfully,
     }
   };
   
@@ -178,7 +199,7 @@ const mapDispatchToProps2  = {
       name: Yup.string()
         .required('Name is required'),
       description: Yup.string()
-        .required('DEscription is required')
+        .required('Description is required')
     });
     
     const onSubmit = (data: IState2) => {
@@ -226,6 +247,106 @@ const mapDispatchToProps2  = {
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4" type='submit' disabled={isCreatingItem}>
                           Create
+                        </CButton>
+                      </CCol>
+                    </CRow>
+                  </CForm>
+                </CCardBody>
+              </CCard>
+            </CCardGroup>
+          </CCol>
+        </CRow>
+      </CContainer>
+      </div>
+    )
+  });
+
+//*************Edit Component?*******************
+
+interface IState3 {
+  id: string;
+  name: string;
+  description: string;
+}
+  const mapStateToProps3 = (state: AppState) => {
+    return {
+      isUpdatingItem: state.package_admin.dataUpdateState.isUpdatingItem,
+      listData: state.package_admin.dataListState.data,
+    }
+  };
+const mapDispatchToProps3  = {
+    updateItem: admindataActions.updateItem,
+};
+
+  const UpdateSampleCategoryComponent: React.FC<any> = connect(mapStateToProps3,mapDispatchToProps3)((props: any) => {
+    //console.log('rendered with props:',props);
+    const  isUpdatingItem: boolean  = props.isUpdatingItem;
+  
+    const validationSchema = Yup.object().shape({
+      name: Yup.string()
+        .required('Name is required'),
+      description: Yup.string()
+        .required('DEscription is required')
+    });
+    
+    const onSubmit = (data: IState3) => {
+      console.log('toBeUpdated', props.toBeUpdatedItem);
+      const inputData= {
+        id: props.toBeUpdatedItem,
+        name: data.name,
+        description: data.description,
+      } 
+      props.updateItem(updateSampleCategory,inputData);
+      props.onclick();
+    };
+    
+    const {
+      register,
+      handleSubmit,
+      formState: { errors }
+    } = useForm<IState3>({
+      resolver: yupResolver(validationSchema)
+    });
+  
+    const toBeUpdatedItemData = props.listData.find(
+      (item: any)=>(item.id===props.toBeUpdatedItem)
+      );
+    return (
+      <div className="bg-light min-vh-50 d-flex flex-row align-items-center">
+        <CContainer>
+        <CRow className="justify-content-center">
+          <CCol md={8}>
+            <CCardGroup>
+              <CCard className="p-4">
+                <CCardBody>
+                  <CForm className="needs-validation" onSubmit={handleSubmit(onSubmit)} >
+                    <CInputGroup className="mb-3">
+                      <CFormInput 
+                        className={`form-control ${errors.name ? 'is-invalid' : ''}`} 
+                        {...register('name')} 
+                        type="text" 
+                        placeholder="name" 
+                        defaultValue= {toBeUpdatedItemData.name}
+                        autoComplete="text" 
+                        required />
+                      <div className="invalid-feedback">{errors.name?.message}</div>
+                    </CInputGroup>
+                    <CInputGroup className="mb-4">
+                      <CFormInput
+                        {...register('description')}
+                        className={`form-control ${errors.description ? 'is-invalid' : ''}`}
+                        type="text"
+                        placeholder="description"
+                        defaultValue= {toBeUpdatedItemData.description}
+                        autoComplete="text"
+                        required
+                      />
+                      <div className="invalid-feedback">{errors.description?.message}</div>
+                    </CInputGroup>
+                    <CRow>
+                      <CCol xs={6}>
+                        <CButton color="primary" className="px-4" type='submit' disabled={isUpdatingItem}>
+                          Save
                         </CButton>
                       </CCol>
                     </CRow>

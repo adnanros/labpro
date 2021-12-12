@@ -20,18 +20,25 @@ const initialState: IPackageAdminState = {
     isLoadingFailed: false,
     data: null,
   },
-    dataDeleteState:
-    {
-      isDeletingItem: false,
-      deletedId: ''
-    },
-    dataCreateState:
-    {
-      isCreatingItem: false,
-      isCreatedSuccessfully: false,
-      createdItemData: null
-    }
-  }
+  dataDeleteState:
+  {
+    isDeletingItem: false,
+    deletedId: ''
+  },
+  dataCreateState:
+  {
+    isCreatingItem: false,
+    isCreatedSuccessfully: false,
+    createdItemData: null
+  },
+  dataUpdateState: 
+  {
+    isUpdatingItem: false,
+    isUpdatedSuccessfully: false,
+    updatedItemData: null
+  },
+
+}
   
   export function data_admin(state = initialState, action: AnyAction) {
     switch (action.type) {
@@ -187,8 +194,8 @@ const initialState: IPackageAdminState = {
           }
         case dataAdminConstants.ITEM_CREATE_SUCCESS: 
           console.log('yyyy',action.createdItemData)
-          const newItem = Object.values(action.createdItemData)[0] as any;
-          console.log('xxxx',newItem)
+          const newItem1 = Object.values(action.createdItemData)[0] as any;
+          console.log('xxxx',newItem1)
           var itemsData = state.dataListState.data;
           
           if(itemsData===null)
@@ -196,7 +203,7 @@ const initialState: IPackageAdminState = {
             itemsData = [];
           }
 
-          itemsData?.push(newItem);
+          itemsData?.push(newItem1);
           
           return {
             ...state,
@@ -221,6 +228,54 @@ const initialState: IPackageAdminState = {
               createdItemData: null
             }
           }
+
+          
+        case dataAdminConstants.ITEM_UPDATE_REQUEST: 
+        return {
+          ...state,
+          dataUpdateState: {
+            isUpdatingItem: true,
+            isUpdatedSuccessfully: false,
+            updatedItemData: null
+          }
+        }
+      case dataAdminConstants.ITEM_UPDATE_SUCCESS: 
+        console.log('yyyy',action.updatedItemData)
+        const newItem = Object.values(action.updatedItemData)[0] as any;
+        console.log('xxxx',newItem)
+        var itemsData1 = state.dataListState.data as any;
+ 
+        if(itemsData1===null)
+          {
+            itemsData1 = [];
+          }
+
+        itemsData1 = itemsData1.map((item:any) => item.id !== newItem.id ? item : newItem);
+        console.log('xxxxConcat', itemsData1);
+        
+        return {
+          ...state,
+          dataListState:{
+            isLoadingData : state.dataListState.isLoadingData,
+            isLoadedSuccessfully: state.dataListState.isLoadedSuccessfully,
+            isLoadingFailed: state.dataListState.isLoadingFailed,
+            data: itemsData1
+          },
+          dataUpdateState: {
+            isUpdatingItem: false,
+            isUpdatedSuccessfully: true,
+            updatedItemData: action.updatedItemData
+          }
+        }
+      case dataAdminConstants.ITEM_UPDATE_FAILURE:
+        return {
+          ...state,
+          dataUpdateState: {
+            isUpdatingItem: false,
+            isUpdatedSuccessfully: false,
+            updatedItemData: null
+          }
+        }
           
       default:
         return state
