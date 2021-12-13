@@ -37,7 +37,12 @@ const initialState: IPackageAdminState = {
     isUpdatedSuccessfully: false,
     updatedItemData: null
   },
-
+  dataDetailState:
+  {
+    isLoaingItemDetail: false,
+    isLoadedItemDetailSuccessfully: false,
+    loadedItemDetailData: null,
+  }
 }
   
   export function data_admin(state = initialState, action: AnyAction) {
@@ -112,7 +117,7 @@ const initialState: IPackageAdminState = {
           }
         }   
 
-        case dataAdminConstants.DATA_LIST3_REQUEST:
+      case dataAdminConstants.DATA_LIST3_REQUEST:
         return { 
           ...state,
           dataList3State:
@@ -122,7 +127,7 @@ const initialState: IPackageAdminState = {
             isLoadingFailed: false,
             data : null
           }
-         }
+        }
       
       case dataAdminConstants.DATA_LIST3_SUCCESS: 
       const items3 = Object.values(action.result.data)[0] as any;
@@ -239,44 +244,76 @@ const initialState: IPackageAdminState = {
             updatedItemData: null
           }
         }
-      case dataAdminConstants.ITEM_UPDATE_SUCCESS: 
-        console.log('yyyy',action.updatedItemData)
-        const newItem = Object.values(action.updatedItemData)[0] as any;
-        console.log('xxxx',newItem)
-        var itemsData1 = state.dataListState.data as any;
- 
-        if(itemsData1===null)
-          {
-            itemsData1 = [];
-          }
+        case dataAdminConstants.ITEM_UPDATE_SUCCESS: 
+          console.log('yyyy',action.updatedItemData)
+          const newItem = Object.values(action.updatedItemData)[0] as any;
+          console.log('xxxx',newItem)
+          var itemsData1 = state.dataListState.data as any;
+  
+          if(itemsData1===null)
+            {
+              itemsData1 = [];
+            }
 
-        itemsData1 = itemsData1.map((item:any) => item.id !== newItem.id ? item : newItem);
-        console.log('xxxxConcat', itemsData1);
-        
-        return {
-          ...state,
-          dataListState:{
-            isLoadingData : state.dataListState.isLoadingData,
-            isLoadedSuccessfully: state.dataListState.isLoadedSuccessfully,
-            isLoadingFailed: state.dataListState.isLoadingFailed,
-            data: itemsData1
-          },
-          dataUpdateState: {
-            isUpdatingItem: false,
-            isUpdatedSuccessfully: true,
-            updatedItemData: action.updatedItemData
-          }
-        }
-      case dataAdminConstants.ITEM_UPDATE_FAILURE:
-        return {
-          ...state,
-          dataUpdateState: {
-            isUpdatingItem: false,
-            isUpdatedSuccessfully: false,
-            updatedItemData: null
-          }
-        }
+          itemsData1 = itemsData1.map((item:any) => item.id !== newItem.id ? item : newItem);
+          console.log('xxxxConcat', itemsData1);
           
+          return {
+            ...state,
+            dataListState:{
+              isLoadingData : state.dataListState.isLoadingData,
+              isLoadedSuccessfully: state.dataListState.isLoadedSuccessfully,
+              isLoadingFailed: state.dataListState.isLoadingFailed,
+              data: itemsData1
+            },
+            dataUpdateState: {
+              isUpdatingItem: false,
+              isUpdatedSuccessfully: true,
+              updatedItemData: action.updatedItemData
+            }
+          }
+          case dataAdminConstants.ITEM_UPDATE_FAILURE:
+            return {
+              ...state,
+              dataUpdateState: {
+                isUpdatingItem: false,
+                isUpdatedSuccessfully: false,
+                updatedItemData: null
+              }
+            }        
+          case dataAdminConstants.ITEM_DETAIL_REQUEST: 
+            return {
+              ...state,
+              dataDetailState: {
+                isLoaingItemDetail: true,
+                isLoadedItemDetailSuccessfully: false,
+                loadedItemDetailData: null
+              }
+          }
+          case dataAdminConstants.ITEM_DETAIL_SUCCESS: 
+            console.log('yyyy',action.itemDetailData)
+            const itemDetail = Object.values(action.itemDetailData)[0] as any;
+            console.log('xxxxToState[0',itemDetail)
+            
+            
+            return {
+              ...state,
+              dataDetailState: {
+                isLoaingItemDetail: false,
+                isLoadedItemDetailSuccessfully: true,
+                loadedItemDetailData: action.itemDetailData
+              }
+          }
+          case dataAdminConstants.ITEM_DETAIL_FAILURE:
+            return {
+              ...state,
+              dataDetailState: {
+                isLoaingItemDetail: false,
+                isLoadedItemDetailSuccessfully: false,
+                loadedItemDetailData: null
+              }
+            }
+            
       default:
         return state
     }

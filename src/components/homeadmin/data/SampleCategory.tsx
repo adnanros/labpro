@@ -28,7 +28,7 @@ import { connect } from 'react-redux';
 import { Component } from "react"
 import { AppState } from '../../../_helpers';
 import { admindataActions} from '../../../_actions';
-import { listSampleCategorys,  } from '../../../graphql/queries';
+import { getSampleCategory, listSampleCategorys,  } from '../../../graphql/queries';
 import React from 'react';
 import { createSampleCategory, deleteSampleCategory, updateSampleCategory } from '../../../graphql/mutations';
 
@@ -86,7 +86,7 @@ class SampleCategory extends Component<any,IState> {
                         <CTableDataCell>{item.name}</CTableDataCell>
                         <CTableDataCell>
                         <div>
-                          <CButton className='primary' color="link" onClick={()=>{this.setState({showDetail: true})}} disabled={this.props.isDeletingItem}>Detail</CButton>
+                          <CButton className='primary' color="link" onClick={()=>{this.setState({showDetail: true}); this.props.getItemDetail(getSampleCategory,item.id);}} disabled={this.props.isLoaingItemDetail}>Detail</CButton>
                           <CButton className='primary' color="link" onClick={()=>{this.setState({toBeUpdatedId: item.id ,showEdit: true})}} disabled={this.props.isUpdatingItem}>Edit</CButton>
                           <CButton className='danger' color="link" onClick={()=>{this.setState({toBeDeletedId: item.id,toBeDeletedName:item.name, showDeleteAlert: true})}} disabled={this.props.isDeletingItem}>Delete</CButton>
                         </div>
@@ -138,10 +138,25 @@ class SampleCategory extends Component<any,IState> {
             onClose = {()=> this.setState({showEdit: false})}
             >
               <CModalHeader>
-                <CModalTitle>Create Sample Category</CModalTitle>
+                <CModalTitle>Edit Sample Category</CModalTitle>
               </CModalHeader>
               <CModalBody>
                 <UpdateSampleCategoryComponent onclick={()=> this.setState({showEdit: false})} toBeUpdatedItem={this.state.toBeUpdatedId}/>
+              </CModalBody>
+            </CModal>
+
+            <CModal
+            backdrop={false}
+            keyboard={false}
+            portal={false}
+            visible= {this.state.showDetail}
+            onClose = {()=> this.setState({showDetail: false})}
+            >
+              <CModalHeader>
+                <CModalTitle>Sample Category Item Details</CModalTitle>
+              </CModalHeader>
+              <CModalBody>
+                <GetSampleCategoryComponent onclick={()=> this.setState({showDetail: false})} fetchedItem={this.props.fetchedItem}/>
               </CModalBody>
             </CModal>
 
@@ -151,6 +166,8 @@ class SampleCategory extends Component<any,IState> {
   };
 
   const mapStateToProps = (state: AppState) => {
+    const itemDetailLoaded: any= state.package_admin.dataDetailState.loadedItemDetailData;
+    const itemDetailEmpty = {id: '', name: '', description: ''};
     return {
       isDataLoading: state.package_admin.dataListState.isLoadingData,
       isLoadingFailed:state.package_admin.dataListState.isLoadingFailed,
@@ -165,6 +182,11 @@ class SampleCategory extends Component<any,IState> {
 
       isUpdatingItem: state.package_admin.dataUpdateState.isUpdatingItem,
       isUpdatedSuccessfully: state.package_admin.dataUpdateState.isUpdatedSuccessfully,
+
+      isLoaingItemDetail: state.package_admin.dataDetailState.isLoaingItemDetail,
+      isLoadedItemDetailSuccessfully: state.package_admin.dataDetailState.isLoadedItemDetailSuccessfully,
+      fetchedItem: itemDetailLoaded !== null? Object.values(state.package_admin.dataDetailState.loadedItemDetailData)[0] : itemDetailEmpty, 
+
     }
   };
   
@@ -172,6 +194,7 @@ class SampleCategory extends Component<any,IState> {
     getDataList: admindataActions.getDataList,
     deleteItem: admindataActions.deleteItem,
     createItem: admindataActions.createItem,
+    getItemDetail: admindataActions.getItemDetail,
   };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SampleCategory)
@@ -360,3 +383,61 @@ const mapDispatchToProps3  = {
       </div>
     )
   });
+
+// ******************ItemDetail*****************************
+
+// interface IState4 {
+//   id: string;
+//   name: string;
+//   description: string;
+// }
+  const mapStateToProps4 = (state: AppState) => {
+      
+    return {
+      isLoaingItemDetail: state.package_admin.dataDetailState.isLoaingItemDetail,
+    }
+  };
+const mapDispatchToProps4  = {
+};
+
+  const GetSampleCategoryComponent: React.FC<any> = connect(mapStateToProps4,mapDispatchToProps4)((props: any) => {
+    //console.log('rendered with props:',props);
+    const  isLoadingItemDetail: boolean  = props.isLoadingItemDetail;
+  
+    
+    const onClickHandler = () => {
+      
+      props.onclick();
+    };
+    
+    
+  
+    return (
+      <div className="bg-light min-vh-50 d-flex flex-row align-items-center">
+        <CContainer>
+        <CRow className="justify-content-center">
+          <CCol md={8}>
+            <CCardGroup>
+              <CCard className="p-4">
+                <CCardBody>
+                 
+                  name: {props.fetchedItem.name} <hr />
+                  description: {props.fetchedItem.description}
+                  <CRow>
+                    <CCol xs={6}>
+                      <CButton color="primary" className="px-4" onClick={onClickHandler} disabled={isLoadingItemDetail}>
+                        Back
+                      </CButton>
+                    </CCol>
+                  </CRow>
+                </CCardBody>
+              </CCard>
+            </CCardGroup>
+          </CCol>
+        </CRow>
+      </CContainer>
+      </div>
+    )
+  });
+
+

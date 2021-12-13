@@ -16,6 +16,10 @@ export const dataAdminConstants = {
     ITEM_UPDATE_SUCCESS: 'ITEM_UPDATE_SUCCESS',
     ITEM_UPDATE_FAILURE: 'ITEM_UPDATE_FAILURE',
 
+    ITEM_DETAIL_REQUEST: 'ITEM_DETAIL_REQUEST',
+    ITEM_DETAIL_SUCCESS: 'ITEM_DETAIL_SUCCESS',
+    ITEM_DETAIL_FAILURE: 'ITEM_DETAIL_FAILURE',
+
     DATA_LIST2_REQUEST: 'DATA_LIST2_REQUEST',
     DATA_LIST2_SUCCESS: 'DATA_LIST2_SUCCESS',
     DATA_LIST2_FAILURE: 'DATA_LIST2_FAILURE',
@@ -51,6 +55,12 @@ export interface DataUpdateState {
     updatedItemData: any,
 }
 
+export interface DataDetailState {
+    isLoaingItemDetail: boolean,
+    isLoadedItemDetailSuccessfully: boolean,
+    loadedItemDetailData: any,
+}
+
 export interface IPackageAdminState {
     dataListState: DataListState,
     dataList2State: DataListState,
@@ -58,6 +68,6 @@ export interface IPackageAdminState {
     dataDeleteState: DataDeleteState,
     dataCreateState: DataCreateState,
     dataUpdateState: DataUpdateState,
-
+    dataDetailState: DataDetailState,
 
 }

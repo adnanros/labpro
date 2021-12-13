@@ -9,6 +9,7 @@ export const admindataActions = {
      deleteItem, 
      createItem,
      updateItem,
+     getItemDetail,
 };
 
 function getDataList(query: string){
@@ -157,4 +158,32 @@ function updateItem(mutation: string, inputData: any){
     function success(updatedItemData: any) { return { type: dataAdminConstants.ITEM_UPDATE_SUCCESS, updatedItemData } }
     function failure(error: string) { return { type: dataAdminConstants.ITEM_UPDATE_FAILURE, error } }
 }
+
+//****** */ Item Detail Action *****************************************//
+
+function getItemDetail(query: string, itemId: any){
+    console.log('XXXXX-Dispatch-ID', itemId);
+
+    return async (dispatch: (arg0: { type: string; error?: string; }) => void) => {
+        dispatch(request());
+        try{
+            
+            const itemDetailData: any = await API.graphql({ query: query, variables: {id: itemId}});
+            
+            dispatch(success(itemDetailData.data));
+            console.log('xxxxx-toState',itemDetailData.data)
+        } catch(error: any)
+        {
+            console.log(error);
+            dispatch(failure(error.toString()))
+            dispatch(alertActions.error(error.toString()));
+        }
+    };
+
+    function request() { return { type: dataAdminConstants.ITEM_DETAIL_REQUEST } }
+    function success(itemDetailData: any) { return { type: dataAdminConstants.ITEM_DETAIL_SUCCESS, itemDetailData } }
+    function failure(error: string) { return { type: dataAdminConstants.ITEM_DETAIL_FAILURE, error } }
+
+}
+
 
