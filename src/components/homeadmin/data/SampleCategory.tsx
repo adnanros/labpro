@@ -409,6 +409,9 @@ const mapDispatchToProps4  = {
       
       props.onclick();
     };
+
+    const testGroups: any = props.fetchedItem.testGroups?.items;
+    console.log('zzzzTestGroupsInSampleC', testGroups);
     
     
   
@@ -420,9 +423,19 @@ const mapDispatchToProps4  = {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                 
+                  <CRow>
+                  <h3>Item Details:</h3><hr />
+                  </CRow>
                   name: {props.fetchedItem.name} <hr />
-                  description: {props.fetchedItem.description}
+                  description: {props.fetchedItem.description}<hr />
+                  <CRow>
+                    testGroups: {testGroups?.map((item: any, index:any )=>(
+                      <div key={index}>{item.name}</div>
+                    ))}
+                  </CRow>
+                  <hr />
+                  
+
                   <CRow>
                     <CCol xs={6}>
                       <CButton color="primary" className="px-4" onClick={onClickHandler} disabled={isLoadingItemDetail}>
