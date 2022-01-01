@@ -19,6 +19,12 @@ import {
   CModalHeader,
   CModalTitle,
   CRow,
+  CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { cilLockLocked, cilUser } from '@coreui/icons';
@@ -26,9 +32,9 @@ import { connect } from 'react-redux';
 import { Component, useState } from "react"
 import { AppState } from '../../../_helpers';
 import { admindataActions} from '../../../_actions';
-import { listSampleCategorys, listTestGroups,  } from '../../../graphql/queries';
+import { getTestGroup, listSampleCategorys, listTestGroups,  } from '../../../graphql/queries';
 import React from 'react';
-import { createTestGroup, deleteTestGroup } from '../../../graphql/mutations';
+import { createTestGroup, deleteTestGroup, updateTestGroup } from '../../../graphql/mutations';
 
 
 // in class component we cannot use useState functionality
@@ -38,7 +44,11 @@ interface IState {
   showEdit: boolean,
   showCreate: boolean,
   showDeleteAlert: boolean,
-  toBeDeletedId: string
+  toBeDeletedId: string,
+  toBeDeletedName: string,
+  toBeUpdatedId: string,
+
+  
 }
 class TestGroup extends Component<any,IState> {
   
@@ -49,7 +59,9 @@ class TestGroup extends Component<any,IState> {
         showEdit: false,
         showCreate: false,
         showDeleteAlert: false,
-        toBeDeletedId: ''
+        toBeDeletedId: '',
+        toBeDeletedName: '',
+        toBeUpdatedId: ''
       }
     }
 
@@ -63,22 +75,37 @@ class TestGroup extends Component<any,IState> {
         <div>
               {(this.props.isLoadingFailed1 || this.props.isLoadingFailed2) && <CButton onClick={()=>{this.props.getDataList(listSampleCategorys)}}>Refresh</CButton>}
 
-              ***********************************************<CButton onClick= {()=> {this.setState({showCreate: true})}} disabled={this.state.showCreate}>Create</CButton>
+
+              <CTable>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">
+                      <CButton onClick= {()=> {this.setState({showCreate: true})}} disabled={this.state.showCreate}>Create</CButton>
+                    </CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {this.props.data && this.props.data2 &&
+                    this.props.data.map((item: any, index:any) => (
+                      <CTableRow key={index}>
+                        <CTableHeaderCell scope="row">{index+1}</CTableHeaderCell>
+                        <CTableDataCell>{item.name}</CTableDataCell>
+                        <CTableDataCell>
+                        <div>
+                          <CButton className='primary' color="link" onClick={()=>{this.setState({showDetail: true}); this.props.getItemDetail(getTestGroup,item.id);}} disabled={this.props.isLoaingItemDetail}>Detail</CButton>
+                          <CButton className='primary' color="link" onClick={()=>{this.setState({toBeUpdatedId: item.id ,showEdit: true})}} disabled={this.props.isUpdatingItem}>Edit</CButton>
+                          <CButton className='danger' color="link" onClick={()=>{this.setState({toBeDeletedId: item.id,toBeDeletedName:item.name, showDeleteAlert: true})}} disabled={this.props.isDeletingItem}>Delete</CButton>
+                        </div>
+                        </CTableDataCell>
+                    </CTableRow>
+                    ))
+                  }
+                </CTableBody>
+              </CTable>
               <React.Fragment>
-              {this.props.data && this.props.data2 &&
-                this.props.data.map((item: any, index:any) => (
-                  <div key={index}>
-                    <div>
-                    **************************** {item.name}
-                    </div>
-                    <div>
-                      <button onClick={()=>{this.setState({showDetail: true})}} disabled={this.props.isDeletingItem}>Edit</button>
-                      <button onClick={()=>{this.setState({showEdit: true})}} disabled={this.props.isDeletingItem}>Detail</button>
-                      888888888888888888888888888888888888<button onClick={()=>{this.setState({toBeDeletedId: item.id, showDeleteAlert: true})}} disabled={this.props.isDeletingItem}>Delete</button>
-                    </div>
-                  </div>)
-                )}
-            </React.Fragment>
+              </React.Fragment>
             <CModal
               className="show d-block position-static"
               backdrop={false}
@@ -107,6 +134,36 @@ class TestGroup extends Component<any,IState> {
               <CreateTestGroupComponent onclick={()=> this.setState({showCreate: false})}/>
             </CModal>
 
+            <CModal
+            backdrop={false}
+            keyboard={false}
+            portal={false}
+            visible= {this.state.showEdit}
+            onClose = {()=> this.setState({showEdit: false})}
+            >
+              <CModalHeader>
+                <CModalTitle>Edit Sample Category</CModalTitle>
+              </CModalHeader>
+              <CModalBody>
+                <UpdateTestGroupComponent onclick={()=> this.setState({showEdit: false})} toBeUpdatedItem={this.state.toBeUpdatedId}/>
+              </CModalBody>
+            </CModal>
+
+            <CModal
+            backdrop={false}
+            keyboard={false}
+            portal={false}
+            visible= {this.state.showDetail}
+            onClose = {()=> this.setState({showDetail: false})}
+            >
+              <CModalHeader>
+                <CModalTitle>Sample Category Item Details</CModalTitle>
+              </CModalHeader>
+              <CModalBody>
+                <GetTestGroupComponent onclick={()=> this.setState({showDetail: false})} fetchedItem={this.props.fetchedItem}/>
+              </CModalBody>
+            </CModal>
+
         </div>
       );
     }
@@ -114,6 +171,8 @@ class TestGroup extends Component<any,IState> {
 
 
   const mapStateToProps = (state: AppState) => {
+    const itemDetailLoaded: any= state.package_admin.dataDetailState.loadedItemDetailData;
+    const itemDetailEmpty = {id: '', name: '', description: ''}
     return {
       isDataLoading: state.package_admin.dataListState.isLoadingData,
       isLoadingFailed1: state.package_admin.dataListState.isLoadingFailed,
@@ -128,6 +187,14 @@ class TestGroup extends Component<any,IState> {
       isCreatingItem: state.package_admin.dataCreateState.isCreatingItem,
       isCreatedSuccessfully: state.package_admin.dataCreateState.isCreatedSuccessfully,
       // createdItemData: state.package_admin.dataCreateState.createdItemData,
+
+      isUpdatingItem: state.package_admin.dataUpdateState.isUpdatingItem,
+      isUpdatedSuccessfully: state.package_admin.dataUpdateState.isUpdatedSuccessfully,
+
+      isLoaingItemDetail: state.package_admin.dataDetailState.isLoaingItemDetail,
+      isLoadedItemDetailSuccessfully: state.package_admin.dataDetailState.isLoadedItemDetailSuccessfully,
+      fetchedItem: itemDetailLoaded !== null? Object.values(state.package_admin.dataDetailState.loadedItemDetailData)[0] : itemDetailEmpty, 
+
     }
   };
   
@@ -136,6 +203,8 @@ class TestGroup extends Component<any,IState> {
     getDataList2: admindataActions.getDataList2,
     deleteItem: admindataActions.deleteItem,
     createItem: admindataActions.createItem,
+    getItemDetail: admindataActions.getItemDetail,
+
   };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestGroup)
@@ -262,3 +331,215 @@ const mapDispatchToProps2  = {
       </div>
     )
   });
+
+
+  //*************Edit Component?*******************
+
+interface IState3 {
+  id: string;
+  name: string;
+  description: string;
+  sampleCategoryId: string;
+}
+  const mapStateToProps3 = (state: AppState) => {
+    return {
+      isUpdatingItem: state.package_admin.dataUpdateState.isUpdatingItem,
+      listData: state.package_admin.dataListState.data,
+      sampleCategoryList: state.package_admin.dataList2State.data,
+
+    }
+  };
+const mapDispatchToProps3  = {
+    updateItem: admindataActions.updateItem,
+};
+
+  const UpdateTestGroupComponent: React.FC<any> = connect(mapStateToProps3,mapDispatchToProps3)((props: any) => {
+    //console.log('rendered with props:',props);
+    const  isUpdatingItem: boolean  = props.isUpdatingItem;
+
+    const toBeUpdatedItemData = props.listData.find(
+      (item: any)=>(item.id===props.toBeUpdatedItem)
+      );
+  
+    const [SampleCategoryId, setSampleCategoryId] = useState(toBeUpdatedItemData.sampleCategoryId);
+    
+    const handleChange = (event: React.FormEvent<HTMLSelectElement>) => {
+      setSampleCategoryId(event.currentTarget.value);
+      console.log(`Option selected:`, event.currentTarget.value);
+    }
+
+    const validationSchema = Yup.object().shape({
+      name: Yup.string()
+        .required('Name is required'),
+      description: Yup.string()
+        .required('DEscription is required'),
+      sampleCategoryId: Yup.string().ensure().required('Sample-category-Id is required'),  
+
+    });
+    
+    const onSubmit = (data: IState3) => {
+      console.log('toBeUpdated', props.toBeUpdatedItem);
+      const inputData= {
+        id: props.toBeUpdatedItem,
+        name: data.name,
+        description: data.description,
+        sampleCategoryId: SampleCategoryId,
+      } 
+      props.updateItem(updateTestGroup,inputData);
+      props.onclick();
+    };
+    
+    const {
+      register,
+      handleSubmit,
+      formState: { errors }
+    } = useForm<IState3>({
+      resolver: yupResolver(validationSchema)
+    });
+  
+    
+    return (
+      <div className="bg-light min-vh-50 d-flex flex-row align-items-center">
+        <CContainer>
+        <CRow className="justify-content-center">
+          <CCol md={8}>
+            <CCardGroup>
+              <CCard className="p-4">
+                <CCardBody>
+                  <CForm className="needs-validation" onSubmit={handleSubmit(onSubmit)} >
+                    <label htmlFor="name">Name:</label>
+                    <CInputGroup className="mb-3">
+                      <CFormInput 
+                        className={`form-control ${errors.name ? 'is-invalid' : ''}`} 
+                        {...register('name')} 
+                        type="text" 
+                        placeholder="name" 
+                        defaultValue= {toBeUpdatedItemData.name}
+                        autoComplete="text" 
+                        required />
+                      <div className="invalid-feedback">{errors.name?.message}</div>
+                    </CInputGroup>
+                    <label htmlFor="description">Description:</label>
+                    <CInputGroup className="mb-4">
+                      <CFormInput
+                        {...register('description')}
+                        className={`form-control ${errors.description ? 'is-invalid' : ''}`}
+                        type="text"
+                        placeholder="description"
+                        defaultValue= {toBeUpdatedItemData.description}
+                        autoComplete="text"
+                        required
+                      />
+                      <div className="invalid-feedback">{errors.description?.message}</div>
+                    </CInputGroup>
+                    <CFormSelect aria-label="Default select example" 
+                    {...register('sampleCategoryId')}
+                    onChange={handleChange}
+                    required
+                    defaultValue={SampleCategoryId}
+                    >
+                      {
+                        props.sampleCategoryList.map((item: any, index:any) => (
+                          <option value={item.id} key={index}>{item.name}</option>
+                        ))
+                      }
+                    </CFormSelect>
+                    <div className="invalid-feedback">{errors.sampleCategoryId?.message}</div>
+
+                    <CRow>
+                      <CCol xs={6}>
+                        <CButton color="primary" className="px-4" type='submit' disabled={isUpdatingItem}>
+                          Save
+                        </CButton>
+                      </CCol>
+                    </CRow>
+                  </CForm>
+                </CCardBody>
+              </CCard>
+            </CCardGroup>
+          </CCol>
+        </CRow>
+      </CContainer>
+      </div>
+    )
+  });
+
+
+
+  // ******************ItemDetail*****************************
+
+// interface IState4 {
+//   id: string;
+//   name: string;
+//   description: string;
+// }
+const mapStateToProps4 = (state: AppState) => {
+      
+  return {
+    isLoaingItemDetail: state.package_admin.dataDetailState.isLoaingItemDetail,
+    sampleCategoryList: state.package_admin.dataList2State.data,
+  }
+};
+const mapDispatchToProps4  = {
+};
+
+const GetTestGroupComponent: React.FC<any> = connect(mapStateToProps4,mapDispatchToProps4)((props: any) => {
+  //console.log('rendered with props:',props);
+  const  isLoadingItemDetail: boolean  = props.isLoadingItemDetail;
+
+  
+
+  const parent = props.sampleCategoryList.find(
+    (item: any)=>(item.id===props.fetchedItem.sampleCategoryId)
+    );
+
+  if (parent !== undefined){
+    console.log('XXXXX_Parent', parent);  
+  }  
+
+  const onClickHandler = () => {
+    
+    props.onclick();
+  };
+
+  // const testPacks: any = props.fetchedItem.testPacks?.items;
+  // console.log('zzzzTestGroupsInSampleC', testPacks);
+  
+  
+
+  return (
+    <div className="bg-light min-vh-50 d-flex flex-row align-items-center">
+      <CContainer>
+      <CRow className="justify-content-center">
+        <CCol md={8}>
+          <CCardGroup>
+            <CCard className="p-4">
+              <CCardBody>
+                <CRow>
+                <h3>Item Details:</h3><hr />
+                </CRow>
+                name: {props.fetchedItem.name} <hr />
+                description: {props.fetchedItem.description}<hr />
+                sample-categord As Parent: {parent?.name}
+                
+                <hr />
+                
+
+                <CRow>
+                  <CCol xs={6}>
+                    <CButton color="primary" className="px-4" onClick={onClickHandler} disabled={isLoadingItemDetail}>
+                      Back
+                    </CButton>
+                  </CCol>
+                </CRow>
+              </CCardBody>
+            </CCard>
+          </CCardGroup>
+        </CCol>
+      </CRow>
+    </CContainer>
+    </div>
+  )
+});
+
+

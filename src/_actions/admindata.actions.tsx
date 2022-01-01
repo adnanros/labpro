@@ -172,8 +172,8 @@ function getItemDetail(query: string, itemId: any){
             
             dispatch(success(itemDetailData.data));
             console.log('xxxxx-toState',itemDetailData.data);
-            var tempData: any= Object.values(itemDetailData.data)[0];
-            console.log('xxxxx-testgroups',Object.values(tempData.testGroups.items));
+            // var tempData: any= Object.values(itemDetailData.data)[0];
+            // console.log('xxxxx-testgroups',Object.values(tempData.testGroups.items));
         } catch(error: any)
         {
             console.log(error);

@@ -343,6 +343,7 @@ const mapDispatchToProps3  = {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm className="needs-validation" onSubmit={handleSubmit(onSubmit)} >
+                    <label htmlFor="name">Name:</label>
                     <CInputGroup className="mb-3">
                       <CFormInput 
                         className={`form-control ${errors.name ? 'is-invalid' : ''}`} 
@@ -354,6 +355,7 @@ const mapDispatchToProps3  = {
                         required />
                       <div className="invalid-feedback">{errors.name?.message}</div>
                     </CInputGroup>
+                    <label htmlFor="description">Description:</label>
                     <CInputGroup className="mb-4">
                       <CFormInput
                         {...register('description')}
