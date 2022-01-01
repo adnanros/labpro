@@ -28,9 +28,9 @@ import { connect } from 'react-redux';
 import { Component } from "react"
 import { AppState } from '../../../_helpers';
 import { admindataActions} from '../../../_actions';
-import { getSampleCategory, getTestPack, listTestPacks,  } from '../../../graphql/queries';
+import { getTestPack, listTestPacks,  } from '../../../graphql/queries';
 import React from 'react';
-import { createSampleCategory, createTestPack, deleteSampleCategory, deleteTestPack, updateSampleCategory, updateTestPack } from '../../../graphql/mutations';
+import { createTestPack, deleteTestPack, updateTestPack } from '../../../graphql/mutations';
 
 interface IState {
     showDetail: boolean,
