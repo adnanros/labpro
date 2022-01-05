@@ -45,6 +45,18 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'TestPacks',
+    to: '/testpack',
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'TestGroupTestPack',
+    to: '/testgrouptestpack',
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Typography',
     to: '/theme/typography',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
