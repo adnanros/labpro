@@ -199,6 +199,8 @@ class SampleCategory extends Component<any,IState> {
 
 export default connect(mapStateToProps, mapDispatchToProps)(SampleCategory)
 
+//*************Create Component?*******************
+
 
 interface IState2 {
     name: string;
