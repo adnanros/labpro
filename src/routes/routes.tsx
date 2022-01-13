@@ -1,5 +1,6 @@
 // import React from 'react'
 
+import Chemical from "../components/homeadmin/data/Chemical"
 import ChemicalAnalysis from "../components/homeadmin/data/ChemicalAnalysis"
 import  SampleCategory from "../components/homeadmin/data/SampleCategory"
 import  TestGroup from "../components/homeadmin/data/TestGroup"
@@ -111,6 +112,8 @@ const routes = [
   { path: '/testgrouptestpack', name: 'TestGroupTestPack', component: TestGroupTestPack },
   { path: '/chemicalanalysis', name: 'ChemicalAnalysis', component: ChemicalAnalysis },
   { path: '/testpackchemicalanalysis', name: 'TestChemicalAnalysis', component: TestPackChemicalAnalysis },
+  { path: '/chemical', name: 'Chemical', component: Chemical },
+
 
 
 
