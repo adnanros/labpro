@@ -5,6 +5,7 @@ import  SampleCategory from "../components/homeadmin/data/SampleCategory"
 import  TestGroup from "../components/homeadmin/data/TestGroup"
 import TestGroupTestPack from "../components/homeadmin/data/TestGroupTestPack"
 import TestPacks from "../components/homeadmin/data/TestPack"
+import TestPackChemicalAnalysis from "../components/homeadmin/data/TestPackChemicalAnalysis"
 
 
 // const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
@@ -109,6 +110,7 @@ const routes = [
   { path: '/testpack', name: 'TestPacks', component: TestPacks },
   { path: '/testgrouptestpack', name: 'TestGroupTestPack', component: TestGroupTestPack },
   { path: '/chemicalanalysis', name: 'ChemicalAnalysis', component: ChemicalAnalysis },
+  { path: '/testpackchemicalanalysis', name: 'TestChemicalAnalysis', component: TestPackChemicalAnalysis },
 
 
 

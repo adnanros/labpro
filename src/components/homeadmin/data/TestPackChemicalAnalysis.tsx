@@ -27,9 +27,9 @@ import { connect } from 'react-redux';
 import { Component, useState } from "react"
 import { AppState } from '../../../_helpers';
 import { admindataActions} from '../../../_actions';
-import { getTestGroupTestPack, listTestGroups, listTestGroupTestPacks, listTestPacks,  } from '../../../graphql/queries';
+import { getTestPackChemicalAnalysis, listChemicalAnalysiss, listTestGroupTestPacks, listTestPackChemicalAnalysiss, listTestPacks,  } from '../../../graphql/queries';
 import React from 'react';
-import { createTestGroupTestPack, deleteTestGroupTestPack, updateTestGroupTestPack,  } from '../../../graphql/mutations';
+import { createTestPackChemicalAnalysis, deleteTestPackChemicalAnalysis, updateTestPackChemicalAnalysis,   } from '../../../graphql/mutations';
 
 
 // in class component we cannot use useState functionality
@@ -45,7 +45,7 @@ interface IState {
   itemNameList: any,
   
 }
-class TestGroupTestPack extends Component<any,IState> {
+class TestPackChemicalAnalysis extends Component<any,IState> {
   
     constructor(props: any){
       super(props);
@@ -62,9 +62,9 @@ class TestGroupTestPack extends Component<any,IState> {
     }
 
     componentDidMount(){
-      this.props.getDataList(listTestGroupTestPacks);
-      this.props.getDataList2(listTestGroups);
-      this.props.getDataList3(listTestPacks);
+      this.props.getDataList(listTestPackChemicalAnalysiss);
+      this.props.getDataList2(listTestPacks);
+      this.props.getDataList3(listChemicalAnalysiss);
     
             
     }//End o DidMount
@@ -73,58 +73,59 @@ class TestGroupTestPack extends Component<any,IState> {
     
     render() {
 
-      console.log('XXXX-Dataaaaaaa',this.props.data);
-      const temp = this.props.data?.map((item: any)=>{
-        // const testGroupIdTemp: string= item.testGroupId;
-        let id: string= item.id;
+    //   console.log('XXXX-Dataaaaaaa',this.props.data);
+    //   const temp = this.props.data?.map((item: any)=>{
+    //     // const testGroupIdTemp: string= item.testGroupId;
+    //     let id: string= item.id;
 
-        let testGroupItem= this.props.data2?.find(
-          (item1:any)=>(item1.id===item.testGroupId)
-        )
+    //     // let testPackItem= this.props.data2?.find(
+    //     //   (item1:any)=>(item1.id===item.testPackId)
+    //     // )
+    //     let testPackItem=item.testpack.name; 
 
-        let testPackItem= this.props.data3?.find(
-          (item2: any)=>(item2.id === item.testPackId)
-        )
-        let testGroupName = testGroupItem?.name;
-        console.log('NAMMMEtestGroup', testGroupName)
-        let testPackName = testPackItem?.name;
-        console.log('NAMMMEtestPack', testGroupName)
+    //     let chemicalAnalysisItem= this.props.data3?.find(
+    //       (item2: any)=>(item2.id === item.chemicalAnalysisId)
+    //     )
+    //     let testPackName = testPackItem?.name;
+    //     console.log('NAMMMEtestGroup', testPackItem)
+    //     let chemicalAnalysisName = chemicalAnalysisItem?.name;
+    //     console.log('NAMMMEtestPack', chemicalAnalysisName)
 
-        return {id, testGroupName, testPackName}
-      }
-      ) 
+    //     return {id, testPackName, chemicalAnalysisName}
+    //   }
+    //   ) 
 
-      console.log('TEEEEMMMPPPP',temp);
+    //   console.log('TEEEEMMMPPPP',temp);
 
 
 
       return (
         <div>
-              {(this.props.isLoadingFailed1 || this.props.isLoadingFailed2) && <CButton onClick={()=>{this.props.getDataList(listTestGroupTestPacks)}}>Refresh</CButton>}
+              {(this.props.isLoadingFailed1 || this.props.isLoadingFailed2) && <CButton onClick={()=>{this.props.getDataList(listTestPackChemicalAnalysiss)}}>Refresh</CButton>}
 
 
               <CTable>
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Test-Group</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Test-Pack</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Chemical-Analysis</CTableHeaderCell>
                     <CTableHeaderCell scope="col">
                       <CButton onClick= {()=> {this.setState({showCreate: true})}} disabled={this.state.showCreate}>Create</CButton>
                     </CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {this.props.data && this.props.data2 && this.props.data3 && temp &&
-                    temp.map((item: any, index:any) => (
+                  {this.props.data && this.props.data2 && this.props.data3 &&
+                    this.props.data.map((item: any, index:any) => (
                                          
                       <CTableRow key={index}>
                         <CTableHeaderCell scope="row">{index+1}</CTableHeaderCell>
-                        <CTableDataCell>{item.testGroupName}</CTableDataCell>
-                        <CTableDataCell>{item.testPackName}</CTableDataCell>
+                        <CTableDataCell>{item.testpack.name}</CTableDataCell>
+                        <CTableDataCell>{item.chemicalAnalysis.name}</CTableDataCell>
                         <CTableDataCell>
                         <div>
-                          <CButton className='primary' color="link" onClick={()=>{this.setState({showDetail: true}); this.props.getItemDetail(getTestGroupTestPack,item.id);}} disabled={this.props.isLoaingItemDetail}>Detail</CButton>
+                          <CButton className='primary' color="link" onClick={()=>{this.setState({showDetail: true}); this.props.getItemDetail(getTestPackChemicalAnalysis,item.id);}} disabled={this.props.isLoaingItemDetail}>Detail</CButton>
                           <CButton className='primary' color="link" onClick={()=>{this.setState({toBeUpdatedId: item.id ,showEdit: true})}} disabled={this.props.isUpdatingItem}>Edit</CButton>
                           <CButton className='danger' color="link" onClick={()=>{this.setState({toBeDeletedId: item.id,toBeDeletedName:item.name, showDeleteAlert: true})}} disabled={this.props.isDeletingItem}>Delete</CButton>
                         </div>
@@ -150,7 +151,7 @@ class TestGroupTestPack extends Component<any,IState> {
               <CModalFooter>
                 <CButton onClick={()=>{this.setState({showDeleteAlert: false})}} color="secondary">Close</CButton>
                 <CButton onClick={()=>{
-                  this.props.deleteItem(deleteTestGroupTestPack,this.state.toBeDeletedId,listTestGroupTestPacks); this.setState({showDeleteAlert: false})} } color="primary">Ok</CButton>
+                  this.props.deleteItem(deleteTestPackChemicalAnalysis,this.state.toBeDeletedId,listTestGroupTestPacks); this.setState({showDeleteAlert: false})} } color="primary">Ok</CButton>
               </CModalFooter>
             </CModal>
 
@@ -161,7 +162,7 @@ class TestGroupTestPack extends Component<any,IState> {
             portal={false}
             visible= {this.state.showCreate}
             >
-              <CreateTestGroupTestPackComponent onclick={()=> this.setState({showCreate: false})}/>
+              <CreateTestPackChemicalAnalysisComponent onclick={()=> this.setState({showCreate: false})}/>
             </CModal>
 
             <CModal
@@ -175,7 +176,7 @@ class TestGroupTestPack extends Component<any,IState> {
                 <CModalTitle>Edit Sample Category</CModalTitle>
               </CModalHeader>
               <CModalBody>
-                <UpdateTestGroupTestPackComponent onclick={()=> this.setState({showEdit: false})} toBeUpdatedItem={this.state.toBeUpdatedId}/>
+                <UpdateTestPackChemicalAnalysisComponent onclick={()=> this.setState({showEdit: false})} toBeUpdatedItem={this.state.toBeUpdatedId}/>
               </CModalBody>
             </CModal>
 
@@ -190,7 +191,7 @@ class TestGroupTestPack extends Component<any,IState> {
                 <CModalTitle>Sample Category Item Details</CModalTitle>
               </CModalHeader>
               <CModalBody>
-                <GetTestGroupTestPackComponent onclick={()=> this.setState({showDetail: false})} fetchedItem={this.props.fetchedItem}/>
+                <GetTestPackChemicalAnalysisComponent onclick={()=> this.setState({showDetail: false})} fetchedItem={this.props.fetchedItem}/>
               </CModalBody>
             </CModal>
 
@@ -238,29 +239,29 @@ class TestGroupTestPack extends Component<any,IState> {
     getItemDetail: admindataActions.getItemDetail,
   };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestGroupTestPack)
+export default connect(mapStateToProps, mapDispatchToProps)(TestPackChemicalAnalysis)
 
 //*************Create Component?*******************
 
 
 interface IState2 {
-    testGroupId: string;
     testPackId: string;
+    chemicalAnalysisId: string;
   }
   
 const mapStateToProps2 = (state: AppState) => {
     return {
       isCreatingItem: state.package_admin.dataCreateState.isCreatingItem,
       listData: state.package_admin.dataListState.data,
-      testGroupList: state.package_admin.dataList2State.data,
-      testPackList: state.package_admin.dataList3State.data
+      testPackList: state.package_admin.dataList2State.data,
+      chemicalAnalysisList: state.package_admin.dataList3State.data
     }
   };
 const mapDispatchToProps2  = {
     createItem: admindataActions.createItem,
 };
 
-  const CreateTestGroupTestPackComponent: React.FC<any> = connect(mapStateToProps2,mapDispatchToProps2)((props: any) => {
+  const CreateTestPackChemicalAnalysisComponent: React.FC<any> = connect(mapStateToProps2,mapDispatchToProps2)((props: any) => {
     
 
     //console.log('rendered with props:',props);
@@ -268,34 +269,34 @@ const mapDispatchToProps2  = {
   
 
     
-    const [testGroupId, setTestGroupId] = useState('');
     const [testPackId, setTestPackId] = useState('');
+    const [chemicalAnalysisId, setChemicalAnalysisId] = useState('');
 
-    console.log(testGroupId);// For Getting rid of Warning
-    console.log(testPackId);
+    console.log(testPackId);// For Getting rid of Warning
+    console.log(chemicalAnalysisId); // For Getting rid of Warning
 
     const handleChange1 = (event: React.FormEvent<HTMLSelectElement>) => {
-        setTestGroupId(event.currentTarget.value);
+        setTestPackId(event.currentTarget.value);
         console.log(`Option selected:`, event.currentTarget.value);
     }
 
     const handleChange2 = (event: React.FormEvent<HTMLSelectElement>) => {
-        setTestPackId(event.currentTarget.value);
+        setChemicalAnalysisId(event.currentTarget.value);
         console.log(`Option selected:`, event.currentTarget.value);
       }
 
     const validationSchema = Yup.object().shape({
-        testGroupId: Yup.string().ensure().required('Test-Group-Id is required'),  
         testPackId: Yup.string().ensure().required('Test-Pack-Id is required'),  
+        chemicalAnalysisId: Yup.string().ensure().required('Chemical-Analysis-Id is required'),  
     });
     
     const onSubmit = (data: IState2) => {
       const inputData= {
-        testGroupId: data.testGroupId,
         testPackId: data.testPackId,
+        chemicalAnalysisId: data.chemicalAnalysisId,
       } 
       
-      props.createItem(createTestGroupTestPack,inputData);
+      props.createItem(createTestPackChemicalAnalysis,inputData);
       props.onclick();
     };
     
@@ -321,21 +322,8 @@ const mapDispatchToProps2  = {
                     <p className="text-medium-emphasis">Create a new Test Group / Test Pack Connection</p>
                     
                     <CFormSelect aria-label="Default select example" 
-                    {...register('testGroupId')}
-                    onChange={handleChange1}
-                    required
-                    >
-                      <option value='' selected>Choose One:</option>
-                      {
-                        props.testGroupList.map((item: any, index:any) => (
-                          <option value={item.id} key={index}>{item.name}</option>
-                        ))
-                      }
-                    </CFormSelect>
-                    <div className="invalid-feedback">{errors.testGroupId?.message}</div>
-                    <CFormSelect aria-label="Default select example" 
                     {...register('testPackId')}
-                    onChange={handleChange2}
+                    onChange={handleChange1}
                     required
                     >
                       <option value='' selected>Choose One:</option>
@@ -346,6 +334,19 @@ const mapDispatchToProps2  = {
                       }
                     </CFormSelect>
                     <div className="invalid-feedback">{errors.testPackId?.message}</div>
+                    <CFormSelect aria-label="Default select example" 
+                    {...register('chemicalAnalysisId')}
+                    onChange={handleChange2}
+                    required
+                    >
+                      <option value='' selected>Choose One:</option>
+                      {
+                        props.chemicalAnalysisList.map((item: any, index:any) => (
+                          <option value={item.id} key={index}>{item.name}</option>
+                        ))
+                      }
+                    </CFormSelect>
+                    <div className="invalid-feedback">{errors.chemicalAnalysisId?.message}</div>
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4" type='submit' disabled={isCreatingItem}>
@@ -365,61 +366,67 @@ const mapDispatchToProps2  = {
     )
   });
 
-//*************Edit Component?*******************
 
-interface IState3 {
-  id: string;
-  testGroupId: string;
-  testPackId: string;
-}
-  const mapStateToProps3 = (state: AppState) => {
+  /*****************Edit Componnenet */
+
+  interface IState3 {
+    id: string,
+    testPackId: string;
+    chemicalAnalysisId: string;
+  }
+  
+const mapStateToProps3 = (state: AppState) => {
     return {
       isUpdatingItem: state.package_admin.dataUpdateState.isUpdatingItem,
       listData: state.package_admin.dataListState.data,
-      testGroupList: state.package_admin.dataList2State.data,
-      testPackList: state.package_admin.dataList3State.data,
+      testPackList: state.package_admin.dataList2State.data,
+      chemicalAnalysisList: state.package_admin.dataList3State.data
     }
   };
 const mapDispatchToProps3  = {
     updateItem: admindataActions.updateItem,
 };
 
-  const UpdateTestGroupTestPackComponent: React.FC<any> = connect(mapStateToProps3,mapDispatchToProps3)((props: any) => {
+  const UpdateTestPackChemicalAnalysisComponent: React.FC<any> = connect(mapStateToProps3,mapDispatchToProps3)((props: any) => {
+    
+
     //console.log('rendered with props:',props);
     const  isUpdatingItem: boolean  = props.isUpdatingItem;
   
-    const validationSchema = Yup.object().shape({
-      testGroupId: Yup.string().ensure().required('testGroupId is required'),  
-      testPackId: Yup.string().ensure().required('testPackId is required'),  
-    });
-
     const toBeUpdatedItemData = props.listData.find(
-      (item: any)=>(item.id===props.toBeUpdatedItem)
-      );
+        (item: any)=>(item.id===props.toBeUpdatedItem)
+        );
+    
+    const [testPackId, setTestPackId] = useState(toBeUpdatedItemData.testPackId);
+    const [chemicalAnalysisId, setChemicalAnalysisId] = useState(toBeUpdatedItemData.chemicalAnalysisId);
 
-
-    const [TestGroupId, setTestGroupId]= useState(toBeUpdatedItemData.testGroupId);
-    const [TestPackId, setTestPackId]= useState(toBeUpdatedItemData.testPackId);
+    console.log('iDDDs',props.toBeUpdatedItem);
+    console.log(testPackId);// For Getting rid of Warning
+    console.log(chemicalAnalysisId); // For Getting rid of Warning
 
     const handleChange1 = (event: React.FormEvent<HTMLSelectElement>) => {
-      setTestGroupId(event.currentTarget.value);
-      console.log(`Option selected:`, event.currentTarget.value);
+        setTestPackId(event.currentTarget.value);
+        console.log(`Option selected:`, event.currentTarget.value);
     }
 
-  const handleChange2 = (event: React.FormEvent<HTMLSelectElement>) => {
-      setTestPackId(event.currentTarget.value);
-      console.log(`Option selected:`, event.currentTarget.value);
-    }
+    const handleChange2 = (event: React.FormEvent<HTMLSelectElement>) => {
+        setChemicalAnalysisId(event.currentTarget.value);
+        console.log(`Option selected:`, event.currentTarget.value);
+      }
 
+    const validationSchema = Yup.object().shape({
+        testPackId: Yup.string().ensure().required('Test-Pack-Id is required'),  
+        chemicalAnalysisId: Yup.string().ensure().required('Chemical-Analysis-Id is required'),  
+    });
     
     const onSubmit = (data: IState3) => {
-      console.log('toBeUpdated', props.toBeUpdatedItem);
       const inputData= {
         id: props.toBeUpdatedItem,
-        testGroupId: data.testGroupId,
         testPackId: data.testPackId,
+        chemicalAnalysisId: data.chemicalAnalysisId,
       } 
-      props.updateItem(updateTestGroupTestPack,inputData);
+      
+      props.updateItem(updateTestPackChemicalAnalysis,inputData);
       props.onclick();
     };
     
@@ -430,10 +437,10 @@ const mapDispatchToProps3  = {
     } = useForm<IState3>({
       resolver: yupResolver(validationSchema)
     });
-  
+
     
     return (
-      <div className="bg-light min-vh-50 d-flex flex-row align-items-center">
+      <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
         <CContainer>
         <CRow className="justify-content-center">
           <CCol md={8}>
@@ -441,24 +448,14 @@ const mapDispatchToProps3  = {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm className="needs-validation" onSubmit={handleSubmit(onSubmit)} >
-                  <CFormSelect aria-label="Default select example" 
-                    {...register('testGroupId')}
-                    onChange={handleChange1}
-                    required
-                    defaultValue={TestGroupId}
-                    >
-                      {
-                        props.testGroupList.map((item: any, index:any) => (
-                          <option value={item.id} key={index}>{item.name}</option>
-                        ))
-                      }
-                    </CFormSelect>
-                    <div className="invalid-feedback">{errors.testGroupId?.message}</div>
+                    <h1>Test Group / Test Pack</h1>
+                    <p className="text-medium-emphasis">Create a new Test Group / Test Pack Connection</p>
+                    
                     <CFormSelect aria-label="Default select example" 
                     {...register('testPackId')}
-                    onChange={handleChange2}
+                    onChange={handleChange1}
                     required
-                    defaultValue={TestPackId}
+                    defaultValue={testPackId}
                     >
                       {
                         props.testPackList.map((item: any, index:any) => (
@@ -467,12 +464,26 @@ const mapDispatchToProps3  = {
                       }
                     </CFormSelect>
                     <div className="invalid-feedback">{errors.testPackId?.message}</div>
+                    <CFormSelect aria-label="Default select example" 
+                    {...register('chemicalAnalysisId')}
+                    onChange={handleChange2}
+                    required
+                    defaultValue={chemicalAnalysisId}
+                    >
+                      {
+                        props.chemicalAnalysisList.map((item: any, index:any) => (
+                          <option value={item.id} key={index}>{item.name}</option>
+                        ))
+                      }
+                    </CFormSelect>
+                    <div className="invalid-feedback">{errors.chemicalAnalysisId?.message}</div>
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4" type='submit' disabled={isUpdatingItem}>
                           Save
                         </CButton>
                       </CCol>
+                      
                     </CRow>
                   </CForm>
                 </CCardBody>
@@ -485,7 +496,7 @@ const mapDispatchToProps3  = {
     )
   });
 
- // ******************ItemDetail*****************************
+  // ******************ItemDetail*****************************
 
 // interface IState4 {
 //   id: string;
@@ -503,20 +514,13 @@ const mapStateToProps4 = (state: AppState) => {
 const mapDispatchToProps4  = {
 };
 
-const GetTestGroupTestPackComponent: React.FC<any> = connect(mapStateToProps4,mapDispatchToProps4)((props: any) => {
+const GetTestPackChemicalAnalysisComponent: React.FC<any> = connect(mapStateToProps4,mapDispatchToProps4)((props: any) => {
   //console.log('rendered with props:',props);
   const  isLoadingItemDetail: boolean  = props.isLoadingItemDetail;
 
   
 
-  const testGroup = props.testGroupList.find(
-    (item: any)=>(item.id===props.fetchedItem.testGroupId)
-    );
-
-  const testPack = props.testPackList.find(
-    (item: any)=>(item.id===props.fetchedItem.testPackId)
-    );  
-
+  
 
   const onClickHandler = () => {
     
@@ -525,7 +529,10 @@ const GetTestGroupTestPackComponent: React.FC<any> = connect(mapStateToProps4,ma
 
   // const testPacks: any = props.fetchedItem.testPacks?.items;
   // console.log('zzzzTestGroupsInSampleC', testPacks);
-  
+  console.log('XXXXX-FetchedItem',props.fetchedItem);
+  console.log('XXXXX-FetchedItemTest',props.fetchedItem.testpack);
+  console.log('XXXXX-FetchedItemChem',props.fetchedItem.chemicalAnalysis);
+
   
 
   return (
@@ -539,12 +546,10 @@ const GetTestGroupTestPackComponent: React.FC<any> = connect(mapStateToProps4,ma
                 <CRow>
                 <h3>Item Details:</h3><hr />
                 </CRow>
-                Test-Group: {testGroup?.name} <hr />
-                Test-Pack: {testPack?.name}<hr />
-                
+                Test-Pack: {props.fetchedItem.testpack?.name} <hr />
+                Chemical-Analysis: {props.fetchedItem.chemicalAnalysis?.name}<hr />
                 <hr />
-                
-
+            
                 <CRow>
                   <CCol xs={6}>
                     <CButton color="primary" className="px-4" onClick={onClickHandler} disabled={isLoadingItemDetail}>
@@ -561,6 +566,4 @@ const GetTestGroupTestPackComponent: React.FC<any> = connect(mapStateToProps4,ma
     </div>
   )
 });
-
-
 

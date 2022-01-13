@@ -205,8 +205,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(ChemicalAnalysis);
 
 interface IState2 {
     name: string;
-    price: string;
-    discount: string;
+    price: number;
+    discount: number;
     description: string;
   }
   
@@ -226,9 +226,9 @@ const mapDispatchToProps2  = {
     const validationSchema = Yup.object().shape({
       name: Yup.string()
         .required('Name is required'),
-      price: Yup.string()
+      price: Yup.number()
         .required('Price is required'),
-      discount: Yup.string()
+      discount: Yup.number()
         .required('Discount is required'),
       description: Yup.string()
         .required('Description is required')
@@ -237,8 +237,8 @@ const mapDispatchToProps2  = {
     const onSubmit = (data: IState2) => {
       const inputData= {
         name: data.name,
-        price: data.price,
-        discount: data.discount,
+        price: Number(data.price),
+        discount: Number(data.discount),
         description: data.description
       } 
       props.createItem(createChemicalAnalysis,inputData);
@@ -322,8 +322,8 @@ const mapDispatchToProps2  = {
 interface IState3 {
     id: string;
     name: string;
-    price: string;
-    discount: string;
+    price: number;
+    discount: number;
     description: string;
   }
     const mapStateToProps3 = (state: AppState) => {
@@ -343,9 +343,9 @@ interface IState3 {
       const validationSchema = Yup.object().shape({
         name: Yup.string()
           .required('Name is required'),
-          price: Yup.string()
+          price: Yup.number()
           .required('Price is required'),
-        discount: Yup.string()
+        discount: Yup.number()
           .required('Discount is required'),
         description: Yup.string()
           .required('DEscription is required')
@@ -356,8 +356,8 @@ interface IState3 {
         const inputData= {
           id: props.toBeUpdatedItem,
           name: data.name,
-          price: data.price,
-          discount: data.discount,
+          price: Number(data.price),
+          discount: Number(data.discount),
           description: data.description,
         } 
         props.updateItem(updateChemicalAnalysis,inputData);
@@ -395,7 +395,7 @@ interface IState3 {
                           autoComplete="text" 
                           required />
                         <div className="invalid-feedback">{errors.name?.message}</div>
-                      </CInputGroup>
+                      </CInputGroup><span>$</span>
                       <label htmlFor="price">Price:</label>
                       <CInputGroup className="mb-4">
                       <CFormInput
@@ -408,7 +408,7 @@ interface IState3 {
                         required
                       />
                       <div className="invalid-feedback">{errors.price?.message}</div>
-                    </CInputGroup>
+                    </CInputGroup><span>$</span>
                     <label htmlFor="discount">Discount:</label>
                     <CInputGroup className="mb-4">
                       <CFormInput
