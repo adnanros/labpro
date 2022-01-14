@@ -12,7 +12,6 @@ import {
   CFormInput,
   CFormSelect,
   CInputGroup,
-  CInputGroupText,
   CModal,
   CModalBody,
   CModalFooter,
@@ -30,11 +29,10 @@ import { connect } from 'react-redux';
 import { Component, useState } from "react"
 import { AppState } from '../../../_helpers';
 import { admindataActions} from '../../../_actions';
-import { getImpact, getTestPack, listImpactCategorys, listImpacts, listTestPacks,  } from '../../../graphql/queries';
+import { getImpact, listImpactCategorys, listImpacts,  } from '../../../graphql/queries';
 import React from 'react';
-import { createImpact, createTestPack, deleteImpact, deleteTestPack, updateImpact, updateTestPack } from '../../../graphql/mutations';
+import { createImpact, deleteImpact, updateImpact } from '../../../graphql/mutations';
 import CIcon from '@coreui/icons-react';
-import { cilLockLocked, cilUser } from '@coreui/icons';
 
 interface IState {
     showDetail: boolean,

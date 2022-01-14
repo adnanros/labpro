@@ -9,9 +9,7 @@ import {
   CCol,
   CContainer,
   CForm,
-  CFormInput,
   CFormSelect,
-  CInputGroup,
   CModal,
   CModalBody,
   CModalFooter,
@@ -29,9 +27,9 @@ import { connect } from 'react-redux';
 import { Component, useState } from "react"
 import { AppState } from '../../../_helpers';
 import { admindataActions} from '../../../_actions';
-import { getTestGroup, listSampleCategorys, listTestGroups,  } from '../../../graphql/queries';
+import { getChemicalImpact, listChemicalImpacts, listChemicals, listImpacts,  } from '../../../graphql/queries';
 import React from 'react';
-import { createTestGroup, deleteTestGroup, updateTestGroup } from '../../../graphql/mutations';
+import { createChemicalImpact, deleteChemicalImpact, updateChemicalImpact,   } from '../../../graphql/mutations';
 
 
 // in class component we cannot use useState functionality
@@ -44,10 +42,10 @@ interface IState {
   toBeDeletedId: string,
   toBeDeletedName: string,
   toBeUpdatedId: string,
-
+  itemNameList: any,
   
 }
-class TestGroup extends Component<any,IState> {
+class ChemicalImpact extends Component<any,IState> {
   
     constructor(props: any){
       super(props);
@@ -58,40 +56,50 @@ class TestGroup extends Component<any,IState> {
         showDeleteAlert: false,
         toBeDeletedId: '',
         toBeDeletedName: '',
-        toBeUpdatedId: ''
+        toBeUpdatedId: '',
+        itemNameList: null,
       }
     }
 
     componentDidMount(){
-      this.props.getDataList(listTestGroups);
-      this.props.getDataList2(listSampleCategorys);
-    }
+      this.props.getDataList(listChemicalImpacts);
+      this.props.getDataList2(listChemicals);
+      this.props.getDataList3(listImpacts);
     
+            
+    }
+
+
     render() {
+
+    
       return (
         <div>
-              {(this.props.isLoadingFailed1 || this.props.isLoadingFailed2) && <CButton onClick={()=>{this.props.getDataList(listSampleCategorys)}}>Refresh</CButton>}
+              {(this.props.isLoadingFailed1 || this.props.isLoadingFailed2) && <CButton onClick={()=>{this.props.getDataList(listChemicalImpacts)}}>Refresh</CButton>}
 
 
               <CTable>
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Chemical-Analysis</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Chemical</CTableHeaderCell>
                     <CTableHeaderCell scope="col">
                       <CButton onClick= {()=> {this.setState({showCreate: true})}} disabled={this.state.showCreate}>Create</CButton>
                     </CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {this.props.data && this.props.data2 &&
+                  {this.props.data && this.props.data2 && this.props.data3 &&
                     this.props.data.map((item: any, index:any) => (
+                                         
                       <CTableRow key={index}>
                         <CTableHeaderCell scope="row">{index+1}</CTableHeaderCell>
-                        <CTableDataCell>{item.name}</CTableDataCell>
+                        <CTableDataCell>{item.chemical?.name}</CTableDataCell>
+                        <CTableDataCell>{item.impact?.name}</CTableDataCell>
                         <CTableDataCell>
                         <div>
-                          <CButton className='primary' color="link" onClick={()=>{this.setState({showDetail: true}); this.props.getItemDetail(getTestGroup,item.id);}} disabled={this.props.isLoaingItemDetail}>Detail</CButton>
+                          <CButton className='primary' color="link" onClick={()=>{this.setState({showDetail: true}); this.props.getItemDetail(getChemicalImpact,item.id);}} disabled={this.props.isLoaingItemDetail}>Detail</CButton>
                           <CButton className='primary' color="link" onClick={()=>{this.setState({toBeUpdatedId: item.id ,showEdit: true})}} disabled={this.props.isUpdatingItem}>Edit</CButton>
                           <CButton className='danger' color="link" onClick={()=>{this.setState({toBeDeletedId: item.id,toBeDeletedName:item.name, showDeleteAlert: true})}} disabled={this.props.isDeletingItem}>Delete</CButton>
                         </div>
@@ -111,13 +119,13 @@ class TestGroup extends Component<any,IState> {
               visible= {this.state.showDeleteAlert}
             >
               <CModalHeader>
-                <CModalTitle>Modal title</CModalTitle>
+                <CModalTitle>Delete</CModalTitle>
               </CModalHeader>
-              <CModalBody>Modal body text goes here.</CModalBody>
+              <CModalBody>Delete selected Chemical-Impact connection</CModalBody>
               <CModalFooter>
                 <CButton onClick={()=>{this.setState({showDeleteAlert: false})}} color="secondary">Close</CButton>
                 <CButton onClick={()=>{
-                  this.props.deleteItem(deleteTestGroup,this.state.toBeDeletedId,listTestGroups); this.setState({showDeleteAlert: false})} } color="primary">Ok</CButton>
+                  this.props.deleteItem(deleteChemicalImpact,this.state.toBeDeletedId, listChemicalImpacts); this.setState({showDeleteAlert: false})} } color="primary">Ok</CButton>
               </CModalFooter>
             </CModal>
 
@@ -128,7 +136,7 @@ class TestGroup extends Component<any,IState> {
             portal={false}
             visible= {this.state.showCreate}
             >
-              <CreateTestGroupComponent onclick={()=> this.setState({showCreate: false})}/>
+              <CreateChemicalImpactComponent onclick={()=> this.setState({showCreate: false})}/>
             </CModal>
 
             <CModal
@@ -139,10 +147,10 @@ class TestGroup extends Component<any,IState> {
             onClose = {()=> this.setState({showEdit: false})}
             >
               <CModalHeader>
-                <CModalTitle>Edit Sample Category</CModalTitle>
+                <CModalTitle>Edit A Chemical-Impact Relation</CModalTitle>
               </CModalHeader>
               <CModalBody>
-                <UpdateTestGroupComponent onclick={()=> this.setState({showEdit: false})} toBeUpdatedItem={this.state.toBeUpdatedId}/>
+                <UpdateChemicalImpactComponent onclick={()=> this.setState({showEdit: false})} toBeUpdatedItem={this.state.toBeUpdatedId}/>
               </CModalBody>
             </CModal>
 
@@ -154,10 +162,10 @@ class TestGroup extends Component<any,IState> {
             onClose = {()=> this.setState({showDetail: false})}
             >
               <CModalHeader>
-                <CModalTitle>Sample Category Item Details</CModalTitle>
+                <CModalTitle>ChemicalAnalysis-Chemical Relation Item Details</CModalTitle>
               </CModalHeader>
               <CModalBody>
-                <GetTestGroupComponent onclick={()=> this.setState({showDetail: false})} fetchedItem={this.props.fetchedItem}/>
+                <GetChemicalImpactComponent onclick={()=> this.setState({showDetail: false})} fetchedItem={this.props.fetchedItem}/>
               </CModalBody>
             </CModal>
 
@@ -176,6 +184,7 @@ class TestGroup extends Component<any,IState> {
       isLoadingFailed2: state.package_admin.dataList2State.isLoadingFailed,
       data: state.package_admin.dataListState.data,
       data2: state.package_admin.dataList2State.data,
+      data3: state.package_admin.dataList3State.data,
 
 
       isDeletingItem: state.package_admin.dataDeleteState.isDeletingItem,
@@ -198,59 +207,70 @@ class TestGroup extends Component<any,IState> {
   const mapDispatchToProps  = {
     getDataList: admindataActions.getDataList,
     getDataList2: admindataActions.getDataList2,
+    getDataList3: admindataActions.getDataList3,
     deleteItem: admindataActions.deleteItem,
     createItem: admindataActions.createItem,
     getItemDetail: admindataActions.getItemDetail,
-
   };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestGroup)
+export default connect(mapStateToProps, mapDispatchToProps)(ChemicalImpact)
+
+//*************Create Component?*******************
 
 
 interface IState2 {
-    name: string;
-    description: string;
+    chemicalId: string;
+    impactId: string;
   }
   
 const mapStateToProps2 = (state: AppState) => {
     return {
       isCreatingItem: state.package_admin.dataCreateState.isCreatingItem,
-      sampleCategoryList: state.package_admin.dataList2State.data,
+      listData: state.package_admin.dataListState.data,
+      chemicalList: state.package_admin.dataList2State.data,
+      impactList: state.package_admin.dataList3State.data
     }
   };
 const mapDispatchToProps2  = {
     createItem: admindataActions.createItem,
 };
 
-  const CreateTestGroupComponent: React.FC<any> = connect(mapStateToProps2,mapDispatchToProps2)((props: any) => {
+  const CreateChemicalImpactComponent: React.FC<any> = connect(mapStateToProps2,mapDispatchToProps2)((props: any) => {
     
 
     //console.log('rendered with props:',props);
     const  isCreatingItem: boolean  = props.isCreatingItem;
   
-    const [SampleCategoryId, setSampleCategoryId] = useState('');
+
     
-    const handleChange = (event: React.FormEvent<HTMLSelectElement>) => {
-      setSampleCategoryId(event.currentTarget.value);
-      console.log(`Option selected:`, event.currentTarget.value);
+    const [chemicalId, setChemicalId] = useState('');
+    const [impactId, setImpactId] = useState('');
+
+    console.log(chemicalId);// For Getting rid of Warning
+    console.log(impactId); // For Getting rid of Warning
+
+    const handleChange1 = (event: React.FormEvent<HTMLSelectElement>) => {
+        setChemicalId(event.currentTarget.value);
+        console.log(`Option selected:`, event.currentTarget.value);
     }
 
+    const handleChange2 = (event: React.FormEvent<HTMLSelectElement>) => {
+        setImpactId(event.currentTarget.value);
+        console.log(`Option selected:`, event.currentTarget.value);
+      }
+
     const validationSchema = Yup.object().shape({
-      name: Yup.string()
-        .required('Name is required'),
-      description: Yup.mixed()
-        .required('DEscription is required'),
-      sampleCategoryId: Yup.string().ensure().required('Sample-category-Id is required'),  
+        chemicalId: Yup.string().ensure().required('Chemical is required'),  
+        impactId: Yup.string().ensure().required('Impact is required'),  
     });
     
     const onSubmit = (data: IState2) => {
       const inputData= {
-        name: data.name,
-        description: data.description,
-        sampleCategoryId: SampleCategoryId,
+        chemicalId: data.chemicalId,
+        impactId: data.impactId,
       } 
       
-      props.createItem(createTestGroup,inputData);
+      props.createItem(createChemicalImpact,inputData);
       props.onclick();
     };
     
@@ -258,7 +278,7 @@ const mapDispatchToProps2  = {
       register,
       handleSubmit,
       formState: { errors }
-    } = useForm({
+    } = useForm<IState2>({
       resolver: yupResolver(validationSchema)
     });
 
@@ -272,40 +292,35 @@ const mapDispatchToProps2  = {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm className="needs-validation" onSubmit={handleSubmit(onSubmit)} >
-                    <h1>Test Group</h1>
-                    <p className="text-medium-emphasis">Create a new Test Group</p>
-                    <CInputGroup className="mb-3">
-                      
-                      <CFormInput 
-                      className={`form-control ${errors.name ? 'is-invalid' : ''}`} 
-                      {...register('name')} type="text" placeholder="name" autoComplete="text" required />
-                      <div className="invalid-feedback">{errors.name?.message}</div>
-                    </CInputGroup>
-                    <CInputGroup className="mb-4">
-                      
-                      <CFormInput
-                        {...register('description')}
-                        className={`form-control ${errors.description ? 'is-invalid' : ''}`}
-                        type="text"
-                        placeholder="description"
-                        autoComplete="text"
-                        required
-                      />
-                      <div className="invalid-feedback">{errors.description?.message}</div>
-                    </CInputGroup>
+                    <h1>ChemicalAnalysis / Chemical</h1>
+                    <p className="text-medium-emphasis">Create a new ChemicalAnalysis / Chemical Relation</p>
+                    
                     <CFormSelect aria-label="Default select example" 
-                    {...register('sampleCategoryId')}
-                    onChange={handleChange}
+                    {...register('chemicalId')}
+                    onChange={handleChange1}
                     required
                     >
                       <option value='' selected>Choose One:</option>
                       {
-                        props.sampleCategoryList.map((item: any, index:any) => (
+                        props.chemicalList?.map((item: any, index:any) => (
                           <option value={item.id} key={index}>{item.name}</option>
                         ))
                       }
                     </CFormSelect>
-                    <div className="invalid-feedback">{errors.sampleCategoryId?.message}</div>
+                    <div className="invalid-feedback">{errors.chemicalId?.message}</div>
+                    <CFormSelect aria-label="Default select example" 
+                    {...register('impactId')}
+                    onChange={handleChange2}
+                    required
+                    >
+                      <option value='' selected>Choose One:</option>
+                      {
+                        props.impactList?.map((item: any, index:any) => (
+                          <option value={item.id} key={index}>{item.name}</option>
+                        ))
+                      }
+                    </CFormSelect>
+                    <div className="invalid-feedback">{errors.impactId?.message}</div>
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4" type='submit' disabled={isCreatingItem}>
@@ -325,60 +340,66 @@ const mapDispatchToProps2  = {
     )
   });
 
-
-  //*************Edit Component?*******************
+/*****************Edit Componnenet */
 
 interface IState3 {
-  id: string;
-  name: string;
-  description: string;
-  sampleCategoryId: string;
-}
-  const mapStateToProps3 = (state: AppState) => {
+    id: string,
+    chemicalId: string;
+    impactId: string;
+  }
+  
+const mapStateToProps3 = (state: AppState) => {
     return {
       isUpdatingItem: state.package_admin.dataUpdateState.isUpdatingItem,
       listData: state.package_admin.dataListState.data,
-      sampleCategoryList: state.package_admin.dataList2State.data,
-
+      chemicalList: state.package_admin.dataList2State.data,
+      impactList: state.package_admin.dataList3State.data
     }
   };
 const mapDispatchToProps3  = {
     updateItem: admindataActions.updateItem,
 };
 
-  const UpdateTestGroupComponent: React.FC<any> = connect(mapStateToProps3,mapDispatchToProps3)((props: any) => {
+  const UpdateChemicalImpactComponent: React.FC<any> = connect(mapStateToProps3,mapDispatchToProps3)((props: any) => {
+    
+
     //console.log('rendered with props:',props);
     const  isUpdatingItem: boolean  = props.isUpdatingItem;
-
-    const toBeUpdatedItemData = props.listData.find(
-      (item: any)=>(item.id===props.toBeUpdatedItem)
-      );
   
-    const [SampleCategoryId, setSampleCategoryId] = useState(toBeUpdatedItemData.sampleCategoryId);
+    const toBeUpdatedItemData = props.listData.find(
+        (item: any)=>(item.id===props.toBeUpdatedItem)
+        );
     
-    const handleChange = (event: React.FormEvent<HTMLSelectElement>) => {
-      setSampleCategoryId(event.currentTarget.value);
-      console.log(`Option selected:`, event.currentTarget.value);
+    const [chemicalId, setChemicalId] = useState(toBeUpdatedItemData.chemicalId);
+    const [impactId, setImpactId] = useState(toBeUpdatedItemData.impactId);
+
+    console.log('iDDDs',props.toBeUpdatedItem);
+    console.log(chemicalId);// For Getting rid of Warning
+    console.log(impactId); // For Getting rid of Warning
+
+    const handleChange1 = (event: React.FormEvent<HTMLSelectElement>) => {
+        setChemicalId(event.currentTarget.value);
+        console.log(`Option selected:`, event.currentTarget.value);
     }
 
-    const validationSchema = Yup.object().shape({
-      name: Yup.string()
-        .required('Name is required'),
-      description: Yup.string()
-        .required('DEscription is required'),
-      sampleCategoryId: Yup.string().ensure().required('Sample-category-Id is required'),  
+    const handleChange2 = (event: React.FormEvent<HTMLSelectElement>) => {
+        setImpactId(event.currentTarget.value);
+        console.log(`Option selected:`, event.currentTarget.value);
+      }
 
+    const validationSchema = Yup.object().shape({
+        chemicalId: Yup.string().ensure().required('Chemical is required'),  
+        impactId: Yup.string().ensure().required('Impact is required'),  
     });
     
     const onSubmit = (data: IState3) => {
-      console.log('toBeUpdated', props.toBeUpdatedItem);
       const inputData= {
         id: props.toBeUpdatedItem,
-        name: data.name,
-        description: data.description,
-        sampleCategoryId: SampleCategoryId,
+        chemicalId: data.chemicalId,
+        impactId: data.impactId,
       } 
-      props.updateItem(updateTestGroup,inputData);
+      
+      props.updateItem(updateChemicalImpact,inputData);
       props.onclick();
     };
     
@@ -389,10 +410,10 @@ const mapDispatchToProps3  = {
     } = useForm<IState3>({
       resolver: yupResolver(validationSchema)
     });
-  
+
     
     return (
-      <div className="bg-light min-vh-50 d-flex flex-row align-items-center">
+      <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
         <CContainer>
         <CRow className="justify-content-center">
           <CCol md={8}>
@@ -400,51 +421,42 @@ const mapDispatchToProps3  = {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm className="needs-validation" onSubmit={handleSubmit(onSubmit)} >
-                    <label htmlFor="name">Name:</label>
-                    <CInputGroup className="mb-3">
-                      <CFormInput 
-                        className={`form-control ${errors.name ? 'is-invalid' : ''}`} 
-                        {...register('name')} 
-                        type="text" 
-                        placeholder="name" 
-                        defaultValue= {toBeUpdatedItemData.name}
-                        autoComplete="text" 
-                        required />
-                      <div className="invalid-feedback">{errors.name?.message}</div>
-                    </CInputGroup>
-                    <label htmlFor="description">Description:</label>
-                    <CInputGroup className="mb-4">
-                      <CFormInput
-                        {...register('description')}
-                        className={`form-control ${errors.description ? 'is-invalid' : ''}`}
-                        type="text"
-                        placeholder="description"
-                        defaultValue= {toBeUpdatedItemData.description}
-                        autoComplete="text"
-                        required
-                      />
-                      <div className="invalid-feedback">{errors.description?.message}</div>
-                    </CInputGroup>
+                    <h1>Chemical / Impact</h1>
+                    <p className="text-medium-emphasis">Edit a Chemical / Impact Connection</p>
+                    
                     <CFormSelect aria-label="Default select example" 
-                    {...register('sampleCategoryId')}
-                    onChange={handleChange}
+                    {...register('chemicalId')}
+                    onChange={handleChange1}
                     required
-                    defaultValue={SampleCategoryId}
+                    defaultValue={chemicalId}
                     >
                       {
-                        props.sampleCategoryList.map((item: any, index:any) => (
+                        props.chemicalList.map((item: any, index:any) => (
                           <option value={item.id} key={index}>{item.name}</option>
                         ))
                       }
                     </CFormSelect>
-                    <div className="invalid-feedback">{errors.sampleCategoryId?.message}</div>
-
+                    <div className="invalid-feedback">{errors.chemicalId?.message}</div>
+                    <CFormSelect aria-label="Default select example" 
+                    {...register('impactId')}
+                    onChange={handleChange2}
+                    required
+                    defaultValue={impactId}
+                    >
+                      {
+                        props.impactList.map((item: any, index:any) => (
+                          <option value={item.id} key={index}>{item.name}</option>
+                        ))
+                      }
+                    </CFormSelect>
+                    <div className="invalid-feedback">{errors.impactId?.message}</div>
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4" type='submit' disabled={isUpdatingItem}>
                           Save
                         </CButton>
                       </CCol>
+                      
                     </CRow>
                   </CForm>
                 </CCardBody>
@@ -458,81 +470,60 @@ const mapDispatchToProps3  = {
   });
 
 
+// ******************ItemDetail*****************************
 
-  // ******************ItemDetail*****************************
 
-// interface IState4 {
-//   id: string;
-//   name: string;
-//   description: string;
-// }
 const mapStateToProps4 = (state: AppState) => {
       
-  return {
-    isLoaingItemDetail: state.package_admin.dataDetailState.isLoaingItemDetail,
-    sampleCategoryList: state.package_admin.dataList2State.data,
-  }
-};
-const mapDispatchToProps4  = {
-};
-
-const GetTestGroupComponent: React.FC<any> = connect(mapStateToProps4,mapDispatchToProps4)((props: any) => {
-  //console.log('rendered with props:',props);
-  const  isLoadingItemDetail: boolean  = props.isLoadingItemDetail;
-
-  
-
-  const parent = props.sampleCategoryList.find(
-    (item: any)=>(item.id===props.fetchedItem.sampleCategoryId)
-    );
-
-  if (parent !== undefined){
-    console.log('XXXXX_Parent', parent);  
-  }  
-
-  const onClickHandler = () => {
+    return {
     
-    props.onclick();
+    }
   };
+  const mapDispatchToProps4  = {
+  };
+  
+  const GetChemicalImpactComponent: React.FC<any> = connect(mapStateToProps4,mapDispatchToProps4)((props: any) => {
 
-  // const testPacks: any = props.fetchedItem.testPacks?.items;
-  // console.log('zzzzTestGroupsInSampleC', testPacks);
+    const  isLoadingItemDetail: boolean  = props.isLoadingItemDetail;
+  
+ 
+  
+    const onClickHandler = () => {
+      props.onclick();
+    };
+  
+    
+  
+    return (
+      <div className="bg-light min-vh-50 d-flex flex-row align-items-center">
+        <CContainer>
+        <CRow className="justify-content-center">
+          <CCol md={8}>
+            <CCardGroup>
+              <CCard className="p-4">
+                <CCardBody>
+                  <CRow>
+                  <h3>Item Details:</h3><hr />
+                  </CRow>
+                  Chemical: {props.fetchedItem.chemical?.name} <hr />
+                  Impact: {props.fetchedItem.impact?.name}<hr />
+                  <hr />
+              
+                  <CRow>
+                    <CCol xs={6}>
+                      <CButton color="primary" className="px-4" onClick={onClickHandler} disabled={isLoadingItemDetail}>
+                        Back
+                      </CButton>
+                    </CCol>
+                  </CRow>
+                </CCardBody>
+              </CCard>
+            </CCardGroup>
+          </CCol>
+        </CRow>
+      </CContainer>
+      </div>
+    )
+  });
   
   
-
-  return (
-    <div className="bg-light min-vh-50 d-flex flex-row align-items-center">
-      <CContainer>
-      <CRow className="justify-content-center">
-        <CCol md={8}>
-          <CCardGroup>
-            <CCard className="p-4">
-              <CCardBody>
-                <CRow>
-                <h3>Item Details:</h3><hr />
-                </CRow>
-                name: {props.fetchedItem.name} <hr />
-                description: {props.fetchedItem.description}<hr />
-                sample-categord As Parent: {parent?.name}
-                
-                <hr />
-                
-
-                <CRow>
-                  <CCol xs={6}>
-                    <CButton color="primary" className="px-4" onClick={onClickHandler} disabled={isLoadingItemDetail}>
-                      Back
-                    </CButton>
-                  </CCol>
-                </CRow>
-              </CCardBody>
-            </CCard>
-          </CCardGroup>
-        </CCol>
-      </CRow>
-    </CContainer>
-    </div>
-  )
-});
-
-
