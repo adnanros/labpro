@@ -506,8 +506,8 @@ const mapDispatchToProps3  = {
 const mapStateToProps4 = (state: AppState) => {
       
   return {
-    testGroupList: state.package_admin.dataList2State.data,
-    testPackList: state.package_admin.dataList3State.data,
+    // testPackList: state.package_admin.dataList2State.data,
+    // chemicalAnalysisList: state.package_admin.dataList3State.data,
 
   }
 };

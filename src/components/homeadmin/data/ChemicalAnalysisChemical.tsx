@@ -476,8 +476,8 @@ const mapDispatchToProps3  = {
 const mapStateToProps4 = (state: AppState) => {
       
     return {
-      chemicalAnalysisList: state.package_admin.dataList2State.data,
-      chemicalList: state.package_admin.dataList3State.data,
+    //   chemicalAnalysisList: state.package_admin.dataList2State.data,
+    //   chemicalList: state.package_admin.dataList3State.data,
   
     }
   };
