@@ -87,6 +87,12 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'Impact',
+    to: '/impact',
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Typography',
     to: '/theme/typography',
     icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,

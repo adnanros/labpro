@@ -278,18 +278,14 @@ const mapDispatchToProps2  = {
                     <h1>Test Group</h1>
                     <p className="text-medium-emphasis">Create a new Test Group</p>
                     <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilUser} />
-                      </CInputGroupText>
+                      
                       <CFormInput 
                       className={`form-control ${errors.name ? 'is-invalid' : ''}`} 
                       {...register('name')} type="text" placeholder="name" autoComplete="text" required />
                       <div className="invalid-feedback">{errors.name?.message}</div>
                     </CInputGroup>
                     <CInputGroup className="mb-4">
-                      <CInputGroupText>
-                        <CIcon icon={cilLockLocked} />
-                      </CInputGroupText>
+                      
                       <CFormInput
                         {...register('description')}
                         className={`form-control ${errors.description ? 'is-invalid' : ''}`}
