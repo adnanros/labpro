@@ -82,8 +82,8 @@ class ChemicalImpact extends Component<any,IState> {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Chemical-Analysis</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Chemical</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Impact</CTableHeaderCell>
                     <CTableHeaderCell scope="col">
                       <CButton onClick= {()=> {this.setState({showCreate: true})}} disabled={this.state.showCreate}>Create</CButton>
                     </CTableHeaderCell>

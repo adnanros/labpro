@@ -6,6 +6,7 @@ import ChemicalAnalysisChemical from "../components/homeadmin/data/ChemicalAnaly
 import ChemicalImpact from "../components/homeadmin/data/ChemicalImpact"
 import Impact from "../components/homeadmin/data/Impact"
 import ImpactCategory from "../components/homeadmin/data/ImpactCategory"
+import Order from "../components/homeadmin/data/Order"
 import  SampleCategory from "../components/homeadmin/data/SampleCategory"
 import  TestGroup from "../components/homeadmin/data/TestGroup"
 import TestGroupTestPack from "../components/homeadmin/data/TestGroupTestPack"
@@ -121,6 +122,7 @@ const routes = [
   { path: '/impactcategory', name: 'ImpactCategory', component: ImpactCategory },
   { path: '/impact', name: 'Impact', component: Impact },
   { path: '/chemicalimpact', name: 'ChemicalImpact', component: ChemicalImpact },
+  { path: '/order', name: 'Order', component: Order },
 
 
 
