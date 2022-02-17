@@ -1,15 +1,22 @@
 import React from "react";
 import IndicatorImage from '../../images/arraw.png';
 
+interface inputs {
+    width: number,
+    standard: number, 
+    amount: number
+}
 
-const ProgressbarSt = (width: number, standard: number, amount: number)=> {
+
+export const ProgressbarSt: React.FC<inputs> = (props: inputs)=> {
 
     const multiplayer= 1.5;
-    let max = Math.max(standard*multiplayer, amount);
-    let w= width * amount / max;
+    let max = Math.max(props.standard*multiplayer, props.amount);
+    let w= props.width * props.amount / max;
 
-    <div style={{width: width, height: 50, backgroundColor: 'gray'}} >
-        <div style={{width: w, height: 50, backgroundColor: amount <= standard? 'green': 'red'}}>
+    return (
+        <div style={{width: props.width, height: 50, backgroundColor: 'gray'}} >
+        <div style={{width: w, height: 50, backgroundColor: props.amount <= props.standard? 'green': 'red'}}>
         </div>
         <div style={{
             backgroundImage: 'url(' + IndicatorImage + ')',
@@ -23,7 +30,8 @@ const ProgressbarSt = (width: number, standard: number, amount: number)=> {
         </div>
 
     </div>
-
+    );
+  
 }
 
-export default ProgressbarSt;
+// export default ProgressbarSt;
