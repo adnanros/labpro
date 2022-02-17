@@ -32,7 +32,6 @@ import { admindataActions} from '../../../_actions';
 import { getImpact, listImpactCategorys, listImpacts,  } from '../../../graphql/queries';
 import React from 'react';
 import { createImpact, deleteImpact, updateImpact } from '../../../graphql/mutations';
-import CIcon from '@coreui/icons-react';
 
 interface IState {
     showDetail: boolean,

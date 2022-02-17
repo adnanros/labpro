@@ -23,7 +23,9 @@ import Amplify  from 'aws-amplify'
 import { alertActions, userActions } from './_actions'
 import HomePage from './pages/HomePage'
 import HomePackageAdminPage from './pages/homePackageAdminPage'
-import { HomeRoute,ConfirmRegisterRoute, HomePackageAdminRoute, LoginRoute } from './routes'
+import { HomeRoute,ConfirmRegisterRoute, HomePackageAdminRoute, LoginRoute, IsSignedInRoute } from './routes'
+import ResultListPage from './pages/resultListPage'
+import OrderRegisterationPage from './pages/OrderRegisterationPage'
 
 Amplify.configure(awsconfig);
 
@@ -45,7 +47,6 @@ const ConfirmRegister = React.lazy(() => import('./pages/confirmRegisterPage'))
 
 const Page404 = React.lazy(() => import('./pages/page404'))
 const Page500 = React.lazy(() => import('./pages/page500'))
-
 
 
 class App extends Component<any,any> {
@@ -81,13 +82,18 @@ class App extends Component<any,any> {
                   <React.Suspense fallback={loading}>
                     <Switch>
                       <LoginRoute exact path="/login"  component={Login} />
-                      <Route exact path="/register" component={Register} />
+                      <LoginRoute exact path="/register" component={Register} />
                       <ConfirmRegisterRoute exact path="/confirmRegister" component={ConfirmRegister} />
                       <Route exact path="/404"  render={(props) => <Page404  />} />
                       <Route exact path="/500"  render={(props) => <Page500  />} />
-                      <HomePackageAdminRoute exact path="/homeAdmin" component={HomePage} />
-                      <HomeRoute path="/" component={HomePackageAdminPage} />
+                      <HomePackageAdminRoute exact path="/homeAdmin" component={HomePackageAdminPage} />
+                      <IsSignedInRoute path="/orderRegisteration" component={OrderRegisterationPage} />
+                      <IsSignedInRoute path="/resulList" component={ResultListPage} />
+                      {/* bASE rOUTE should be last one! */}
+                      <HomeRoute path="/" component={HomePage} />
+                      
                     </Switch>
+
                   </React.Suspense>
                   </Router>
                 </div>
