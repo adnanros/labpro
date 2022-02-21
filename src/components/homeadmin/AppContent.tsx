@@ -4,10 +4,14 @@ import { CContainer, CSpinner } from '@coreui/react'
 
 // routes config
 import routes from '../../routes/routes'
+import { HomePackageAdminRoute } from '../../routes';
+import SampleCategory from './data/SampleCategory';
+import TestGroup from './data/TestGroup';
 
 const AppContent = React.memo(() => {
   return (
     <CContainer>
+      
       <Suspense fallback={<CSpinner color="primary" />}>
         <Switch>
           {routes.map((route: any, idx: any) => {
@@ -17,20 +21,20 @@ const AppContent = React.memo(() => {
                   key={idx}
                   path={route.path}
                   exact={route.exact}
-                  render={(props) => (
-                    <>
-                      <route.component {...props} />
-                    </>
-                  )}
+                  component = {route.component }
+                  // render={(props) => (
+                  //   <>
+                  //     <route.component {...props} />
+                  //   </>
+                  // )}
                 />
               )
             )
           })}
-          <Redirect from="/" to="/dashboard" />
         </Switch>
       </Suspense>
     </CContainer>
   )
 });
 
-export default AppContent
+export default React.memo(AppContent)

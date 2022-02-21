@@ -47,6 +47,7 @@ interface IState {
 class SampleCategory extends Component<any,IState> {
   
     constructor(props: any){
+      console.log("samplecategory init");
       super(props);
       this.state = {
         showDetail: false,

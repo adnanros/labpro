@@ -1,6 +1,7 @@
 import { userConstants } from '../_constants';
 import { alertActions } from './';
-import { history, isPackageAdmin } from '../_helpers';
+import { history } from '../_helpers';
+import isPackageAdmin from '../_helpers/authentication';
 import {Auth} from 'aws-amplify';
 
 export const userActions = {
@@ -18,11 +19,14 @@ function fetchAthStatus() {
         Auth.currentSession().then(
             session => {
                 let idToken = session.getIdToken();
-                if(isPackageAdmin()){
-                    dispatch(success(idToken.payload.email,true));
-                }else {
-                    dispatch(success(idToken.payload.email,false));
-                }
+
+                isPackageAdmin((ipa: Boolean) => {
+                    if(ipa){
+                        dispatch(success(idToken.payload.email,true));
+                    }else {
+                        dispatch(success(idToken.payload.email,false));
+                    }
+               })
             },
             error => {
                 dispatch(failure(error.toString()));
@@ -42,12 +46,14 @@ function login(username: string, password: string) {
 
         Auth.signIn(username, password).then(
             user => {
-                if(isPackageAdmin()){
-                    dispatch(success(username,true));
-                }else {
-                    dispatch(success(username,false));
-                }
-                history.push('/');
+                isPackageAdmin((ipa: Boolean) => {
+                    if(ipa){
+                        dispatch(success(username,true));
+                    }else {
+                        dispatch(success(username,false));
+                    }
+                    history.push('/');
+               })
             },
             error => {
                 if(error.name === 'UserNotConfirmedException') {

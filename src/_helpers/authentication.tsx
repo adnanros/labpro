@@ -1,6 +1,6 @@
 import {Auth } from 'aws-amplify';
-
-const isPackageAdmin = () => {// user is signed in now and we want to check wheather user belongs to admin group
+type BoolCallback = (n: Boolean) => any;
+const isPackageAdmin = (myCompletionHandler: BoolCallback) => {// user is signed in now and we want to check wheather user belongs to admin group
     try{
       Auth.currentSession().then(session=> {
         let idToken = session.getIdToken();
@@ -9,14 +9,15 @@ const isPackageAdmin = () => {// user is signed in now and we want to check whea
         if(groups!= null && Array.isArray(groups)){
           // let cg = idToken.payload['cognito:groups'] as string[];
           if(groups.includes('PackagesAdmin')){
-            return true;
+            myCompletionHandler(true);
+          }else {
+            myCompletionHandler(false);
           }
         }
       })
     }
     catch(ex){
     }
-    return false;
 }
 
-export {isPackageAdmin}
+export default isPackageAdmin

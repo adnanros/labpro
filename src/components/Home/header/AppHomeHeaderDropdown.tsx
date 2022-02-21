@@ -32,13 +32,12 @@ const AppHomeHeaderDropdown = (props: any) => {
       <CDropdownToggle  className="py-0" caret={true}>
         {/* <CAvatar src={avatar8} size="md" /> */}
       </CDropdownToggle>
-      {isSignedIn &&
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">{email}</CDropdownHeader>
           <CDropdownItem>
           <Link to="/orderRegisteration">
                 Order an Experiment
-            </Link>
+          </Link>
           </CDropdownItem>
           <CDropdownItem>
             <Link to="/resulList">
@@ -50,24 +49,8 @@ const AppHomeHeaderDropdown = (props: any) => {
           <CButton onClick={()=>{props.logout()}} disabled= {isLogingOut}>Logout</CButton>
         </CDropdownItem>
       </CDropdownMenu>
-      }
-      {!isSignedIn &&
-      <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownHeader className="bg-light fw-semibold py-2">
-        
-        </CDropdownHeader>
-        <CDropdownItem>
-          <Link to="/register">
-              Register Now!
-          </Link>
-        </CDropdownItem>
-        <CDropdownItem>
-          <Link to="/login">
-              login
-          </Link>
-        </CDropdownItem>
-      </CDropdownMenu>
-      }
+      
+      
     </CDropdown>
   )
 }

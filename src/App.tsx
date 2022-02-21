@@ -86,12 +86,13 @@ class App extends Component<any,any> {
                       <ConfirmRegisterRoute exact path="/confirmRegister" component={ConfirmRegister} />
                       <Route exact path="/404"  render={(props) => <Page404  />} />
                       <Route exact path="/500"  render={(props) => <Page500  />} />
+                      <HomePackageAdminRoute exact path="/samplecategory" component={HomePackageAdminPage} />
+                      <HomePackageAdminRoute exact path="/testGroup" component={HomePackageAdminPage} />
                       <HomePackageAdminRoute exact path="/homeAdmin" component={HomePackageAdminPage} />
                       <IsSignedInRoute path="/orderRegisteration" component={OrderRegisterationPage} />
                       <IsSignedInRoute path="/resulList" component={ResultListPage} />
                       {/* bASE rOUTE should be last one! */}
-                      <HomeRoute path="/" component={HomePage} />
-                      
+                      <HomeRoute name="Home" exact path="/" component={HomePage} />
                     </Switch>
 
                   </React.Suspense>
