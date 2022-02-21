@@ -3,14 +3,11 @@ import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { AppState } from '../_helpers';
 
-  
-const HomeRoute: React.FC<any> = (props) => (
-    <Route {...props.rest} render={() => (
-        (!props.userAuthenticationStatus.isSignedInUserPackageAdmin)
-            ? <props.component {...props} />
-            : <Redirect to={{ pathname: '/homeAdmin', state: { from: props.location } }} />
-    )} />
-)
+
+const HomeRoute = (props: any) => {
+  if (props.userAuthenticationStatus.isSignedInUserPackageAdmin) return <Redirect to="/homeAdmin" />;
+  return <Route {...props} />;
+};
 
 const mapStateToProps = (state: AppState) => {
   return {

@@ -3,13 +3,11 @@ import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { AppState } from '../_helpers';
 
-const LoginRoute: React.FC<any> = (props) => (
-    <Route {...props.rest} render={() => (
-        (!props.userAuthenticationStatus.isSignedIn)
-            ? <props.component {...props} />
-            : <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-    )} />
-)
+
+const LoginRoute = (props: any) => {
+  if (props.userAuthenticationStatus.isSignedIn) return <Redirect to="/" />;
+  return <Route {...props} />;
+};
 
 const mapStateToProps = (state: AppState) => {
   return {

@@ -12,26 +12,19 @@ import TestPack from "../components/homeadmin/data/TestPack"
 import TestPackChemicalAnalysis from "../components/homeadmin/data/TestPackChemicalAnalysis"
 
 const routes = [
-   { path: '/samplecategory',exact:true, name: 'SampleCategory', component: SampleCategory },
-  { path: '/testgroup', name: 'TestGroup', component: TestGroup },
-  { path: '/testpack', name: 'TestPacks', component: TestPack },
-  { path: '/testgrouptestpack', name: 'TestGroupTestPack', component: TestGroupTestPack },
-  { path: '/chemicalanalysis', name: 'ChemicalAnalysis', component: ChemicalAnalysis },
-  { path: '/testpackchemicalanalysis', name: 'TestChemicalAnalysis', component: TestPackChemicalAnalysis },
-  { path: '/chemical', name: 'Chemical', component: Chemical },
-  { path: '/chemicalanalysischemical', name: 'ChemicalAnalysisChemical', component: ChemicalAnalysisChemical },
-  { path: '/impactcategory', name: 'ImpactCategory', component: ImpactCategory },
-  { path: '/impact', name: 'Impact', component: Impact },
-  { path: '/chemicalimpact', name: 'ChemicalImpact', component: ChemicalImpact },
-  { path: '/order', name: 'Order', component: Order },
-
-
-
-
-
-
-
-
+  { path: '/homeAdmin',exact:true, name: 'Home Admin' },
+  { path: '/homeAdmin/samplecategory', name: 'SampleCategory', component: SampleCategory },
+  { path: '/homeAdmin/testgroup', name: 'TestGroup', component: TestGroup },
+  { path: '/homeAdmin/testpack', name: 'TestPacks', component: TestPack },
+  { path: '/homeAdmin/testgrouptestpack', name: 'TestGroupTestPack', component: TestGroupTestPack },
+  { path: '/homeAdmin/chemicalanalysis', name: 'ChemicalAnalysis', component: ChemicalAnalysis },
+  { path: '/homeAdmin/testpackchemicalanalysis', name: 'TestChemicalAnalysis', component: TestPackChemicalAnalysis },
+  { path: '/homeAdmin/chemical', name: 'Chemical', component: Chemical },
+  { path: '/homeAdmin/chemicalanalysischemical', name: 'ChemicalAnalysisChemical', component: ChemicalAnalysisChemical },
+  { path: '/homeAdmin/impactcategory', name: 'ImpactCategory', component: ImpactCategory },
+  { path: '/homeAdmin/impact', name: 'Impact', component: Impact },
+  { path: '/homeAdmin/chemicalimpact', name: 'ChemicalImpact', component: ChemicalImpact },
+  { path: '/homeAdmin/order', name: 'Order', component: Order }
 ]
 // export default routes
 export default routes
