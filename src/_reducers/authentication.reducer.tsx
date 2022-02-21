@@ -3,7 +3,7 @@ import { IUserAuthenticationState, userConstants } from '../_constants';
 
 const initialState: IUserAuthenticationState =  {
   isLogingout: false,
-  isLoadingAuthState: true,
+  isLoadingAuthState: false,
   isLoggingIn: false,
   isSignedIn: false,
   isSignedInUserPackageAdmin: false,

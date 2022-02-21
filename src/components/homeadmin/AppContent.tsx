@@ -1,40 +1,39 @@
 import React, { Suspense } from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Switch } from 'react-router-dom'
 import { CContainer, CSpinner } from '@coreui/react'
 
 // routes config
 import routes from '../../routes/routes'
 import { HomePackageAdminRoute } from '../../routes';
-import SampleCategory from './data/SampleCategory';
-import TestGroup from './data/TestGroup';
 
-const AppContent = React.memo(() => {
+const AppContent = (() => {
   return (
-    <CContainer>
-      
+    <CContainer >
       <Suspense fallback={<CSpinner color="primary" />}>
         <Switch>
-          {routes.map((route: any, idx: any) => {
+          {routes.map((route, idx) => {
             return (
               route.component && (
-                <Route
+                <HomePackageAdminRoute
                   key={idx}
                   path={route.path}
                   exact={route.exact}
-                  component = {route.component }
-                  // render={(props) => (
+                  name={route.name}
+                  
+                  // render={(props: any) => (
                   //   <>
                   //     <route.component {...props} />
                   //   </>
                   // )}
-                />
+                ><route.component/></HomePackageAdminRoute>
               )
             )
           })}
         </Switch>
       </Suspense>
+      
     </CContainer>
   )
 });
 
-export default React.memo(AppContent)
+export default AppContent
