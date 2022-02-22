@@ -35,15 +35,13 @@ const AppHomeContent = React.memo((props:any) => {
                     {
                         props.data &&
                         props.data.map((item: any, index:any) => (
-                            <CCol key={index}>
+                            <CCol sm={4} key={index}>
                             <SampleCategoryCard name={item.name} description={item.description} imageName={'sampleCat1.jpg'} sampleCategoryId={item.id} />
                             </CCol>
                         ))
                      }
                 </CRow>
-                
             </CCard>
-       
     </CContainer>
     )
 });

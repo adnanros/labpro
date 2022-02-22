@@ -10,38 +10,10 @@ const AppHomeFooter = () => {
                         <Link className="d-block" to="/">
                             Home
                         </Link>
-                        <Link className="d-block" to="/">
-                            Home
-                        </Link>
-                        <Link className="d-block" to="/">
-                            Home
-                        </Link>
-                    </CCol>
-                    <CCol >
-                        <Link className="d-block" to="/">
-                            About
-                        </Link>
-                        <Link className="d-block" to="/">
-                            About   
-                        </Link>
-                        <Link className="d-block" to="/">
-                            About
-                        </Link>
-                    </CCol>
-                    <CCol >
-                        <Link className="d-block" to="/">
-                            About
-                        </Link>
-                        <Link className="d-block" to="/">
-                            About   
-                        </Link>
-                        <Link className="d-block" to="/">
-                            About
-                        </Link>
                     </CCol>
                 </CRow>
                 <CRow>
-                    <CCol>
+                    <CCol style={{width:'100%'}}>
                         Labpro Company &reg; {new Date().getFullYear()}
                     </CCol>
                 </CRow>

@@ -80,7 +80,7 @@ class App extends Component<any,any> {
                       <IsSignedInRoute exact path="/orderRegisteration" component={(props: any) => <OrderRegisterationPage {...props} />} />
                       <IsSignedInRoute exact path="/resulList" component={(props: any) => <ResultListPage {...props} />} />
                       {/* Order is important.*/}
-                      <HomeRoute exact name="Home" path="/" component={HomePage} />
+                      <HomeRoute name="Home" path="/home" render={(props: any) => <HomePage {...props} />} />
                       <HomePackageAdminRoute path="/homeAdmin" render={(props: any) => <HomeAdmin {...props} />}  />
                       <Route exact path="/404"  render={(props: any) => <Page404 {...props} />} />
                       <Route exact path="/500"  render={(props: any) => <Page500 {...props} />} />

@@ -18,7 +18,7 @@ const SampleCategoryCard = (props: IProps) => {
                     <CCardText>
                         {props.description}
                     </CCardText>
-                    <CButton href="#">Go somewhere</CButton>
+                    <CButton href="/home/sampleCategoryDetails">Details</CButton>
                 </CCardBody>
             </CCard>
         </div>
