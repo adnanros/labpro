@@ -1,13 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
   CContainer,
-  CHeader,
-  CHeaderDivider,
-  CHeaderNav,
   CNavLink,
   CNavItem,
-  CHeaderToggler,
   CCollapse,
   CNavbar,
   CNavbarToggler,
@@ -30,7 +26,7 @@ const AppHeader = () => {
        <CCollapse className="navbar-collapse" visible={visible}>
         <CNavbarNav className="me-auto mb-2 mb-lg-0">
           <CNavItem>
-            <CNavLink to="/" component={NavLink} className="active">
+            <CNavLink to={"/"} component={NavLink} className="active">
               Home
             </CNavLink>
             </CNavItem>

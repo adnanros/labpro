@@ -1,6 +1,5 @@
-import React, { Suspense } from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
-import { CCol, CContainer, CRow, CSpinner } from '@coreui/react'
+import React from 'react'
+import { CCol, CContainer, CRow } from '@coreui/react'
 
 // routes config
 import routes from '../../routes/routes'
