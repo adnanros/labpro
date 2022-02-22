@@ -30,7 +30,7 @@ const AppHeader = () => {
        <CCollapse className="navbar-collapse" visible={visible}>
         <CNavbarNav className="me-auto mb-2 mb-lg-0">
           <CNavItem>
-            <CNavLink to="/" component={NavLink} className="active">
+            <CNavLink to={"/"} component={NavLink} className="active">
               Home
             </CNavLink>
             </CNavItem>
