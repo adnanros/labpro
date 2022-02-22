@@ -1,13 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
   CContainer,
-  CHeader,
-  CHeaderDivider,
-  CHeaderNav,
   CNavLink,
   CNavItem,
-  CHeaderToggler,
   CCollapse,
   CNavbar,
   CNavbarToggler,

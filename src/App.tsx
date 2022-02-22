@@ -12,6 +12,7 @@ import { HomeRoute,ConfirmRegisterRoute, HomePackageAdminRoute,LoginRoute, IsSig
 import ResultListPage from './pages/resultListPage'
 import OrderRegisterationPage from './pages/OrderRegisterationPage'
 import confirmRegisterPage from './pages/confirmRegisterPage'
+import UnknownRoute from './routes/unknownRoute';
 
 Amplify.configure(awsconfig);
 
@@ -52,7 +53,8 @@ class App extends Component<any,any> {
                   <div className={`alert ${this.props.type}`}>{this.props.message}</div>
               }
               {
-                this.props.isLoadingAuthStatus && loading
+                 this.props.isLoadingAuthStatus && 
+                <div style={{width:100,height:100,backgroundColor:'red'}}> </div>
               }
               {
                 !this.props.isLoadingAuthStatus &&
@@ -64,13 +66,15 @@ class App extends Component<any,any> {
                       <LoginRoute exact path="/login"   render={(props: any) => <Login {...props} />} />
                       <LoginRoute exact path="/register" render={(props: any) => <Register {...props} />} />
                       <ConfirmRegisterRoute exact path="/confirmRegister" component={confirmRegisterPage} />
-                      <Route exact path="/404"  render={(props) => <Page404  />} />
-                      <Route exact path="/500"  render={(props) => <Page500  />} />
+                      <Route exact path="/404"  render={(props: any) => <Page404 {...props} />} />
+                      <Route exact path="/500"  render={(props: any) => <Page500 {...props} />} />
                       <HomePackageAdminRoute path="/homeAdmin" render={(props: any) => <HomeAdmin {...props} />}  />
-                      <IsSignedInRoute exact path="/orderRegisteration" component={OrderRegisterationPage} />
-                      <IsSignedInRoute exact path="/resulList" component={ResultListPage} />
-                      {/* bASE rOUTE should be last one! */}
-                      <HomeRoute name="Home" path="/" component={HomePage} />
+                      <IsSignedInRoute exact path="/orderRegisteration" component={(props: any) => <OrderRegisterationPage {...props} />} />
+                      <IsSignedInRoute exact path="/resulList" component={(props: any) => <ResultListPage {...props} />} />
+                      {/* Order is important.*/}
+                      <HomeRoute exact name="Home" path="/" component={HomePage} />
+                      {/* Order is important. this one should be the last one. unknown routes will be redirected to 404 page. */}
+                      <UnknownRoute path='*' exact={true} />
                     </Switch>
                   </React.Suspense>
                   </Router >
