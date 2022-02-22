@@ -12,7 +12,7 @@ import TestPack from "../components/homeadmin/data/TestPack"
 import TestPackChemicalAnalysis from "../components/homeadmin/data/TestPackChemicalAnalysis"
 
 const routes = [
-  { path: '/homeAdmin',exact:true, name: 'Home Admin' },
+  { path: '/homeAdmin',exact:true, name: 'Home Admin', component: SampleCategory },
   { path: '/homeAdmin/samplecategory', name: 'SampleCategory', component: SampleCategory },
   { path: '/homeAdmin/testgroup', name: 'TestGroup', component: TestGroup },
   { path: '/homeAdmin/testpack', name: 'TestPacks', component: TestPack },

@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { AppState } from '../_helpers';
 
 const IsSignedInRoute = (props: any) => {
-  console.log("xxxxxxx")
   if (!props.isSignedIn) return <Redirect to="/" />;
   return <Route {...props} />;
 };
