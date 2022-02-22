@@ -1,19 +1,21 @@
 import { CButton, CCard, CCardBody, CCardImage, CCardText, CCardTitle, CCol, CContainer, CRow, } from "@coreui/react";
 import React from "react";
 import { Link } from "react-router-dom";
+import { number } from "yup/lib/locale";
+import pic from '../../../images/sampleCat1.jpg';
 
-var myImg = document.getElementById('myId') as HTMLImageElement;
+var myImg = document.getElementById('myImg') as HTMLImageElement;
 
-myImg?.setAttribute('src','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeu4wXOAa2ISH6oCkYHuJbcl6X4c1oJO1p6Q&usqp=CAU');
+myImg?.setAttribute('src', pic);
 
-const SampleCategoryCard = () => {
+const SampleCategoryCard = ({index}) => {
     
     return (
         <div>
             <CCard style={{ width: '18rem' }}>
-                <CCardImage id="myId" orientation="top" />
+                <CCardImage id= {'myImg' + index} orientation="top" />
                 <CCardBody>
-                    <CCardTitle>Card title</CCardTitle>
+                    <CCardTitle>Card title {index}</CCardTitle>
                     <CCardText>
                     Some quick example text to build on the card title and make up the bulk of the card's content.
                     </CCardText>
