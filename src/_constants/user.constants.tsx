@@ -11,6 +11,13 @@ export const userConstants = {
     RESEND_REGISTER_CODE_SUCCESS: 'RESEND_REGISTER_CODE_SUCCESS',
     RESEND_REGISTER_CODE_FAILURE: 'RESEND_REGISTER_CODE_FAILURE',
 
+    SEND_ForgotPassword_CODE_REQUEST: 'SEND_ForgotPassword_CODE_REQUEST',
+    SEND_ForgotPassword_CODE_SUCCESS: 'SEND_ForgotPassword_CODE_SUCCESS',
+    SEND_ForgotPassword_CODE_FAILURE: 'SEND_ForgotPassword_CODE_FAILURE',
+    Reset_Password_REQUEST: 'Reset_Password_REQUEST',
+    Reset_Password_SUCCESS: 'Reset_Password_SUCCESS',
+    Reset_Password_FAILURE: 'Reset_Password_FAILURE',
+
     LOGIN_REQUEST: 'USERS_LOGIN_REQUEST',
     LOGIN_SUCCESS: 'USERS_LOGIN_SUCCESS',
     LOGIN_FAILURE: 'USERS_LOGIN_FAILURE',
@@ -41,4 +48,8 @@ export interface IUserRegisterationState {
 
 export interface IUserConfirmRegisterationState {
     isConfirming: boolean
+}
+
+export interface IUserSendForgotPassordState {
+    isSending: boolean
 }

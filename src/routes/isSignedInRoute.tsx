@@ -4,14 +4,15 @@ import { connect } from 'react-redux'
 import { AppState } from '../_helpers';
 
 const IsSignedInRoute = (props: any) => {
-  if (!props.userAuthenticationStatus.isSignedIn) return <Redirect to="/" />;
+  console.log("xxxxxxx")
+  if (!props.isSignedIn) return <Redirect to="/" />;
   return <Route {...props} />;
 };
 
 const mapStateToProps = (state: AppState) => {
   return {
     //we have 3 fields in redux state. authentication, registration and alert. see index.tsx of reducers.
-    userAuthenticationStatus: state.authentication
+    isSignedIn: state.authentication.isSignedIn
   };
 };
 

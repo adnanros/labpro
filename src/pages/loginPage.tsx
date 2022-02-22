@@ -45,7 +45,7 @@ const LoginPage: React.FC<any> = (props) => {
   const onSubmit = (data: IState) => {
    
     props.login(data.email,data.password);
-    console.log(JSON.stringify(data, null, 2));
+    //console.log(JSON.stringify(data, null, 2));
   };
   
   const {
@@ -65,7 +65,10 @@ const LoginPage: React.FC<any> = (props) => {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm className="needs-validation" onSubmit={handleSubmit(onSubmit)} >
-                    <h1>Login</h1>
+                    <CRow>
+                      <CCol xs={9}><h1>Login</h1></CCol>
+                      <CCol xs={3}><Link to={loggingIn ? "#" : "/"}>  <CButton color="link" className="px-0" disabled={loggingIn}>  <h3>Home</h3> </CButton>  </Link>  </CCol>
+                    </CRow>
                     <p className="text-medium-emphasis">Sign In to your account</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
@@ -95,9 +98,11 @@ const LoginPage: React.FC<any> = (props) => {
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0" disabled={loggingIn}>
-                          Forgot password?
-                        </CButton>
+                        <Link to={loggingIn ? "#" : "/forgotPassword"} >
+                          <CButton color="link" className="px-0" disabled={loggingIn}>
+                            Forgot password?
+                          </CButton>
+                        </Link>
                       </CCol>
                     </CRow>
                   </CForm>
@@ -108,11 +113,10 @@ const LoginPage: React.FC<any> = (props) => {
                   <div>
                     <h2>Sign up</h2>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                      tempor incididunt ut labore et dolore magna aliqua.
+                      If you don't have an account,you can register an account in registeration page.
                     </p>
-                    <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
+                    <Link to={loggingIn ? "#" : "/register"} >
+                      <CButton color="primary" className="mt-3" disabled = {loggingIn} active tabIndex={-1}>
                         Register Now!
                       </CButton>
                     </Link>

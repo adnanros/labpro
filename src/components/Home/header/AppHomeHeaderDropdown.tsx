@@ -9,6 +9,7 @@ import {
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
+  CLink,
 } from '@coreui/react'
 import { userActions } from '../../../_actions';
 import { useSelector,connect } from 'react-redux';
@@ -26,18 +27,15 @@ const AppHomeHeaderDropdown = (props: any) => {
   const isLogingOut = useSelector((state: AppState) => state.authentication.isLogingout);
 
   return (
-
     <CDropdown variant="nav-item">
       <CDropdownToggle  className="py-0" caret={true}>
         <CAvatar src={avatar8} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">{email}</CDropdownHeader>
-          <CDropdownItem>
-            <Link to="/resulList">
+        <CLink href='/resulList'>
                 Resuls
-            </Link>
-          </CDropdownItem>
+        </CLink>
         <CDropdownDivider />
         <CDropdownItem href="#">
           <CButton onClick={()=>{props.logout()}} disabled= {isLogingOut}>Logout</CButton>

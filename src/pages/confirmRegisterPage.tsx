@@ -50,7 +50,11 @@ const ConfirmRegisterPage: React.FC<any> = (props) => {
             <CCard className="mx-4">
               <CCardBody className="p-4">
                 <CForm className="needs-validation" onSubmit={handleSubmit(onSubmit)}>
-                  <h1>Confirm Registration</h1>
+                  
+                  <CRow>
+                      <CCol xs={9}><h1>Confirm Registration</h1></CCol>
+                      <CCol xs={3}><Link to={isConfirming ? "#" : "/"}>  <CButton color="link" className="px-0" disabled={isConfirming}>  <h3>Home</h3> </CButton>  </Link>  </CCol>
+                  </CRow>
                   <p className="text-medium-emphasis">Enter the code we sent to {props.email}</p>
                   <CInputGroup className="mb-4">
                     <CInputGroupText>
@@ -67,7 +71,7 @@ const ConfirmRegisterPage: React.FC<any> = (props) => {
                     <CButton color="success" type='submit' disabled={isConfirming}>Confirm Registration</CButton>
                   </div>
                   <CButton color='primary'  variant="ghost"  disabled={isConfirming} onClick={()=> props.resendConfirmationCode(props.email)} >resend code</CButton>
-                  <Link to="/login">
+                  <Link to={isConfirming ? "#" : "/login"}>
                     <CButton color="link" className="px-0" disabled={isConfirming}>
                             Already have a confirmed account? Log in
                     </CButton>

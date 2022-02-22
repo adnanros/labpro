@@ -10,7 +10,9 @@ export const userActions = {
     register,
     confirmRegister,
     resendConfirmationCode,
-    fetchAthStatus
+    fetchAthStatus,
+    forgotPassword,
+    resetPassword
 };
 
 function fetchAthStatus() {
@@ -19,7 +21,6 @@ function fetchAthStatus() {
         Auth.currentSession().then(
             session => {
                 let idToken = session.getIdToken();
-
                 isPackageAdmin((ipa: Boolean) => {
                     if(ipa){
                         dispatch(success(idToken.payload.email,true));
@@ -160,3 +161,51 @@ function resendConfirmationCode(username: string) {
     function success() { return { type: userConstants.RESEND_REGISTER_CODE_SUCCESS } }
     function failure(error: any) { return { type: userConstants.RESEND_REGISTER_CODE_FAILURE, error } }
 }
+
+function forgotPassword(username: string) {
+    
+    return (dispatch: (arg0: { type: string; message?: string; error?: any; }) => void) => {
+        dispatch(request());
+        Auth.forgotPassword(username).then(
+            user => { 
+                    dispatch(success());
+                    history.push({
+                        pathname: '/resetPassword',
+                        state: { email: username }//to get: this.props.location.state.email
+                      })
+                    dispatch(alertActions.success('Code sent successfully. please check your email at: ' + username));
+                },
+            error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    function request() { return { type: userConstants.SEND_ForgotPassword_CODE_REQUEST } }
+    function success() { return { type: userConstants.SEND_ForgotPassword_CODE_SUCCESS } }
+    function failure(error: any) { return { type: userConstants.SEND_ForgotPassword_CODE_FAILURE, error } }
+}
+
+
+function resetPassword(username: string,code: string,newPassword: string) {
+    
+    return (dispatch: (arg0: { type: string; message?: string; error?: any; }) => void) => {
+        dispatch(request());
+        Auth.forgotPasswordSubmit(username,code,newPassword).then(
+            data => { 
+                    dispatch(success());
+                    history.push("/login");
+                },
+            error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    function request() { return { type: userConstants.Reset_Password_REQUEST } }
+    function success() { return { type: userConstants.Reset_Password_SUCCESS } }
+    function failure(error: any) { return { type: userConstants.Reset_Password_FAILURE, error } }
+}
+

@@ -11,8 +11,10 @@ import HomePage from './pages/HomePage'
 import { HomeRoute,ConfirmRegisterRoute, HomePackageAdminRoute,LoginRoute, IsSignedInRoute } from './routes'//
 import ResultListPage from './pages/resultListPage'
 import OrderRegisterationPage from './pages/OrderRegisterationPage'
-import confirmRegisterPage from './pages/confirmRegisterPage'
+import ConfirmRegisterPage from './pages/confirmRegisterPage'
 import UnknownRoute from './routes/unknownRoute';
+import ForgotPasswordPage from './pages/forgotPasswordPage';
+import ResetPasswordPage from './pages/resetPasswordPage';
 
 Amplify.configure(awsconfig);
 
@@ -36,17 +38,24 @@ class App extends Component<any,any> {
       // clear alert on location change
       this.props.clearAlerts();
     });
+    this.state = {
+      isMounted: false
+    }
+    //console.log("Constructor");
   }
 
   componentDidMount() {
-
+    //console.log("did mount")
     this.props.fetchAuthStatus();
+    this.setState({isMounted: true})
   }
   
   render() {
+    //console.log("Hello");
+    
+    if(!this.state.isMounted) return loading
 
     return(
-     
             <div>
               {
               this.props.message &&
@@ -65,14 +74,16 @@ class App extends Component<any,any> {
                       {/* when use component = ..., the component will be recreated. when using render = ..., the component is created only once. */}
                       <LoginRoute exact path="/login"   render={(props: any) => <Login {...props} />} />
                       <LoginRoute exact path="/register" render={(props: any) => <Register {...props} />} />
-                      <ConfirmRegisterRoute exact path="/confirmRegister" component={confirmRegisterPage} />
-                      <Route exact path="/404"  render={(props: any) => <Page404 {...props} />} />
-                      <Route exact path="/500"  render={(props: any) => <Page500 {...props} />} />
-                      <HomePackageAdminRoute path="/homeAdmin" render={(props: any) => <HomeAdmin {...props} />}  />
+                      <LoginRoute exact path="/forgotPassword" component={ForgotPasswordPage} />
+                      <LoginRoute exact path="/resetPassword" component={(props: any) => <ResetPasswordPage {...props} />} />
+                      <ConfirmRegisterRoute exact path="/confirmRegister" component={ConfirmRegisterPage} />
                       <IsSignedInRoute exact path="/orderRegisteration" component={(props: any) => <OrderRegisterationPage {...props} />} />
                       <IsSignedInRoute exact path="/resulList" component={(props: any) => <ResultListPage {...props} />} />
                       {/* Order is important.*/}
                       <HomeRoute exact name="Home" path="/" component={HomePage} />
+                      <HomePackageAdminRoute path="/homeAdmin" render={(props: any) => <HomeAdmin {...props} />}  />
+                      <Route exact path="/404"  render={(props: any) => <Page404 {...props} />} />
+                      <Route exact path="/500"  render={(props: any) => <Page500 {...props} />} />
                       {/* Order is important. this one should be the last one. unknown routes will be redirected to 404 page. */}
                       <UnknownRoute path='*' exact={true} />
                     </Switch>

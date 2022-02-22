@@ -63,7 +63,11 @@ const RegisterPage: React.FC<any> = (props) => {
             <CCard className="mx-4">
               <CCardBody className="p-4">
                 <CForm className="needs-validation" onSubmit={handleSubmit(onSubmit)}>
-                  <h1>Register</h1>
+                  
+                  <CRow>
+                      <CCol xs={9}><h1>Register</h1></CCol>
+                      <CCol xs={3}><Link to={isRegistering ? "#" : "/"}>  <CButton color="link" className="px-0" disabled={isRegistering}>  <h3>Home</h3> </CButton>  </Link>  </CCol>
+                  </CRow>
                   <p className="text-medium-emphasis">Create your account</p>
                   <CInputGroup className="mb-3">
                     <CInputGroupText>@</CInputGroupText>
@@ -95,9 +99,9 @@ const RegisterPage: React.FC<any> = (props) => {
                     />
                   </CInputGroup>
                   <div className="d-grid">
-                    <CButton color="success" type='submit' disabled={isRegistering}>Create Account</CButton>
+                    <CButton color="primary" type='submit' disabled={isRegistering}>Create Account</CButton>
                   </div>
-                  <Link to="/login">
+                  <Link to={isRegistering ? "#" : "/login"}>
                     <CButton color="link" className="px-0" disabled={isRegistering}>
                             Already have an account? Log in
                     </CButton>
