@@ -15,6 +15,9 @@ export const getLocalUser = /* GraphQL */ `
       city
       postalCode
       company
+      createdAt
+      updatedAt
+      owner
       orders {
         items {
           id
@@ -41,9 +44,6 @@ export const getLocalUser = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -73,84 +73,10 @@ export const listLocalUsers = /* GraphQL */ `
         city
         postalCode
         company
+        createdAt
+        updatedAt
+        owner
         orders {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
-      nextToken
-    }
-  }
-`;
-export const getOrder = /* GraphQL */ `
-  query GetOrder($id: ID!) {
-    getOrder(id: $id) {
-      id
-      localUserId
-      count
-      purchasedDate
-      samplingDate
-      resultDate
-      orderStatus
-      paymentStatus
-      email
-      name
-      addressPart1
-      addressPart2
-      contactNumber
-      profileImageLink
-      country
-      city
-      postalCode
-      company
-      createdAt
-      updatedAt
-      owner
-      chemicalAnalysisOrder {
-        items {
-          id
-          orderId
-          chemicalAnalysisId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-    }
-  }
-`;
-export const listOrders = /* GraphQL */ `
-  query ListOrders(
-    $filter: ModelOrderFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        localUserId
-        count
-        purchasedDate
-        samplingDate
-        resultDate
-        orderStatus
-        paymentStatus
-        email
-        name
-        addressPart1
-        addressPart2
-        contactNumber
-        profileImageLink
-        country
-        city
-        postalCode
-        company
-        createdAt
-        updatedAt
-        owner
-        chemicalAnalysisOrder {
           nextToken
         }
       }
@@ -835,13 +761,51 @@ export const listChemicalImpacts = /* GraphQL */ `
     }
   }
 `;
-export const getChemicalAnalysisOrder = /* GraphQL */ `
-  query GetChemicalAnalysisOrder($id: ID!) {
-    getChemicalAnalysisOrder(id: $id) {
+export const getOrder = /* GraphQL */ `
+  query GetOrder($id: ID!) {
+    getOrder(id: $id) {
       id
-      orderId
-      chemicalAnalysisId
-      order {
+      localUserId
+      count
+      purchasedDate
+      samplingDate
+      resultDate
+      orderStatus
+      paymentStatus
+      email
+      name
+      addressPart1
+      addressPart2
+      contactNumber
+      profileImageLink
+      country
+      city
+      postalCode
+      company
+      createdAt
+      updatedAt
+      owner
+      chemicalAnalysisOrder {
+        items {
+          id
+          orderId
+          chemicalAnalysisId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const listOrders = /* GraphQL */ `
+  query ListOrders(
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
         id
         localUserId
         count
@@ -867,6 +831,16 @@ export const getChemicalAnalysisOrder = /* GraphQL */ `
           nextToken
         }
       }
+      nextToken
+    }
+  }
+`;
+export const getChemicalAnalysisOrder = /* GraphQL */ `
+  query GetChemicalAnalysisOrder($id: ID!) {
+    getChemicalAnalysisOrder(id: $id) {
+      id
+      orderId
+      chemicalAnalysisId
       createdAt
       updatedAt
       chemicalAnalysis {
@@ -883,6 +857,32 @@ export const getChemicalAnalysisOrder = /* GraphQL */ `
         chemicalAnalysisChemical {
           nextToken
         }
+        chemicalAnalysisOrder {
+          nextToken
+        }
+      }
+      order {
+        id
+        localUserId
+        count
+        purchasedDate
+        samplingDate
+        resultDate
+        orderStatus
+        paymentStatus
+        email
+        name
+        addressPart1
+        addressPart2
+        contactNumber
+        profileImageLink
+        country
+        city
+        postalCode
+        company
+        createdAt
+        updatedAt
+        owner
         chemicalAnalysisOrder {
           nextToken
         }
@@ -917,6 +917,17 @@ export const listChemicalAnalysisOrders = /* GraphQL */ `
         id
         orderId
         chemicalAnalysisId
+        createdAt
+        updatedAt
+        chemicalAnalysis {
+          id
+          name
+          price
+          discount
+          description
+          createdAt
+          updatedAt
+        }
         order {
           id
           localUserId
@@ -939,17 +950,6 @@ export const listChemicalAnalysisOrders = /* GraphQL */ `
           createdAt
           updatedAt
           owner
-        }
-        createdAt
-        updatedAt
-        chemicalAnalysis {
-          id
-          name
-          price
-          discount
-          description
-          createdAt
-          updatedAt
         }
         chemicalAnalysisResults {
           nextToken

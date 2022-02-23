@@ -17,5 +17,24 @@
         "userPoolGroups": {}
       }
     }
+  },
+  "test": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-labpro-test-43610-authRole",
+      "UnauthRoleArn": "arn:aws:iam::670277671745:role/amplify-labpro-test-43610-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::670277671745:role/amplify-labpro-test-43610-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-labpro-test-43610-deployment",
+      "UnauthRoleName": "amplify-labpro-test-43610-unauthRole",
+      "StackName": "amplify-labpro-test-43610",
+      "StackId": "arn:aws:cloudformation:us-east-1:670277671745:stack/amplify-labpro-test-43610/381cf7e0-94a5-11ec-b298-0e41eb28ac6d",
+      "AmplifyAppId": "d1i7ikthsrnb59"
+    },
+    "categories": {
+      "auth": {
+        "labpro767d1598": {},
+        "userPoolGroups": {}
+      }
+    }
   }
 }

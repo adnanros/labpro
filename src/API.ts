@@ -2,20 +2,36 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateLocalUserInput = {
-  email: string,
-  name: string,
-  addressPart1: string,
-  addressPart2: string,
-  contactNumber: string,
-  profileImageLink: string,
-  country: string,
-  city: string,
-  postalCode: string,
-  company: string,
+export type UpdateOrderInput = {
+  id: string,
+  localUserId?: string | null,
+  count?: number | null,
+  purchasedDate?: string | null,
+  samplingDate?: string | null,
+  resultDate?: string | null,
+  orderStatus?: string | null,
+  paymentStatus?: string | null,
+  email?: string | null,
+  name?: string | null,
+  addressPart1?: string | null,
+  addressPart2?: string | null,
+  contactNumber?: string | null,
+  profileImageLink?: string | null,
+  country?: string | null,
+  city?: string | null,
+  postalCode?: string | null,
+  company?: string | null,
 };
 
-export type ModelLocalUserConditionInput = {
+export type ModelOrderConditionInput = {
+  localUserId?: ModelStringInput | null,
+  count?: ModelIntInput | null,
+  purchasedDate?: ModelStringInput | null,
+  samplingDate?: ModelStringInput | null,
+  resultDate?: ModelStringInput | null,
+  orderStatus?: ModelStringInput | null,
+  paymentStatus?: ModelStringInput | null,
+  email?: ModelStringInput | null,
   name?: ModelStringInput | null,
   addressPart1?: ModelStringInput | null,
   addressPart2?: ModelStringInput | null,
@@ -25,9 +41,9 @@ export type ModelLocalUserConditionInput = {
   city?: ModelStringInput | null,
   postalCode?: ModelStringInput | null,
   company?: ModelStringInput | null,
-  and?: Array< ModelLocalUserConditionInput | null > | null,
-  or?: Array< ModelLocalUserConditionInput | null > | null,
-  not?: ModelLocalUserConditionInput | null,
+  and?: Array< ModelOrderConditionInput | null > | null,
+  or?: Array< ModelOrderConditionInput | null > | null,
+  not?: ModelOrderConditionInput | null,
 };
 
 export type ModelStringInput = {
@@ -70,28 +86,16 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
-export type LocalUser = {
-  __typename: "LocalUser",
-  email: string,
-  name: string,
-  addressPart1: string,
-  addressPart2: string,
-  contactNumber: string,
-  profileImageLink: string,
-  country: string,
-  city: string,
-  postalCode: string,
-  company: string,
-  orders?: ModelOrderConnection | null,
-  createdAt: string,
-  updatedAt: string,
-  owner?: string | null,
-};
-
-export type ModelOrderConnection = {
-  __typename: "ModelOrderConnection",
-  items?:  Array<Order | null > | null,
-  nextToken?: string | null,
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
 export type Order = {
@@ -122,7 +126,7 @@ export type Order = {
 
 export type ModelChemicalAnalysisOrderConnection = {
   __typename: "ModelChemicalAnalysisOrderConnection",
-  items?:  Array<ChemicalAnalysisOrder | null > | null,
+  items:  Array<ChemicalAnalysisOrder | null >,
   nextToken?: string | null,
 };
 
@@ -131,10 +135,10 @@ export type ChemicalAnalysisOrder = {
   id: string,
   orderId: string,
   chemicalAnalysisId: string,
-  order: Order,
   createdAt: string,
   updatedAt: string,
   chemicalAnalysis: ChemicalAnalysis,
+  order: Order,
   chemicalAnalysisResults?: ModelChemicalAnalysisResultConnection | null,
 };
 
@@ -154,7 +158,7 @@ export type ChemicalAnalysis = {
 
 export type ModelTestPackChemicalAnalysisConnection = {
   __typename: "ModelTestPackChemicalAnalysisConnection",
-  items?:  Array<TestPackChemicalAnalysis | null > | null,
+  items:  Array<TestPackChemicalAnalysis | null >,
   nextToken?: string | null,
 };
 
@@ -182,7 +186,7 @@ export type TestPack = {
 
 export type ModelTestGroupTestPackConnection = {
   __typename: "ModelTestGroupTestPackConnection",
-  items?:  Array<TestGroupTestPack | null > | null,
+  items:  Array<TestGroupTestPack | null >,
   nextToken?: string | null,
 };
 
@@ -212,7 +216,7 @@ export type TestGroup = {
 
 export type ModelChemicalAnalysisChemicalConnection = {
   __typename: "ModelChemicalAnalysisChemicalConnection",
-  items?:  Array<ChemicalAnalysisChemical | null > | null,
+  items:  Array<ChemicalAnalysisChemical | null >,
   nextToken?: string | null,
 };
 
@@ -240,7 +244,7 @@ export type Chemical = {
 
 export type ModelChemicalImpactConnection = {
   __typename: "ModelChemicalImpactConnection",
-  items?:  Array<ChemicalImpact | null > | null,
+  items:  Array<ChemicalImpact | null >,
   nextToken?: string | null,
 };
 
@@ -269,7 +273,7 @@ export type Impact = {
 
 export type ModelChemicalAnalysisResultConnection = {
   __typename: "ModelChemicalAnalysisResultConnection",
-  items?:  Array<ChemicalAnalysisResult | null > | null,
+  items:  Array<ChemicalAnalysisResult | null >,
   nextToken?: string | null,
 };
 
@@ -283,6 +287,58 @@ export type ChemicalAnalysisResult = {
   createdAt: string,
   updatedAt: string,
   chemical?: Chemical | null,
+};
+
+export type CreateLocalUserInput = {
+  email: string,
+  name: string,
+  addressPart1: string,
+  addressPart2: string,
+  contactNumber: string,
+  profileImageLink: string,
+  country: string,
+  city: string,
+  postalCode: string,
+  company: string,
+};
+
+export type ModelLocalUserConditionInput = {
+  name?: ModelStringInput | null,
+  addressPart1?: ModelStringInput | null,
+  addressPart2?: ModelStringInput | null,
+  contactNumber?: ModelStringInput | null,
+  profileImageLink?: ModelStringInput | null,
+  country?: ModelStringInput | null,
+  city?: ModelStringInput | null,
+  postalCode?: ModelStringInput | null,
+  company?: ModelStringInput | null,
+  and?: Array< ModelLocalUserConditionInput | null > | null,
+  or?: Array< ModelLocalUserConditionInput | null > | null,
+  not?: ModelLocalUserConditionInput | null,
+};
+
+export type LocalUser = {
+  __typename: "LocalUser",
+  email: string,
+  name: string,
+  addressPart1: string,
+  addressPart2: string,
+  contactNumber: string,
+  profileImageLink: string,
+  country: string,
+  city: string,
+  postalCode: string,
+  company: string,
+  createdAt: string,
+  updatedAt: string,
+  owner?: string | null,
+  orders?: ModelOrderConnection | null,
+};
+
+export type ModelOrderConnection = {
+  __typename: "ModelOrderConnection",
+  items:  Array<Order | null >,
+  nextToken?: string | null,
 };
 
 export type UpdateLocalUserInput = {
@@ -328,7 +384,7 @@ export type SampleCategory = {
 
 export type ModelTestGroupConnection = {
   __typename: "ModelTestGroupConnection",
-  items?:  Array<TestGroup | null > | null,
+  items:  Array<TestGroup | null >,
   nextToken?: string | null,
 };
 
@@ -570,7 +626,7 @@ export type ImpactCategory = {
 
 export type ModelImpactConnection = {
   __typename: "ModelImpactConnection",
-  items?:  Array<Impact | null > | null,
+  items:  Array<Impact | null >,
   nextToken?: string | null,
 };
 
@@ -658,62 +714,6 @@ export type CreateOrderInput = {
   city: string,
   postalCode: string,
   company: string,
-};
-
-export type ModelOrderConditionInput = {
-  localUserId?: ModelStringInput | null,
-  count?: ModelIntInput | null,
-  purchasedDate?: ModelStringInput | null,
-  samplingDate?: ModelStringInput | null,
-  resultDate?: ModelStringInput | null,
-  orderStatus?: ModelStringInput | null,
-  paymentStatus?: ModelStringInput | null,
-  email?: ModelStringInput | null,
-  name?: ModelStringInput | null,
-  addressPart1?: ModelStringInput | null,
-  addressPart2?: ModelStringInput | null,
-  contactNumber?: ModelStringInput | null,
-  profileImageLink?: ModelStringInput | null,
-  country?: ModelStringInput | null,
-  city?: ModelStringInput | null,
-  postalCode?: ModelStringInput | null,
-  company?: ModelStringInput | null,
-  and?: Array< ModelOrderConditionInput | null > | null,
-  or?: Array< ModelOrderConditionInput | null > | null,
-  not?: ModelOrderConditionInput | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
-export type UpdateOrderInput = {
-  id: string,
-  localUserId?: string | null,
-  count?: number | null,
-  purchasedDate?: string | null,
-  samplingDate?: string | null,
-  resultDate?: string | null,
-  orderStatus?: string | null,
-  paymentStatus?: string | null,
-  email?: string | null,
-  name?: string | null,
-  addressPart1?: string | null,
-  addressPart2?: string | null,
-  contactNumber?: string | null,
-  profileImageLink?: string | null,
-  country?: string | null,
-  city?: string | null,
-  postalCode?: string | null,
-  company?: string | null,
 };
 
 export type DeleteOrderInput = {
@@ -810,32 +810,8 @@ export enum ModelSortDirection {
 
 export type ModelLocalUserConnection = {
   __typename: "ModelLocalUserConnection",
-  items?:  Array<LocalUser | null > | null,
+  items:  Array<LocalUser | null >,
   nextToken?: string | null,
-};
-
-export type ModelOrderFilterInput = {
-  id?: ModelIDInput | null,
-  localUserId?: ModelStringInput | null,
-  count?: ModelIntInput | null,
-  purchasedDate?: ModelStringInput | null,
-  samplingDate?: ModelStringInput | null,
-  resultDate?: ModelStringInput | null,
-  orderStatus?: ModelStringInput | null,
-  paymentStatus?: ModelStringInput | null,
-  email?: ModelStringInput | null,
-  name?: ModelStringInput | null,
-  addressPart1?: ModelStringInput | null,
-  addressPart2?: ModelStringInput | null,
-  contactNumber?: ModelStringInput | null,
-  profileImageLink?: ModelStringInput | null,
-  country?: ModelStringInput | null,
-  city?: ModelStringInput | null,
-  postalCode?: ModelStringInput | null,
-  company?: ModelStringInput | null,
-  and?: Array< ModelOrderFilterInput | null > | null,
-  or?: Array< ModelOrderFilterInput | null > | null,
-  not?: ModelOrderFilterInput | null,
 };
 
 export type ModelSampleCategoryFilterInput = {
@@ -849,7 +825,7 @@ export type ModelSampleCategoryFilterInput = {
 
 export type ModelSampleCategoryConnection = {
   __typename: "ModelSampleCategoryConnection",
-  items?:  Array<SampleCategory | null > | null,
+  items:  Array<SampleCategory | null >,
   nextToken?: string | null,
 };
 
@@ -885,7 +861,7 @@ export type ModelTestPackFilterInput = {
 
 export type ModelTestPackConnection = {
   __typename: "ModelTestPackConnection",
-  items?:  Array<TestPack | null > | null,
+  items:  Array<TestPack | null >,
   nextToken?: string | null,
 };
 
@@ -902,7 +878,7 @@ export type ModelChemicalAnalysisFilterInput = {
 
 export type ModelChemicalAnalysisConnection = {
   __typename: "ModelChemicalAnalysisConnection",
-  items?:  Array<ChemicalAnalysis | null > | null,
+  items:  Array<ChemicalAnalysis | null >,
   nextToken?: string | null,
 };
 
@@ -926,7 +902,7 @@ export type ModelChemicalFilterInput = {
 
 export type ModelChemicalConnection = {
   __typename: "ModelChemicalConnection",
-  items?:  Array<Chemical | null > | null,
+  items:  Array<Chemical | null >,
   nextToken?: string | null,
 };
 
@@ -951,7 +927,7 @@ export type ModelImpactCategoryFilterInput = {
 
 export type ModelImpactCategoryConnection = {
   __typename: "ModelImpactCategoryConnection",
-  items?:  Array<ImpactCategory | null > | null,
+  items:  Array<ImpactCategory | null >,
   nextToken?: string | null,
 };
 
@@ -975,6 +951,30 @@ export type ModelChemicalImpactFilterInput = {
   not?: ModelChemicalImpactFilterInput | null,
 };
 
+export type ModelOrderFilterInput = {
+  id?: ModelIDInput | null,
+  localUserId?: ModelStringInput | null,
+  count?: ModelIntInput | null,
+  purchasedDate?: ModelStringInput | null,
+  samplingDate?: ModelStringInput | null,
+  resultDate?: ModelStringInput | null,
+  orderStatus?: ModelStringInput | null,
+  paymentStatus?: ModelStringInput | null,
+  email?: ModelStringInput | null,
+  name?: ModelStringInput | null,
+  addressPart1?: ModelStringInput | null,
+  addressPart2?: ModelStringInput | null,
+  contactNumber?: ModelStringInput | null,
+  profileImageLink?: ModelStringInput | null,
+  country?: ModelStringInput | null,
+  city?: ModelStringInput | null,
+  postalCode?: ModelStringInput | null,
+  company?: ModelStringInput | null,
+  and?: Array< ModelOrderFilterInput | null > | null,
+  or?: Array< ModelOrderFilterInput | null > | null,
+  not?: ModelOrderFilterInput | null,
+};
+
 export type ModelChemicalAnalysisOrderFilterInput = {
   id?: ModelIDInput | null,
   orderId?: ModelIDInput | null,
@@ -995,6 +995,50 @@ export type ModelChemicalAnalysisResultFilterInput = {
   not?: ModelChemicalAnalysisResultFilterInput | null,
 };
 
+export type UpdateOrderMutationVariables = {
+  input: UpdateOrderInput,
+  condition?: ModelOrderConditionInput | null,
+};
+
+export type UpdateOrderMutation = {
+  updateOrder?:  {
+    __typename: "Order",
+    id: string,
+    localUserId: string,
+    count: number,
+    purchasedDate: string,
+    samplingDate: string,
+    resultDate: string,
+    orderStatus: string,
+    paymentStatus: string,
+    email: string,
+    name: string,
+    addressPart1: string,
+    addressPart2: string,
+    contactNumber: string,
+    profileImageLink: string,
+    country: string,
+    city: string,
+    postalCode: string,
+    company: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+    chemicalAnalysisOrder?:  {
+      __typename: "ModelChemicalAnalysisOrderConnection",
+      items:  Array< {
+        __typename: "ChemicalAnalysisOrder",
+        id: string,
+        orderId: string,
+        chemicalAnalysisId: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+  } | null,
+};
+
 export type CreateLocalUserMutationVariables = {
   input: CreateLocalUserInput,
   condition?: ModelLocalUserConditionInput | null,
@@ -1013,9 +1057,12 @@ export type CreateLocalUserMutation = {
     city: string,
     postalCode: string,
     company: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
     orders?:  {
       __typename: "ModelOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Order",
         id: string,
         localUserId: string,
@@ -1038,12 +1085,9 @@ export type CreateLocalUserMutation = {
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -1065,9 +1109,12 @@ export type UpdateLocalUserMutation = {
     city: string,
     postalCode: string,
     company: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
     orders?:  {
       __typename: "ModelOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Order",
         id: string,
         localUserId: string,
@@ -1090,12 +1137,9 @@ export type UpdateLocalUserMutation = {
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -1117,9 +1161,12 @@ export type DeleteLocalUserMutation = {
     city: string,
     postalCode: string,
     company: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
     orders?:  {
       __typename: "ModelOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Order",
         id: string,
         localUserId: string,
@@ -1142,12 +1189,9 @@ export type DeleteLocalUserMutation = {
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -1166,7 +1210,7 @@ export type CreateSampleCategoryMutation = {
     updatedAt: string,
     testGroups?:  {
       __typename: "ModelTestGroupConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroup",
         id: string,
         name: string,
@@ -1176,7 +1220,7 @@ export type CreateSampleCategoryMutation = {
         sampleCategoryId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -1197,7 +1241,7 @@ export type UpdateSampleCategoryMutation = {
     updatedAt: string,
     testGroups?:  {
       __typename: "ModelTestGroupConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroup",
         id: string,
         name: string,
@@ -1207,7 +1251,7 @@ export type UpdateSampleCategoryMutation = {
         sampleCategoryId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -1228,7 +1272,7 @@ export type DeleteSampleCategoryMutation = {
     updatedAt: string,
     testGroups?:  {
       __typename: "ModelTestGroupConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroup",
         id: string,
         name: string,
@@ -1238,7 +1282,7 @@ export type DeleteSampleCategoryMutation = {
         sampleCategoryId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -1262,14 +1306,14 @@ export type CreateTestGroupMutation = {
     updatedAt: string,
     testGroupTestPack?:  {
       __typename: "ModelTestGroupTestPackConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroupTestPack",
         id: string,
         testPackId: string,
         testGroupId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -1293,14 +1337,14 @@ export type UpdateTestGroupMutation = {
     updatedAt: string,
     testGroupTestPack?:  {
       __typename: "ModelTestGroupTestPackConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroupTestPack",
         id: string,
         testPackId: string,
         testGroupId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -1324,14 +1368,14 @@ export type DeleteTestGroupMutation = {
     updatedAt: string,
     testGroupTestPack?:  {
       __typename: "ModelTestGroupTestPackConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroupTestPack",
         id: string,
         testPackId: string,
         testGroupId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -1493,26 +1537,26 @@ export type CreateTestPackMutation = {
     updatedAt: string,
     testGroupTestPack?:  {
       __typename: "ModelTestGroupTestPackConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroupTestPack",
         id: string,
         testPackId: string,
         testGroupId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     testPackChemicalAnalysis?:  {
       __typename: "ModelTestPackChemicalAnalysisConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestPackChemicalAnalysis",
         id: string,
         testPackId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -1533,26 +1577,26 @@ export type UpdateTestPackMutation = {
     updatedAt: string,
     testGroupTestPack?:  {
       __typename: "ModelTestGroupTestPackConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroupTestPack",
         id: string,
         testPackId: string,
         testGroupId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     testPackChemicalAnalysis?:  {
       __typename: "ModelTestPackChemicalAnalysisConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestPackChemicalAnalysis",
         id: string,
         testPackId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -1573,26 +1617,26 @@ export type DeleteTestPackMutation = {
     updatedAt: string,
     testGroupTestPack?:  {
       __typename: "ModelTestGroupTestPackConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroupTestPack",
         id: string,
         testPackId: string,
         testGroupId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     testPackChemicalAnalysis?:  {
       __typename: "ModelTestPackChemicalAnalysisConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestPackChemicalAnalysis",
         id: string,
         testPackId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -1615,38 +1659,38 @@ export type CreateChemicalAnalysisMutation = {
     updatedAt: string,
     testPackChemicalAnalysis?:  {
       __typename: "ModelTestPackChemicalAnalysisConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestPackChemicalAnalysis",
         id: string,
         testPackId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalAnalysisChemical?:  {
       __typename: "ModelChemicalAnalysisChemicalConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisChemical",
         id: string,
         chemicalId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalAnalysisOrder?:  {
       __typename: "ModelChemicalAnalysisOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisOrder",
         id: string,
         orderId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -1669,38 +1713,38 @@ export type UpdateChemicalAnalysisMutation = {
     updatedAt: string,
     testPackChemicalAnalysis?:  {
       __typename: "ModelTestPackChemicalAnalysisConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestPackChemicalAnalysis",
         id: string,
         testPackId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalAnalysisChemical?:  {
       __typename: "ModelChemicalAnalysisChemicalConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisChemical",
         id: string,
         chemicalId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalAnalysisOrder?:  {
       __typename: "ModelChemicalAnalysisOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisOrder",
         id: string,
         orderId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -1723,38 +1767,38 @@ export type DeleteChemicalAnalysisMutation = {
     updatedAt: string,
     testPackChemicalAnalysis?:  {
       __typename: "ModelTestPackChemicalAnalysisConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestPackChemicalAnalysis",
         id: string,
         testPackId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalAnalysisChemical?:  {
       __typename: "ModelChemicalAnalysisChemicalConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisChemical",
         id: string,
         chemicalId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalAnalysisOrder?:  {
       __typename: "ModelChemicalAnalysisOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisOrder",
         id: string,
         orderId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -1937,26 +1981,26 @@ export type CreateChemicalMutation = {
     updatedAt: string,
     chemicalAnalysisChemical?:  {
       __typename: "ModelChemicalAnalysisChemicalConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisChemical",
         id: string,
         chemicalId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalImpacts?:  {
       __typename: "ModelChemicalImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalImpact",
         id: string,
         chemicalId: string,
         impactId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -1977,26 +2021,26 @@ export type UpdateChemicalMutation = {
     updatedAt: string,
     chemicalAnalysisChemical?:  {
       __typename: "ModelChemicalAnalysisChemicalConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisChemical",
         id: string,
         chemicalId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalImpacts?:  {
       __typename: "ModelChemicalImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalImpact",
         id: string,
         chemicalId: string,
         impactId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -2017,26 +2061,26 @@ export type DeleteChemicalMutation = {
     updatedAt: string,
     chemicalAnalysisChemical?:  {
       __typename: "ModelChemicalAnalysisChemicalConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisChemical",
         id: string,
         chemicalId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalImpacts?:  {
       __typename: "ModelChemicalImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalImpact",
         id: string,
         chemicalId: string,
         impactId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -2220,7 +2264,7 @@ export type CreateImpactCategoryMutation = {
     updatedAt: string,
     impacts?:  {
       __typename: "ModelImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Impact",
         id: string,
         name: string,
@@ -2229,7 +2273,7 @@ export type CreateImpactCategoryMutation = {
         impactCategoryId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -2251,7 +2295,7 @@ export type UpdateImpactCategoryMutation = {
     updatedAt: string,
     impacts?:  {
       __typename: "ModelImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Impact",
         id: string,
         name: string,
@@ -2260,7 +2304,7 @@ export type UpdateImpactCategoryMutation = {
         impactCategoryId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -2282,7 +2326,7 @@ export type DeleteImpactCategoryMutation = {
     updatedAt: string,
     impacts?:  {
       __typename: "ModelImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Impact",
         id: string,
         name: string,
@@ -2291,7 +2335,7 @@ export type DeleteImpactCategoryMutation = {
         impactCategoryId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -2314,14 +2358,14 @@ export type CreateImpactMutation = {
     updatedAt: string,
     chemicalImpacts?:  {
       __typename: "ModelChemicalImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalImpact",
         id: string,
         chemicalId: string,
         impactId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -2344,14 +2388,14 @@ export type UpdateImpactMutation = {
     updatedAt: string,
     chemicalImpacts?:  {
       __typename: "ModelChemicalImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalImpact",
         id: string,
         chemicalId: string,
         impactId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -2374,14 +2418,14 @@ export type DeleteImpactMutation = {
     updatedAt: string,
     chemicalImpacts?:  {
       __typename: "ModelChemicalImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalImpact",
         id: string,
         chemicalId: string,
         impactId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -2556,58 +2600,14 @@ export type CreateOrderMutation = {
     owner?: string | null,
     chemicalAnalysisOrder?:  {
       __typename: "ModelChemicalAnalysisOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisOrder",
         id: string,
         orderId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type UpdateOrderMutationVariables = {
-  input: UpdateOrderInput,
-  condition?: ModelOrderConditionInput | null,
-};
-
-export type UpdateOrderMutation = {
-  updateOrder?:  {
-    __typename: "Order",
-    id: string,
-    localUserId: string,
-    count: number,
-    purchasedDate: string,
-    samplingDate: string,
-    resultDate: string,
-    orderStatus: string,
-    paymentStatus: string,
-    email: string,
-    name: string,
-    addressPart1: string,
-    addressPart2: string,
-    contactNumber: string,
-    profileImageLink: string,
-    country: string,
-    city: string,
-    postalCode: string,
-    company: string,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-    chemicalAnalysisOrder?:  {
-      __typename: "ModelChemicalAnalysisOrderConnection",
-      items?:  Array< {
-        __typename: "ChemicalAnalysisOrder",
-        id: string,
-        orderId: string,
-        chemicalAnalysisId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -2644,14 +2644,14 @@ export type DeleteOrderMutation = {
     owner?: string | null,
     chemicalAnalysisOrder?:  {
       __typename: "ModelChemicalAnalysisOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisOrder",
         id: string,
         orderId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -2668,6 +2668,30 @@ export type CreateChemicalAnalysisOrderMutation = {
     id: string,
     orderId: string,
     chemicalAnalysisId: string,
+    createdAt: string,
+    updatedAt: string,
+    chemicalAnalysis:  {
+      __typename: "ChemicalAnalysis",
+      id: string,
+      name: string,
+      price: string,
+      discount: string,
+      description: string,
+      createdAt: string,
+      updatedAt: string,
+      testPackChemicalAnalysis?:  {
+        __typename: "ModelTestPackChemicalAnalysisConnection",
+        nextToken?: string | null,
+      } | null,
+      chemicalAnalysisChemical?:  {
+        __typename: "ModelChemicalAnalysisChemicalConnection",
+        nextToken?: string | null,
+      } | null,
+      chemicalAnalysisOrder?:  {
+        __typename: "ModelChemicalAnalysisOrderConnection",
+        nextToken?: string | null,
+      } | null,
+    },
     order:  {
       __typename: "Order",
       id: string,
@@ -2696,33 +2720,9 @@ export type CreateChemicalAnalysisOrderMutation = {
         nextToken?: string | null,
       } | null,
     },
-    createdAt: string,
-    updatedAt: string,
-    chemicalAnalysis:  {
-      __typename: "ChemicalAnalysis",
-      id: string,
-      name: string,
-      price: string,
-      discount: string,
-      description: string,
-      createdAt: string,
-      updatedAt: string,
-      testPackChemicalAnalysis?:  {
-        __typename: "ModelTestPackChemicalAnalysisConnection",
-        nextToken?: string | null,
-      } | null,
-      chemicalAnalysisChemical?:  {
-        __typename: "ModelChemicalAnalysisChemicalConnection",
-        nextToken?: string | null,
-      } | null,
-      chemicalAnalysisOrder?:  {
-        __typename: "ModelChemicalAnalysisOrderConnection",
-        nextToken?: string | null,
-      } | null,
-    },
     chemicalAnalysisResults?:  {
       __typename: "ModelChemicalAnalysisResultConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisResult",
         id: string,
         chemicalAnalysisOrderId: string,
@@ -2731,7 +2731,7 @@ export type CreateChemicalAnalysisOrderMutation = {
         resultType: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -2748,6 +2748,30 @@ export type UpdateChemicalAnalysisOrderMutation = {
     id: string,
     orderId: string,
     chemicalAnalysisId: string,
+    createdAt: string,
+    updatedAt: string,
+    chemicalAnalysis:  {
+      __typename: "ChemicalAnalysis",
+      id: string,
+      name: string,
+      price: string,
+      discount: string,
+      description: string,
+      createdAt: string,
+      updatedAt: string,
+      testPackChemicalAnalysis?:  {
+        __typename: "ModelTestPackChemicalAnalysisConnection",
+        nextToken?: string | null,
+      } | null,
+      chemicalAnalysisChemical?:  {
+        __typename: "ModelChemicalAnalysisChemicalConnection",
+        nextToken?: string | null,
+      } | null,
+      chemicalAnalysisOrder?:  {
+        __typename: "ModelChemicalAnalysisOrderConnection",
+        nextToken?: string | null,
+      } | null,
+    },
     order:  {
       __typename: "Order",
       id: string,
@@ -2776,33 +2800,9 @@ export type UpdateChemicalAnalysisOrderMutation = {
         nextToken?: string | null,
       } | null,
     },
-    createdAt: string,
-    updatedAt: string,
-    chemicalAnalysis:  {
-      __typename: "ChemicalAnalysis",
-      id: string,
-      name: string,
-      price: string,
-      discount: string,
-      description: string,
-      createdAt: string,
-      updatedAt: string,
-      testPackChemicalAnalysis?:  {
-        __typename: "ModelTestPackChemicalAnalysisConnection",
-        nextToken?: string | null,
-      } | null,
-      chemicalAnalysisChemical?:  {
-        __typename: "ModelChemicalAnalysisChemicalConnection",
-        nextToken?: string | null,
-      } | null,
-      chemicalAnalysisOrder?:  {
-        __typename: "ModelChemicalAnalysisOrderConnection",
-        nextToken?: string | null,
-      } | null,
-    },
     chemicalAnalysisResults?:  {
       __typename: "ModelChemicalAnalysisResultConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisResult",
         id: string,
         chemicalAnalysisOrderId: string,
@@ -2811,7 +2811,7 @@ export type UpdateChemicalAnalysisOrderMutation = {
         resultType: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -2828,6 +2828,30 @@ export type DeleteChemicalAnalysisOrderMutation = {
     id: string,
     orderId: string,
     chemicalAnalysisId: string,
+    createdAt: string,
+    updatedAt: string,
+    chemicalAnalysis:  {
+      __typename: "ChemicalAnalysis",
+      id: string,
+      name: string,
+      price: string,
+      discount: string,
+      description: string,
+      createdAt: string,
+      updatedAt: string,
+      testPackChemicalAnalysis?:  {
+        __typename: "ModelTestPackChemicalAnalysisConnection",
+        nextToken?: string | null,
+      } | null,
+      chemicalAnalysisChemical?:  {
+        __typename: "ModelChemicalAnalysisChemicalConnection",
+        nextToken?: string | null,
+      } | null,
+      chemicalAnalysisOrder?:  {
+        __typename: "ModelChemicalAnalysisOrderConnection",
+        nextToken?: string | null,
+      } | null,
+    },
     order:  {
       __typename: "Order",
       id: string,
@@ -2856,33 +2880,9 @@ export type DeleteChemicalAnalysisOrderMutation = {
         nextToken?: string | null,
       } | null,
     },
-    createdAt: string,
-    updatedAt: string,
-    chemicalAnalysis:  {
-      __typename: "ChemicalAnalysis",
-      id: string,
-      name: string,
-      price: string,
-      discount: string,
-      description: string,
-      createdAt: string,
-      updatedAt: string,
-      testPackChemicalAnalysis?:  {
-        __typename: "ModelTestPackChemicalAnalysisConnection",
-        nextToken?: string | null,
-      } | null,
-      chemicalAnalysisChemical?:  {
-        __typename: "ModelChemicalAnalysisChemicalConnection",
-        nextToken?: string | null,
-      } | null,
-      chemicalAnalysisOrder?:  {
-        __typename: "ModelChemicalAnalysisOrderConnection",
-        nextToken?: string | null,
-      } | null,
-    },
     chemicalAnalysisResults?:  {
       __typename: "ModelChemicalAnalysisResultConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisResult",
         id: string,
         chemicalAnalysisOrderId: string,
@@ -2891,7 +2891,7 @@ export type DeleteChemicalAnalysisOrderMutation = {
         resultType: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -3016,9 +3016,12 @@ export type GetLocalUserQuery = {
     city: string,
     postalCode: string,
     company: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
     orders?:  {
       __typename: "ModelOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Order",
         id: string,
         localUserId: string,
@@ -3041,12 +3044,9 @@ export type GetLocalUserQuery = {
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -3061,7 +3061,7 @@ export type ListLocalUsersQueryVariables = {
 export type ListLocalUsersQuery = {
   listLocalUsers?:  {
     __typename: "ModelLocalUserConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "LocalUser",
       email: string,
       name: string,
@@ -3073,98 +3073,14 @@ export type ListLocalUsersQuery = {
       city: string,
       postalCode: string,
       company: string,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
       orders?:  {
         __typename: "ModelOrderConnection",
         nextToken?: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    } | null > | null,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetOrderQueryVariables = {
-  id: string,
-};
-
-export type GetOrderQuery = {
-  getOrder?:  {
-    __typename: "Order",
-    id: string,
-    localUserId: string,
-    count: number,
-    purchasedDate: string,
-    samplingDate: string,
-    resultDate: string,
-    orderStatus: string,
-    paymentStatus: string,
-    email: string,
-    name: string,
-    addressPart1: string,
-    addressPart2: string,
-    contactNumber: string,
-    profileImageLink: string,
-    country: string,
-    city: string,
-    postalCode: string,
-    company: string,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-    chemicalAnalysisOrder?:  {
-      __typename: "ModelChemicalAnalysisOrderConnection",
-      items?:  Array< {
-        __typename: "ChemicalAnalysisOrder",
-        id: string,
-        orderId: string,
-        chemicalAnalysisId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type ListOrdersQueryVariables = {
-  filter?: ModelOrderFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListOrdersQuery = {
-  listOrders?:  {
-    __typename: "ModelOrderConnection",
-    items?:  Array< {
-      __typename: "Order",
-      id: string,
-      localUserId: string,
-      count: number,
-      purchasedDate: string,
-      samplingDate: string,
-      resultDate: string,
-      orderStatus: string,
-      paymentStatus: string,
-      email: string,
-      name: string,
-      addressPart1: string,
-      addressPart2: string,
-      contactNumber: string,
-      profileImageLink: string,
-      country: string,
-      city: string,
-      postalCode: string,
-      company: string,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-      chemicalAnalysisOrder?:  {
-        __typename: "ModelChemicalAnalysisOrderConnection",
-        nextToken?: string | null,
-      } | null,
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -3183,7 +3099,7 @@ export type GetSampleCategoryQuery = {
     updatedAt: string,
     testGroups?:  {
       __typename: "ModelTestGroupConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroup",
         id: string,
         name: string,
@@ -3193,7 +3109,7 @@ export type GetSampleCategoryQuery = {
         sampleCategoryId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -3208,7 +3124,7 @@ export type ListSampleCategorysQueryVariables = {
 export type ListSampleCategorysQuery = {
   listSampleCategorys?:  {
     __typename: "ModelSampleCategoryConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "SampleCategory",
       id: string,
       name: string,
@@ -3219,7 +3135,7 @@ export type ListSampleCategorysQuery = {
         __typename: "ModelTestGroupConnection",
         nextToken?: string | null,
       } | null,
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -3241,14 +3157,14 @@ export type GetTestGroupQuery = {
     updatedAt: string,
     testGroupTestPack?:  {
       __typename: "ModelTestGroupTestPackConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroupTestPack",
         id: string,
         testPackId: string,
         testGroupId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -3263,7 +3179,7 @@ export type ListTestGroupsQueryVariables = {
 export type ListTestGroupsQuery = {
   listTestGroups?:  {
     __typename: "ModelTestGroupConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "TestGroup",
       id: string,
       name: string,
@@ -3277,7 +3193,7 @@ export type ListTestGroupsQuery = {
         __typename: "ModelTestGroupTestPackConnection",
         nextToken?: string | null,
       } | null,
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -3337,7 +3253,7 @@ export type ListTestGroupTestPacksQueryVariables = {
 export type ListTestGroupTestPacksQuery = {
   listTestGroupTestPacks?:  {
     __typename: "ModelTestGroupTestPackConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "TestGroupTestPack",
       id: string,
       testPackId: string,
@@ -3363,7 +3279,7 @@ export type ListTestGroupTestPacksQuery = {
         createdAt: string,
         updatedAt: string,
       },
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -3382,26 +3298,26 @@ export type GetTestPackQuery = {
     updatedAt: string,
     testGroupTestPack?:  {
       __typename: "ModelTestGroupTestPackConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroupTestPack",
         id: string,
         testPackId: string,
         testGroupId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     testPackChemicalAnalysis?:  {
       __typename: "ModelTestPackChemicalAnalysisConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestPackChemicalAnalysis",
         id: string,
         testPackId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -3416,7 +3332,7 @@ export type ListTestPacksQueryVariables = {
 export type ListTestPacksQuery = {
   listTestPacks?:  {
     __typename: "ModelTestPackConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "TestPack",
       id: string,
       name: string,
@@ -3431,7 +3347,7 @@ export type ListTestPacksQuery = {
         __typename: "ModelTestPackChemicalAnalysisConnection",
         nextToken?: string | null,
       } | null,
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -3452,38 +3368,38 @@ export type GetChemicalAnalysisQuery = {
     updatedAt: string,
     testPackChemicalAnalysis?:  {
       __typename: "ModelTestPackChemicalAnalysisConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestPackChemicalAnalysis",
         id: string,
         testPackId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalAnalysisChemical?:  {
       __typename: "ModelChemicalAnalysisChemicalConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisChemical",
         id: string,
         chemicalId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalAnalysisOrder?:  {
       __typename: "ModelChemicalAnalysisOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisOrder",
         id: string,
         orderId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -3498,7 +3414,7 @@ export type ListChemicalAnalysissQueryVariables = {
 export type ListChemicalAnalysissQuery = {
   listChemicalAnalysiss?:  {
     __typename: "ModelChemicalAnalysisConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "ChemicalAnalysis",
       id: string,
       name: string,
@@ -3519,7 +3435,7 @@ export type ListChemicalAnalysissQuery = {
         __typename: "ModelChemicalAnalysisOrderConnection",
         nextToken?: string | null,
       } | null,
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -3586,7 +3502,7 @@ export type ListTestPackChemicalAnalysissQueryVariables = {
 export type ListTestPackChemicalAnalysissQuery = {
   listTestPackChemicalAnalysiss?:  {
     __typename: "ModelTestPackChemicalAnalysisConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "TestPackChemicalAnalysis",
       id: string,
       testPackId: string,
@@ -3611,7 +3527,7 @@ export type ListTestPackChemicalAnalysissQuery = {
         createdAt: string,
         updatedAt: string,
       },
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -3630,26 +3546,26 @@ export type GetChemicalQuery = {
     updatedAt: string,
     chemicalAnalysisChemical?:  {
       __typename: "ModelChemicalAnalysisChemicalConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisChemical",
         id: string,
         chemicalId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalImpacts?:  {
       __typename: "ModelChemicalImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalImpact",
         id: string,
         chemicalId: string,
         impactId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -3664,7 +3580,7 @@ export type ListChemicalsQueryVariables = {
 export type ListChemicalsQuery = {
   listChemicals?:  {
     __typename: "ModelChemicalConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "Chemical",
       id: string,
       name: string,
@@ -3679,7 +3595,7 @@ export type ListChemicalsQuery = {
         __typename: "ModelChemicalImpactConnection",
         nextToken?: string | null,
       } | null,
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -3746,7 +3662,7 @@ export type ListChemicalAnalysisChemicalsQueryVariables = {
 export type ListChemicalAnalysisChemicalsQuery = {
   listChemicalAnalysisChemicals?:  {
     __typename: "ModelChemicalAnalysisChemicalConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "ChemicalAnalysisChemical",
       id: string,
       chemicalId: string,
@@ -3771,7 +3687,7 @@ export type ListChemicalAnalysisChemicalsQuery = {
         createdAt: string,
         updatedAt: string,
       },
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -3791,7 +3707,7 @@ export type GetImpactCategoryQuery = {
     updatedAt: string,
     impacts?:  {
       __typename: "ModelImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Impact",
         id: string,
         name: string,
@@ -3800,7 +3716,7 @@ export type GetImpactCategoryQuery = {
         impactCategoryId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -3815,7 +3731,7 @@ export type ListImpactCategorysQueryVariables = {
 export type ListImpactCategorysQuery = {
   listImpactCategorys?:  {
     __typename: "ModelImpactCategoryConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "ImpactCategory",
       id: string,
       name: string,
@@ -3827,7 +3743,7 @@ export type ListImpactCategorysQuery = {
         __typename: "ModelImpactConnection",
         nextToken?: string | null,
       } | null,
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -3848,14 +3764,14 @@ export type GetImpactQuery = {
     updatedAt: string,
     chemicalImpacts?:  {
       __typename: "ModelChemicalImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalImpact",
         id: string,
         chemicalId: string,
         impactId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -3870,7 +3786,7 @@ export type ListImpactsQueryVariables = {
 export type ListImpactsQuery = {
   listImpacts?:  {
     __typename: "ModelImpactConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "Impact",
       id: string,
       name: string,
@@ -3883,7 +3799,7 @@ export type ListImpactsQuery = {
         __typename: "ModelChemicalImpactConnection",
         nextToken?: string | null,
       } | null,
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -3942,7 +3858,7 @@ export type ListChemicalImpactsQueryVariables = {
 export type ListChemicalImpactsQuery = {
   listChemicalImpacts?:  {
     __typename: "ModelChemicalImpactConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "ChemicalImpact",
       id: string,
       chemicalId: string,
@@ -3967,7 +3883,91 @@ export type ListChemicalImpactsQuery = {
         createdAt: string,
         updatedAt: string,
       },
-    } | null > | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetOrderQueryVariables = {
+  id: string,
+};
+
+export type GetOrderQuery = {
+  getOrder?:  {
+    __typename: "Order",
+    id: string,
+    localUserId: string,
+    count: number,
+    purchasedDate: string,
+    samplingDate: string,
+    resultDate: string,
+    orderStatus: string,
+    paymentStatus: string,
+    email: string,
+    name: string,
+    addressPart1: string,
+    addressPart2: string,
+    contactNumber: string,
+    profileImageLink: string,
+    country: string,
+    city: string,
+    postalCode: string,
+    company: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+    chemicalAnalysisOrder?:  {
+      __typename: "ModelChemicalAnalysisOrderConnection",
+      items:  Array< {
+        __typename: "ChemicalAnalysisOrder",
+        id: string,
+        orderId: string,
+        chemicalAnalysisId: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+  } | null,
+};
+
+export type ListOrdersQueryVariables = {
+  filter?: ModelOrderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListOrdersQuery = {
+  listOrders?:  {
+    __typename: "ModelOrderConnection",
+    items:  Array< {
+      __typename: "Order",
+      id: string,
+      localUserId: string,
+      count: number,
+      purchasedDate: string,
+      samplingDate: string,
+      resultDate: string,
+      orderStatus: string,
+      paymentStatus: string,
+      email: string,
+      name: string,
+      addressPart1: string,
+      addressPart2: string,
+      contactNumber: string,
+      profileImageLink: string,
+      country: string,
+      city: string,
+      postalCode: string,
+      company: string,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+      chemicalAnalysisOrder?:  {
+        __typename: "ModelChemicalAnalysisOrderConnection",
+        nextToken?: string | null,
+      } | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -3982,6 +3982,30 @@ export type GetChemicalAnalysisOrderQuery = {
     id: string,
     orderId: string,
     chemicalAnalysisId: string,
+    createdAt: string,
+    updatedAt: string,
+    chemicalAnalysis:  {
+      __typename: "ChemicalAnalysis",
+      id: string,
+      name: string,
+      price: string,
+      discount: string,
+      description: string,
+      createdAt: string,
+      updatedAt: string,
+      testPackChemicalAnalysis?:  {
+        __typename: "ModelTestPackChemicalAnalysisConnection",
+        nextToken?: string | null,
+      } | null,
+      chemicalAnalysisChemical?:  {
+        __typename: "ModelChemicalAnalysisChemicalConnection",
+        nextToken?: string | null,
+      } | null,
+      chemicalAnalysisOrder?:  {
+        __typename: "ModelChemicalAnalysisOrderConnection",
+        nextToken?: string | null,
+      } | null,
+    },
     order:  {
       __typename: "Order",
       id: string,
@@ -4010,33 +4034,9 @@ export type GetChemicalAnalysisOrderQuery = {
         nextToken?: string | null,
       } | null,
     },
-    createdAt: string,
-    updatedAt: string,
-    chemicalAnalysis:  {
-      __typename: "ChemicalAnalysis",
-      id: string,
-      name: string,
-      price: string,
-      discount: string,
-      description: string,
-      createdAt: string,
-      updatedAt: string,
-      testPackChemicalAnalysis?:  {
-        __typename: "ModelTestPackChemicalAnalysisConnection",
-        nextToken?: string | null,
-      } | null,
-      chemicalAnalysisChemical?:  {
-        __typename: "ModelChemicalAnalysisChemicalConnection",
-        nextToken?: string | null,
-      } | null,
-      chemicalAnalysisOrder?:  {
-        __typename: "ModelChemicalAnalysisOrderConnection",
-        nextToken?: string | null,
-      } | null,
-    },
     chemicalAnalysisResults?:  {
       __typename: "ModelChemicalAnalysisResultConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisResult",
         id: string,
         chemicalAnalysisOrderId: string,
@@ -4045,7 +4045,7 @@ export type GetChemicalAnalysisOrderQuery = {
         resultType: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -4060,11 +4060,23 @@ export type ListChemicalAnalysisOrdersQueryVariables = {
 export type ListChemicalAnalysisOrdersQuery = {
   listChemicalAnalysisOrders?:  {
     __typename: "ModelChemicalAnalysisOrderConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "ChemicalAnalysisOrder",
       id: string,
       orderId: string,
       chemicalAnalysisId: string,
+      createdAt: string,
+      updatedAt: string,
+      chemicalAnalysis:  {
+        __typename: "ChemicalAnalysis",
+        id: string,
+        name: string,
+        price: string,
+        discount: string,
+        description: string,
+        createdAt: string,
+        updatedAt: string,
+      },
       order:  {
         __typename: "Order",
         id: string,
@@ -4089,23 +4101,11 @@ export type ListChemicalAnalysisOrdersQuery = {
         updatedAt: string,
         owner?: string | null,
       },
-      createdAt: string,
-      updatedAt: string,
-      chemicalAnalysis:  {
-        __typename: "ChemicalAnalysis",
-        id: string,
-        name: string,
-        price: string,
-        discount: string,
-        description: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       chemicalAnalysisResults?:  {
         __typename: "ModelChemicalAnalysisResultConnection",
         nextToken?: string | null,
       } | null,
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -4152,7 +4152,7 @@ export type ListChemicalAnalysisResultsQueryVariables = {
 export type ListChemicalAnalysisResultsQuery = {
   listChemicalAnalysisResults?:  {
     __typename: "ModelChemicalAnalysisResultConnection",
-    items?:  Array< {
+    items:  Array< {
       __typename: "ChemicalAnalysisResult",
       id: string,
       chemicalAnalysisOrderId: string,
@@ -4169,7 +4169,7 @@ export type ListChemicalAnalysisResultsQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
-    } | null > | null,
+    } | null >,
     nextToken?: string | null,
   } | null,
 };
@@ -4191,9 +4191,12 @@ export type OnCreateLocalUserSubscription = {
     city: string,
     postalCode: string,
     company: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
     orders?:  {
       __typename: "ModelOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Order",
         id: string,
         localUserId: string,
@@ -4216,12 +4219,9 @@ export type OnCreateLocalUserSubscription = {
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -4242,9 +4242,12 @@ export type OnUpdateLocalUserSubscription = {
     city: string,
     postalCode: string,
     company: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
     orders?:  {
       __typename: "ModelOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Order",
         id: string,
         localUserId: string,
@@ -4267,12 +4270,9 @@ export type OnUpdateLocalUserSubscription = {
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -4293,9 +4293,12 @@ export type OnDeleteLocalUserSubscription = {
     city: string,
     postalCode: string,
     company: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
     orders?:  {
       __typename: "ModelOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Order",
         id: string,
         localUserId: string,
@@ -4318,139 +4321,7 @@ export type OnDeleteLocalUserSubscription = {
         createdAt: string,
         updatedAt: string,
         owner?: string | null,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null,
-};
-
-export type OnCreateOrderSubscriptionVariables = {
-  owner: string,
-};
-
-export type OnCreateOrderSubscription = {
-  onCreateOrder?:  {
-    __typename: "Order",
-    id: string,
-    localUserId: string,
-    count: number,
-    purchasedDate: string,
-    samplingDate: string,
-    resultDate: string,
-    orderStatus: string,
-    paymentStatus: string,
-    email: string,
-    name: string,
-    addressPart1: string,
-    addressPart2: string,
-    contactNumber: string,
-    profileImageLink: string,
-    country: string,
-    city: string,
-    postalCode: string,
-    company: string,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-    chemicalAnalysisOrder?:  {
-      __typename: "ModelChemicalAnalysisOrderConnection",
-      items?:  Array< {
-        __typename: "ChemicalAnalysisOrder",
-        id: string,
-        orderId: string,
-        chemicalAnalysisId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type OnUpdateOrderSubscriptionVariables = {
-  owner: string,
-};
-
-export type OnUpdateOrderSubscription = {
-  onUpdateOrder?:  {
-    __typename: "Order",
-    id: string,
-    localUserId: string,
-    count: number,
-    purchasedDate: string,
-    samplingDate: string,
-    resultDate: string,
-    orderStatus: string,
-    paymentStatus: string,
-    email: string,
-    name: string,
-    addressPart1: string,
-    addressPart2: string,
-    contactNumber: string,
-    profileImageLink: string,
-    country: string,
-    city: string,
-    postalCode: string,
-    company: string,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-    chemicalAnalysisOrder?:  {
-      __typename: "ModelChemicalAnalysisOrderConnection",
-      items?:  Array< {
-        __typename: "ChemicalAnalysisOrder",
-        id: string,
-        orderId: string,
-        chemicalAnalysisId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type OnDeleteOrderSubscriptionVariables = {
-  owner: string,
-};
-
-export type OnDeleteOrderSubscription = {
-  onDeleteOrder?:  {
-    __typename: "Order",
-    id: string,
-    localUserId: string,
-    count: number,
-    purchasedDate: string,
-    samplingDate: string,
-    resultDate: string,
-    orderStatus: string,
-    paymentStatus: string,
-    email: string,
-    name: string,
-    addressPart1: string,
-    addressPart2: string,
-    contactNumber: string,
-    profileImageLink: string,
-    country: string,
-    city: string,
-    postalCode: string,
-    company: string,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-    chemicalAnalysisOrder?:  {
-      __typename: "ModelChemicalAnalysisOrderConnection",
-      items?:  Array< {
-        __typename: "ChemicalAnalysisOrder",
-        id: string,
-        orderId: string,
-        chemicalAnalysisId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -4466,7 +4337,7 @@ export type OnCreateSampleCategorySubscription = {
     updatedAt: string,
     testGroups?:  {
       __typename: "ModelTestGroupConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroup",
         id: string,
         name: string,
@@ -4476,7 +4347,7 @@ export type OnCreateSampleCategorySubscription = {
         sampleCategoryId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -4492,7 +4363,7 @@ export type OnUpdateSampleCategorySubscription = {
     updatedAt: string,
     testGroups?:  {
       __typename: "ModelTestGroupConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroup",
         id: string,
         name: string,
@@ -4502,7 +4373,7 @@ export type OnUpdateSampleCategorySubscription = {
         sampleCategoryId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -4518,7 +4389,7 @@ export type OnDeleteSampleCategorySubscription = {
     updatedAt: string,
     testGroups?:  {
       __typename: "ModelTestGroupConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroup",
         id: string,
         name: string,
@@ -4528,7 +4399,7 @@ export type OnDeleteSampleCategorySubscription = {
         sampleCategoryId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -4547,14 +4418,14 @@ export type OnCreateTestGroupSubscription = {
     updatedAt: string,
     testGroupTestPack?:  {
       __typename: "ModelTestGroupTestPackConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroupTestPack",
         id: string,
         testPackId: string,
         testGroupId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -4573,14 +4444,14 @@ export type OnUpdateTestGroupSubscription = {
     updatedAt: string,
     testGroupTestPack?:  {
       __typename: "ModelTestGroupTestPackConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroupTestPack",
         id: string,
         testPackId: string,
         testGroupId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -4599,14 +4470,14 @@ export type OnDeleteTestGroupSubscription = {
     updatedAt: string,
     testGroupTestPack?:  {
       __typename: "ModelTestGroupTestPackConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroupTestPack",
         id: string,
         testPackId: string,
         testGroupId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -4748,26 +4619,26 @@ export type OnCreateTestPackSubscription = {
     updatedAt: string,
     testGroupTestPack?:  {
       __typename: "ModelTestGroupTestPackConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroupTestPack",
         id: string,
         testPackId: string,
         testGroupId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     testPackChemicalAnalysis?:  {
       __typename: "ModelTestPackChemicalAnalysisConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestPackChemicalAnalysis",
         id: string,
         testPackId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -4783,26 +4654,26 @@ export type OnUpdateTestPackSubscription = {
     updatedAt: string,
     testGroupTestPack?:  {
       __typename: "ModelTestGroupTestPackConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroupTestPack",
         id: string,
         testPackId: string,
         testGroupId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     testPackChemicalAnalysis?:  {
       __typename: "ModelTestPackChemicalAnalysisConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestPackChemicalAnalysis",
         id: string,
         testPackId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -4818,26 +4689,26 @@ export type OnDeleteTestPackSubscription = {
     updatedAt: string,
     testGroupTestPack?:  {
       __typename: "ModelTestGroupTestPackConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestGroupTestPack",
         id: string,
         testPackId: string,
         testGroupId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     testPackChemicalAnalysis?:  {
       __typename: "ModelTestPackChemicalAnalysisConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestPackChemicalAnalysis",
         id: string,
         testPackId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -4855,38 +4726,38 @@ export type OnCreateChemicalAnalysisSubscription = {
     updatedAt: string,
     testPackChemicalAnalysis?:  {
       __typename: "ModelTestPackChemicalAnalysisConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestPackChemicalAnalysis",
         id: string,
         testPackId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalAnalysisChemical?:  {
       __typename: "ModelChemicalAnalysisChemicalConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisChemical",
         id: string,
         chemicalId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalAnalysisOrder?:  {
       __typename: "ModelChemicalAnalysisOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisOrder",
         id: string,
         orderId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -4904,38 +4775,38 @@ export type OnUpdateChemicalAnalysisSubscription = {
     updatedAt: string,
     testPackChemicalAnalysis?:  {
       __typename: "ModelTestPackChemicalAnalysisConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestPackChemicalAnalysis",
         id: string,
         testPackId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalAnalysisChemical?:  {
       __typename: "ModelChemicalAnalysisChemicalConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisChemical",
         id: string,
         chemicalId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalAnalysisOrder?:  {
       __typename: "ModelChemicalAnalysisOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisOrder",
         id: string,
         orderId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -4953,38 +4824,38 @@ export type OnDeleteChemicalAnalysisSubscription = {
     updatedAt: string,
     testPackChemicalAnalysis?:  {
       __typename: "ModelTestPackChemicalAnalysisConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "TestPackChemicalAnalysis",
         id: string,
         testPackId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalAnalysisChemical?:  {
       __typename: "ModelChemicalAnalysisChemicalConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisChemical",
         id: string,
         chemicalId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalAnalysisOrder?:  {
       __typename: "ModelChemicalAnalysisOrderConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisOrder",
         id: string,
         orderId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -5147,26 +5018,26 @@ export type OnCreateChemicalSubscription = {
     updatedAt: string,
     chemicalAnalysisChemical?:  {
       __typename: "ModelChemicalAnalysisChemicalConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisChemical",
         id: string,
         chemicalId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalImpacts?:  {
       __typename: "ModelChemicalImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalImpact",
         id: string,
         chemicalId: string,
         impactId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -5182,26 +5053,26 @@ export type OnUpdateChemicalSubscription = {
     updatedAt: string,
     chemicalAnalysisChemical?:  {
       __typename: "ModelChemicalAnalysisChemicalConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisChemical",
         id: string,
         chemicalId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalImpacts?:  {
       __typename: "ModelChemicalImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalImpact",
         id: string,
         chemicalId: string,
         impactId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -5217,26 +5088,26 @@ export type OnDeleteChemicalSubscription = {
     updatedAt: string,
     chemicalAnalysisChemical?:  {
       __typename: "ModelChemicalAnalysisChemicalConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisChemical",
         id: string,
         chemicalId: string,
         chemicalAnalysisId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
     chemicalImpacts?:  {
       __typename: "ModelChemicalImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalImpact",
         id: string,
         chemicalId: string,
         impactId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -5400,7 +5271,7 @@ export type OnCreateImpactCategorySubscription = {
     updatedAt: string,
     impacts?:  {
       __typename: "ModelImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Impact",
         id: string,
         name: string,
@@ -5409,7 +5280,7 @@ export type OnCreateImpactCategorySubscription = {
         impactCategoryId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -5426,7 +5297,7 @@ export type OnUpdateImpactCategorySubscription = {
     updatedAt: string,
     impacts?:  {
       __typename: "ModelImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Impact",
         id: string,
         name: string,
@@ -5435,7 +5306,7 @@ export type OnUpdateImpactCategorySubscription = {
         impactCategoryId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -5452,7 +5323,7 @@ export type OnDeleteImpactCategorySubscription = {
     updatedAt: string,
     impacts?:  {
       __typename: "ModelImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "Impact",
         id: string,
         name: string,
@@ -5461,7 +5332,7 @@ export type OnDeleteImpactCategorySubscription = {
         impactCategoryId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -5479,14 +5350,14 @@ export type OnCreateImpactSubscription = {
     updatedAt: string,
     chemicalImpacts?:  {
       __typename: "ModelChemicalImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalImpact",
         id: string,
         chemicalId: string,
         impactId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -5504,14 +5375,14 @@ export type OnUpdateImpactSubscription = {
     updatedAt: string,
     chemicalImpacts?:  {
       __typename: "ModelChemicalImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalImpact",
         id: string,
         chemicalId: string,
         impactId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -5529,14 +5400,14 @@ export type OnDeleteImpactSubscription = {
     updatedAt: string,
     chemicalImpacts?:  {
       __typename: "ModelChemicalImpactConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalImpact",
         id: string,
         chemicalId: string,
         impactId: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -5665,12 +5536,165 @@ export type OnDeleteChemicalImpactSubscription = {
   } | null,
 };
 
+export type OnCreateOrderSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnCreateOrderSubscription = {
+  onCreateOrder?:  {
+    __typename: "Order",
+    id: string,
+    localUserId: string,
+    count: number,
+    purchasedDate: string,
+    samplingDate: string,
+    resultDate: string,
+    orderStatus: string,
+    paymentStatus: string,
+    email: string,
+    name: string,
+    addressPart1: string,
+    addressPart2: string,
+    contactNumber: string,
+    profileImageLink: string,
+    country: string,
+    city: string,
+    postalCode: string,
+    company: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+    chemicalAnalysisOrder?:  {
+      __typename: "ModelChemicalAnalysisOrderConnection",
+      items:  Array< {
+        __typename: "ChemicalAnalysisOrder",
+        id: string,
+        orderId: string,
+        chemicalAnalysisId: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+  } | null,
+};
+
+export type OnUpdateOrderSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnUpdateOrderSubscription = {
+  onUpdateOrder?:  {
+    __typename: "Order",
+    id: string,
+    localUserId: string,
+    count: number,
+    purchasedDate: string,
+    samplingDate: string,
+    resultDate: string,
+    orderStatus: string,
+    paymentStatus: string,
+    email: string,
+    name: string,
+    addressPart1: string,
+    addressPart2: string,
+    contactNumber: string,
+    profileImageLink: string,
+    country: string,
+    city: string,
+    postalCode: string,
+    company: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+    chemicalAnalysisOrder?:  {
+      __typename: "ModelChemicalAnalysisOrderConnection",
+      items:  Array< {
+        __typename: "ChemicalAnalysisOrder",
+        id: string,
+        orderId: string,
+        chemicalAnalysisId: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+  } | null,
+};
+
+export type OnDeleteOrderSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnDeleteOrderSubscription = {
+  onDeleteOrder?:  {
+    __typename: "Order",
+    id: string,
+    localUserId: string,
+    count: number,
+    purchasedDate: string,
+    samplingDate: string,
+    resultDate: string,
+    orderStatus: string,
+    paymentStatus: string,
+    email: string,
+    name: string,
+    addressPart1: string,
+    addressPart2: string,
+    contactNumber: string,
+    profileImageLink: string,
+    country: string,
+    city: string,
+    postalCode: string,
+    company: string,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+    chemicalAnalysisOrder?:  {
+      __typename: "ModelChemicalAnalysisOrderConnection",
+      items:  Array< {
+        __typename: "ChemicalAnalysisOrder",
+        id: string,
+        orderId: string,
+        chemicalAnalysisId: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+  } | null,
+};
+
 export type OnCreateChemicalAnalysisOrderSubscription = {
   onCreateChemicalAnalysisOrder?:  {
     __typename: "ChemicalAnalysisOrder",
     id: string,
     orderId: string,
     chemicalAnalysisId: string,
+    createdAt: string,
+    updatedAt: string,
+    chemicalAnalysis:  {
+      __typename: "ChemicalAnalysis",
+      id: string,
+      name: string,
+      price: string,
+      discount: string,
+      description: string,
+      createdAt: string,
+      updatedAt: string,
+      testPackChemicalAnalysis?:  {
+        __typename: "ModelTestPackChemicalAnalysisConnection",
+        nextToken?: string | null,
+      } | null,
+      chemicalAnalysisChemical?:  {
+        __typename: "ModelChemicalAnalysisChemicalConnection",
+        nextToken?: string | null,
+      } | null,
+      chemicalAnalysisOrder?:  {
+        __typename: "ModelChemicalAnalysisOrderConnection",
+        nextToken?: string | null,
+      } | null,
+    },
     order:  {
       __typename: "Order",
       id: string,
@@ -5699,33 +5723,9 @@ export type OnCreateChemicalAnalysisOrderSubscription = {
         nextToken?: string | null,
       } | null,
     },
-    createdAt: string,
-    updatedAt: string,
-    chemicalAnalysis:  {
-      __typename: "ChemicalAnalysis",
-      id: string,
-      name: string,
-      price: string,
-      discount: string,
-      description: string,
-      createdAt: string,
-      updatedAt: string,
-      testPackChemicalAnalysis?:  {
-        __typename: "ModelTestPackChemicalAnalysisConnection",
-        nextToken?: string | null,
-      } | null,
-      chemicalAnalysisChemical?:  {
-        __typename: "ModelChemicalAnalysisChemicalConnection",
-        nextToken?: string | null,
-      } | null,
-      chemicalAnalysisOrder?:  {
-        __typename: "ModelChemicalAnalysisOrderConnection",
-        nextToken?: string | null,
-      } | null,
-    },
     chemicalAnalysisResults?:  {
       __typename: "ModelChemicalAnalysisResultConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisResult",
         id: string,
         chemicalAnalysisOrderId: string,
@@ -5734,7 +5734,7 @@ export type OnCreateChemicalAnalysisOrderSubscription = {
         resultType: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -5746,6 +5746,30 @@ export type OnUpdateChemicalAnalysisOrderSubscription = {
     id: string,
     orderId: string,
     chemicalAnalysisId: string,
+    createdAt: string,
+    updatedAt: string,
+    chemicalAnalysis:  {
+      __typename: "ChemicalAnalysis",
+      id: string,
+      name: string,
+      price: string,
+      discount: string,
+      description: string,
+      createdAt: string,
+      updatedAt: string,
+      testPackChemicalAnalysis?:  {
+        __typename: "ModelTestPackChemicalAnalysisConnection",
+        nextToken?: string | null,
+      } | null,
+      chemicalAnalysisChemical?:  {
+        __typename: "ModelChemicalAnalysisChemicalConnection",
+        nextToken?: string | null,
+      } | null,
+      chemicalAnalysisOrder?:  {
+        __typename: "ModelChemicalAnalysisOrderConnection",
+        nextToken?: string | null,
+      } | null,
+    },
     order:  {
       __typename: "Order",
       id: string,
@@ -5774,33 +5798,9 @@ export type OnUpdateChemicalAnalysisOrderSubscription = {
         nextToken?: string | null,
       } | null,
     },
-    createdAt: string,
-    updatedAt: string,
-    chemicalAnalysis:  {
-      __typename: "ChemicalAnalysis",
-      id: string,
-      name: string,
-      price: string,
-      discount: string,
-      description: string,
-      createdAt: string,
-      updatedAt: string,
-      testPackChemicalAnalysis?:  {
-        __typename: "ModelTestPackChemicalAnalysisConnection",
-        nextToken?: string | null,
-      } | null,
-      chemicalAnalysisChemical?:  {
-        __typename: "ModelChemicalAnalysisChemicalConnection",
-        nextToken?: string | null,
-      } | null,
-      chemicalAnalysisOrder?:  {
-        __typename: "ModelChemicalAnalysisOrderConnection",
-        nextToken?: string | null,
-      } | null,
-    },
     chemicalAnalysisResults?:  {
       __typename: "ModelChemicalAnalysisResultConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisResult",
         id: string,
         chemicalAnalysisOrderId: string,
@@ -5809,7 +5809,7 @@ export type OnUpdateChemicalAnalysisOrderSubscription = {
         resultType: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,
@@ -5821,6 +5821,30 @@ export type OnDeleteChemicalAnalysisOrderSubscription = {
     id: string,
     orderId: string,
     chemicalAnalysisId: string,
+    createdAt: string,
+    updatedAt: string,
+    chemicalAnalysis:  {
+      __typename: "ChemicalAnalysis",
+      id: string,
+      name: string,
+      price: string,
+      discount: string,
+      description: string,
+      createdAt: string,
+      updatedAt: string,
+      testPackChemicalAnalysis?:  {
+        __typename: "ModelTestPackChemicalAnalysisConnection",
+        nextToken?: string | null,
+      } | null,
+      chemicalAnalysisChemical?:  {
+        __typename: "ModelChemicalAnalysisChemicalConnection",
+        nextToken?: string | null,
+      } | null,
+      chemicalAnalysisOrder?:  {
+        __typename: "ModelChemicalAnalysisOrderConnection",
+        nextToken?: string | null,
+      } | null,
+    },
     order:  {
       __typename: "Order",
       id: string,
@@ -5849,33 +5873,9 @@ export type OnDeleteChemicalAnalysisOrderSubscription = {
         nextToken?: string | null,
       } | null,
     },
-    createdAt: string,
-    updatedAt: string,
-    chemicalAnalysis:  {
-      __typename: "ChemicalAnalysis",
-      id: string,
-      name: string,
-      price: string,
-      discount: string,
-      description: string,
-      createdAt: string,
-      updatedAt: string,
-      testPackChemicalAnalysis?:  {
-        __typename: "ModelTestPackChemicalAnalysisConnection",
-        nextToken?: string | null,
-      } | null,
-      chemicalAnalysisChemical?:  {
-        __typename: "ModelChemicalAnalysisChemicalConnection",
-        nextToken?: string | null,
-      } | null,
-      chemicalAnalysisOrder?:  {
-        __typename: "ModelChemicalAnalysisOrderConnection",
-        nextToken?: string | null,
-      } | null,
-    },
     chemicalAnalysisResults?:  {
       __typename: "ModelChemicalAnalysisResultConnection",
-      items?:  Array< {
+      items:  Array< {
         __typename: "ChemicalAnalysisResult",
         id: string,
         chemicalAnalysisOrderId: string,
@@ -5884,7 +5884,7 @@ export type OnDeleteChemicalAnalysisOrderSubscription = {
         resultType: string,
         createdAt: string,
         updatedAt: string,
-      } | null > | null,
+      } | null >,
       nextToken?: string | null,
     } | null,
   } | null,

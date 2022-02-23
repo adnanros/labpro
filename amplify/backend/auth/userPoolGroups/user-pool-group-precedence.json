@@ -1,6 +1,6 @@
 [
-    {
-        "groupName": "PackagesAdmin",
-        "precedence": 1
-    }
+  {
+    "groupName": "PackagesAdmin",
+    "precedence": 1
+  }
 ]

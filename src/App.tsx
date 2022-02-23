@@ -80,8 +80,9 @@ class App extends Component<any,any> {
                       <IsSignedInRoute exact path="/orderRegisteration" component={(props: any) => <OrderRegisterationPage {...props} />} />
                       <IsSignedInRoute exact path="/resulList" component={(props: any) => <ResultListPage {...props} />} />
                       {/* Order is important.*/}
-                      <HomeRoute name="Home" path="/home" render={(props: any) => <HomePage {...props} />} />
                       <HomePackageAdminRoute path="/homeAdmin" render={(props: any) => <HomeAdmin {...props} />}  />
+                      <HomeRoute name="Home" path="/" render={(props: any) => <HomePage {...props} />} />
+                      
                       <Route exact path="/404"  render={(props: any) => <Page404 {...props} />} />
                       <Route exact path="/500"  render={(props: any) => <Page500 {...props} />} />
                       {/* Order is important. this one should be the last one. unknown routes will be redirected to 404 page. */}

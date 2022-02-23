@@ -2,6 +2,46 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const updateOrder = /* GraphQL */ `
+  mutation UpdateOrder(
+    $input: UpdateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    updateOrder(input: $input, condition: $condition) {
+      id
+      localUserId
+      count
+      purchasedDate
+      samplingDate
+      resultDate
+      orderStatus
+      paymentStatus
+      email
+      name
+      addressPart1
+      addressPart2
+      contactNumber
+      profileImageLink
+      country
+      city
+      postalCode
+      company
+      createdAt
+      updatedAt
+      owner
+      chemicalAnalysisOrder {
+        items {
+          id
+          orderId
+          chemicalAnalysisId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+    }
+  }
+`;
 export const createLocalUser = /* GraphQL */ `
   mutation CreateLocalUser(
     $input: CreateLocalUserInput!
@@ -18,6 +58,9 @@ export const createLocalUser = /* GraphQL */ `
       city
       postalCode
       company
+      createdAt
+      updatedAt
+      owner
       orders {
         items {
           id
@@ -44,9 +87,6 @@ export const createLocalUser = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -66,6 +106,9 @@ export const updateLocalUser = /* GraphQL */ `
       city
       postalCode
       company
+      createdAt
+      updatedAt
+      owner
       orders {
         items {
           id
@@ -92,9 +135,6 @@ export const updateLocalUser = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -114,6 +154,9 @@ export const deleteLocalUser = /* GraphQL */ `
       city
       postalCode
       company
+      createdAt
+      updatedAt
+      owner
       orders {
         items {
           id
@@ -140,9 +183,6 @@ export const deleteLocalUser = /* GraphQL */ `
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -1356,46 +1396,6 @@ export const createOrder = /* GraphQL */ `
     }
   }
 `;
-export const updateOrder = /* GraphQL */ `
-  mutation UpdateOrder(
-    $input: UpdateOrderInput!
-    $condition: ModelOrderConditionInput
-  ) {
-    updateOrder(input: $input, condition: $condition) {
-      id
-      localUserId
-      count
-      purchasedDate
-      samplingDate
-      resultDate
-      orderStatus
-      paymentStatus
-      email
-      name
-      addressPart1
-      addressPart2
-      contactNumber
-      profileImageLink
-      country
-      city
-      postalCode
-      company
-      createdAt
-      updatedAt
-      owner
-      chemicalAnalysisOrder {
-        items {
-          id
-          orderId
-          chemicalAnalysisId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-    }
-  }
-`;
 export const deleteOrder = /* GraphQL */ `
   mutation DeleteOrder(
     $input: DeleteOrderInput!
@@ -1445,6 +1445,26 @@ export const createChemicalAnalysisOrder = /* GraphQL */ `
       id
       orderId
       chemicalAnalysisId
+      createdAt
+      updatedAt
+      chemicalAnalysis {
+        id
+        name
+        price
+        discount
+        description
+        createdAt
+        updatedAt
+        testPackChemicalAnalysis {
+          nextToken
+        }
+        chemicalAnalysisChemical {
+          nextToken
+        }
+        chemicalAnalysisOrder {
+          nextToken
+        }
+      }
       order {
         id
         localUserId
@@ -1467,26 +1487,6 @@ export const createChemicalAnalysisOrder = /* GraphQL */ `
         createdAt
         updatedAt
         owner
-        chemicalAnalysisOrder {
-          nextToken
-        }
-      }
-      createdAt
-      updatedAt
-      chemicalAnalysis {
-        id
-        name
-        price
-        discount
-        description
-        createdAt
-        updatedAt
-        testPackChemicalAnalysis {
-          nextToken
-        }
-        chemicalAnalysisChemical {
-          nextToken
-        }
         chemicalAnalysisOrder {
           nextToken
         }
@@ -1515,6 +1515,26 @@ export const updateChemicalAnalysisOrder = /* GraphQL */ `
       id
       orderId
       chemicalAnalysisId
+      createdAt
+      updatedAt
+      chemicalAnalysis {
+        id
+        name
+        price
+        discount
+        description
+        createdAt
+        updatedAt
+        testPackChemicalAnalysis {
+          nextToken
+        }
+        chemicalAnalysisChemical {
+          nextToken
+        }
+        chemicalAnalysisOrder {
+          nextToken
+        }
+      }
       order {
         id
         localUserId
@@ -1537,26 +1557,6 @@ export const updateChemicalAnalysisOrder = /* GraphQL */ `
         createdAt
         updatedAt
         owner
-        chemicalAnalysisOrder {
-          nextToken
-        }
-      }
-      createdAt
-      updatedAt
-      chemicalAnalysis {
-        id
-        name
-        price
-        discount
-        description
-        createdAt
-        updatedAt
-        testPackChemicalAnalysis {
-          nextToken
-        }
-        chemicalAnalysisChemical {
-          nextToken
-        }
         chemicalAnalysisOrder {
           nextToken
         }
@@ -1585,6 +1585,26 @@ export const deleteChemicalAnalysisOrder = /* GraphQL */ `
       id
       orderId
       chemicalAnalysisId
+      createdAt
+      updatedAt
+      chemicalAnalysis {
+        id
+        name
+        price
+        discount
+        description
+        createdAt
+        updatedAt
+        testPackChemicalAnalysis {
+          nextToken
+        }
+        chemicalAnalysisChemical {
+          nextToken
+        }
+        chemicalAnalysisOrder {
+          nextToken
+        }
+      }
       order {
         id
         localUserId
@@ -1607,26 +1627,6 @@ export const deleteChemicalAnalysisOrder = /* GraphQL */ `
         createdAt
         updatedAt
         owner
-        chemicalAnalysisOrder {
-          nextToken
-        }
-      }
-      createdAt
-      updatedAt
-      chemicalAnalysis {
-        id
-        name
-        price
-        discount
-        description
-        createdAt
-        updatedAt
-        testPackChemicalAnalysis {
-          nextToken
-        }
-        chemicalAnalysisChemical {
-          nextToken
-        }
         chemicalAnalysisOrder {
           nextToken
         }

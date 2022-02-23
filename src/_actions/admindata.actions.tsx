@@ -13,12 +13,15 @@ export const admindataActions = {
 };
 
 function getDataList(query: string){
-
+    
     return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
         dispatch(request());
         try{
             const result: any = await API.graphql(
-                {query: query}
+                {
+                query: query ,
+                authMode:"AWS_IAM"
+                 }
             ) as Promise<any>
             console.log('List-result',result.data);
             
