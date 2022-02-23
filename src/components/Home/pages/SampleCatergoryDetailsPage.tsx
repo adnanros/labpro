@@ -17,12 +17,13 @@ class SampleCatergoryDetailsPage extends Component<any,any> {
       }
   
       componentDidMount(){
-        this.props.getDataList(listTestGroups);
+        let filter = {
+            sampleCategoryId: {
+                eq: this.props.location.state.id // filter priority = 1
+            }
+        };
+        this.props.getDataList(listTestGroups,filter,this.props.auth.isSignedIn);
       }
-
-      testGrouList = this.props.data?.find(
-          (item: any)=>(item.sampleCategoryId === this.props.sampleCategoryId)
-      );
       
     render(){
         return (
@@ -35,11 +36,11 @@ class SampleCatergoryDetailsPage extends Component<any,any> {
                         <CCard style={{width: '100%'}}>
                             <CRow>
                                 {
-                                    this.testGrouList &&
-                                    this.testGrouList.map((item: any, index:any) => (
+                                    this.props.data &&
+                                    this.props.data.map((item: any, index:any) => (
                                         <CCol sm={4} key={index}>
                                             <TestGroupCard name={item.name} description={item.description} 
-                                            imageName={'sampleCat1.jpg'} testGroupId={item.id} testPacks={item.testPacks} />
+                                            imageName={'sampleCat1.jpg'} testGroupId={item.id}  />
                                         </CCol>
                                     ))
                                 }
@@ -68,3 +69,4 @@ const mapStateToProps = (state: AppState) => {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(SampleCatergoryDetailsPage);
+

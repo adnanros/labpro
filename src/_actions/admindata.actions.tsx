@@ -12,16 +12,17 @@ export const admindataActions = {
      getItemDetail,
 };
 
-function getDataList(query: string){
+function getDataList(query: string,filter: any = null,isCognito: true){
     
     return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
         dispatch(request());
         try{
             const result: any = await API.graphql(
                 {
-                query: query ,
-                authMode:"AWS_IAM"
-                 }
+                query: query,
+                variables: { filter: filter},
+                authMode:isCognito ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+                }
             ) as Promise<any>
             console.log('List-result',result.data);
             
@@ -40,13 +41,16 @@ function getDataList(query: string){
 
 }
 
-function getDataList2(query: string){
+function getDataList2(query: string,filter: any = null,isCognito: true){
 
     return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
         dispatch(request());
         try{
             const result: any = await API.graphql(
-                {query: query}
+                { query: query,
+                  variables: { filter: filter},
+                  authMode:isCognito ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+                }
             ) as Promise<any>
             console.log('List-result',result.data);
             
@@ -65,13 +69,16 @@ function getDataList2(query: string){
 
 }
 
-function getDataList3(query: string){
+function getDataList3(query: string,filter: any = null,isCognito: true){
 
     return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
         dispatch(request());
         try{
             const result: any = await API.graphql(
-                {query: query}
+                { query: query,
+                  variables: { filter: filter},
+                  authMode:isCognito ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+                }
             ) as Promise<any>
             console.log('List-result',result.data);
             

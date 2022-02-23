@@ -17,7 +17,7 @@ class AppHomeContent extends Component<any,any> {
       }
   
       componentDidMount(){
-        this.props.getDataList(listSampleCategorys);
+        this.props.getDataList(listSampleCategorys,null,this.props.auth.isSignedIn);
       }
       
     render(){

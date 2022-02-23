@@ -1,4 +1,5 @@
 import { CButton, CCard, CCardBody, CCardText, CCardTitle, } from "@coreui/react";
+import { Link } from "react-router-dom";
 
 interface IProps {
     name: string;
@@ -18,7 +19,13 @@ const SampleCategoryCard = (props: IProps) => {
                     <CCardText>
                         {props.description}
                     </CCardText>
-                    <CButton href="/home/sampleCategoryDetails">Details</CButton>
+                    <Link to={{
+                        pathname: "/sampleCategoryDetails",
+                        state: {id: props.sampleCategoryId }
+                    }}>
+                    <CButton>Details</CButton>
+                    </Link>
+                    
                 </CCardBody>
             </CCard>
         </div>
