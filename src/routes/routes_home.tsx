@@ -1,4 +1,5 @@
 import AppHomeContent from "../components/Home/AppHomeContent"
+import OrderRegisterationPage from "../components/Home/pages/OrderRegisterationPage"
 import SampleCategoryDetailsPage from "../components/Home/pages/SampleCatergoryDetailsPage"
 
 

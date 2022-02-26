@@ -9,4 +9,4 @@ export * from './forgotPasswordPage';
 export * from './resetPasswordPage';
 
 export * from './resultListPage';
-export * from './OrderRegisterationPage';
+export * from '../components/Home/pages/OrderRegisterationPage';

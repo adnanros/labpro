@@ -28,6 +28,10 @@ export const dataAdminConstants = {
     DATA_LIST3_SUCCESS: 'DATA_LIST3_SUCCESS',
     DATA_LIST3_FAILURE: 'DATA_LIST3_FAILURE',
 
+    MULTI_QUERY_DATA_LIST_REQUEST: 'MULTI_QUERY_DATA_LIST_REQUEST',
+    MULTI_QUERY_DATA_LIST_SUCCESS: 'MULTI_QUERY_DATA_LIST_SUCCESS',
+    MULTI_QUERY_DATA_LIST_FAILURE: 'MULTI_QUERY_DATA_LIST_FAILURE',
+
 
 }
 
@@ -65,6 +69,7 @@ export interface IPackageAdminState {
     dataListState: DataListState,
     dataList2State: DataListState,
     dataList3State: DataListState,
+    multiQuerydataListState: DataListState,
     dataDeleteState: DataDeleteState,
     dataCreateState: DataCreateState,
     dataUpdateState: DataUpdateState,
