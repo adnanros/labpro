@@ -1,31 +1,29 @@
-import { CButton, CCard, CCardBody, CCardText, CCardTitle, CLink, } from "@coreui/react";
+import { CButton, CCard, CCardBody, CCardText, CCardTitle, CCol, CLink, CRow, } from "@coreui/react";
 import { Component } from "react";
-import { connect } from "react-redux";
-import { admindataActions } from "../../../_actions";
-import { AppState } from "../../../_helpers";
+import { Link } from "react-router-dom";
 
 interface IProps {
     name: string;
     description: string;
     imageName: string;
-    testGroupId: string;
-    //testPacks: {};
+    testGroupId: String;
+    testGroupTestPacks: [{}],
+    TestPackChemicalAnalysis: [{}]
 }
 
-class TestGroupCard extends Component<any,any> {
-    constructor(props: any){
+class TestGroupCard extends Component<IProps,any> {
+    constructor(props: IProps){
         super(props);
+        var tps=props.testGroupTestPacks.filter((item: any) => item.testGroupId === props.testGroupId);
+        var cms = props.TestPackChemicalAnalysis.filter((item: any) =>  tps.some((e: any) => e.testPackId === item.testPackId));
+        var price = cms.map((a:any) => Number(a.chemicalAnalysis.price)).reduce((a, c) => { return a + c })
+        var discount = cms.map((a:any) => Number(a.chemicalAnalysis.discount)).reduce((a, c) => { return a + c })
         this.state = {
+          testPacks: tps,
+          chemicalAnalysis: cms,
+          price: price,
+          discount: discount
         }
-      }
-  
-      componentDidMount(){
-        // let filter = {
-        //     sampleCategoryId: {
-        //         eq: this.props.location.state.id // filter priority = 1
-        //     }
-        // };
-        //this.props.getDataList(listTestGroups,filter,this.props.auth.isSignedIn);
       }
       
     render(){
@@ -35,10 +33,22 @@ class TestGroupCard extends Component<any,any> {
                 <img width={'100%'} height={'100%'} src={require('../../../Assets/images/'+this.props.imageName).default}/>
                 <CCardBody>
                     <CCardTitle>{this.props.name}</CCardTitle>
-                    <CCardText>
-                        {/* {props.testPacks} */}
-                    </CCardText>
-                    <CButton href="/sampleCategoryDetails">Details</CButton>
+                    
+                      {this.state.testPacks.map((item: any, index:any) => (
+                        <CRow  key={index}>
+                            <CCol>
+                                {item.testpack.name}
+                            </CCol>
+                       </CRow>
+                        ))
+                      }
+                      {
+                        this.state.price
+                      }
+                      <Link to={{
+                        pathname: "/orderRegisteration",
+                        state: {chemicalAnalysis: this.state.chemicalAnalysis }//to get: this.props.location.state.chemicalAnalysis
+                    }}>Order</Link>
                 </CCardBody>
             </CCard>
         </div>
@@ -46,19 +56,4 @@ class TestGroupCard extends Component<any,any> {
     }
 }
 
-const mapStateToProps = (state: AppState) => {
-    return {
-      auth: state.authentication,
-      isDataLoading: state.package_admin.dataListState.isLoadingData,
-      isLoadingFailed:state.package_admin.dataListState.isLoadingFailed,
-      isLoadedSuccessfully: state.package_admin.dataListState.isLoadedSuccessfully,
-      data: state.package_admin.dataListState.data,
-    }
-  };
-  
-  const mapDispatchToProps  = {
-    getDataList: admindataActions.getDataList,
-  };
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(TestGroupCard);
+export default TestGroupCard;

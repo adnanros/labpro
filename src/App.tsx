@@ -10,7 +10,7 @@ import { alertActions, userActions } from './_actions'
 import HomePage from './pages/HomePage'
 import { HomeRoute,ConfirmRegisterRoute, HomePackageAdminRoute,LoginRoute, IsSignedInRoute } from './routes'//
 import ResultListPage from './pages/resultListPage'
-import OrderRegisterationPage from './pages/OrderRegisterationPage'
+import  OrderRegisterationPage from './components/Home/pages/OrderRegisterationPage'
 import ConfirmRegisterPage from './pages/confirmRegisterPage'
 import UnknownRoute from './routes/unknownRoute';
 import ForgotPasswordPage from './pages/forgotPasswordPage';

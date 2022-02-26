@@ -20,6 +20,12 @@ const initialState: IPackageAdminState = {
     isLoadingFailed: false,
     data: null,
   },
+  multiQuerydataListState: {
+    isLoadingData: false,
+    isLoadedSuccessfully: false,
+    isLoadingFailed: false,
+    data: null,
+  },
   dataDeleteState:
   {
     isDeletingItem: false,
@@ -60,6 +66,7 @@ const initialState: IPackageAdminState = {
          }
       
       case dataAdminConstants.DATA_LIST_SUCCESS: 
+      console.log("adnan",action.result.data);
       const items = Object.values(action.result.data)[0] as any;
          return {
           ...state,
@@ -152,6 +159,40 @@ const initialState: IPackageAdminState = {
           }
         }   
 
+        case dataAdminConstants.MULTI_QUERY_DATA_LIST_REQUEST:
+          return { 
+            ...state,
+            multiQuerydataListState:
+            {
+              isLoadingData : true,
+              isLoadedSuccessfully: false,
+              isLoadingFailed: false,
+              data : null
+            }
+          }
+        
+        case dataAdminConstants.MULTI_QUERY_DATA_LIST_SUCCESS: 
+        const multiQueryItems = Object.values(action.result.data) as any;
+           return {
+            ...state,
+            multiQuerydataListState: {
+              isLoadingData : false,
+              isLoadedSuccessfully: true,
+              isLoadingFailed: false,
+              data: multiQueryItems
+             }
+           }
+  
+        case dataAdminConstants.MULTI_QUERY_DATA_LIST_FAILURE: 
+          return {
+            ...state,
+            multiQuerydataListState: {
+              isLoadingData: false,
+              isLoadedSuccessfully: false,
+              isLoadingFailed: true,
+              data: null
+            }
+          }  
         
         case dataAdminConstants.ITEM_DELETE_REQUEST: 
           return {

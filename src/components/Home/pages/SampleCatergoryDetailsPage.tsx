@@ -7,7 +7,7 @@ import { admindataActions } from '../../../_actions';
 import { connect } from 'react-redux';
 import { AppState } from '../../../_helpers';
 import TestGroupCard from '../subcomponents/TestGroupCard';
-import { listTestGroups } from '../../../graphql/queries';
+import { sampleCategoryDetailsQuery } from '../../../graphql/customQueries';
 
 class SampleCatergoryDetailsPage extends Component<any,any> {
     constructor(props: any){
@@ -22,7 +22,7 @@ class SampleCatergoryDetailsPage extends Component<any,any> {
                 eq: this.props.location.state.id // filter priority = 1
             }
         };
-        this.props.getDataList(listTestGroups,filter,this.props.auth.isSignedIn);
+        this.props.getDataList(sampleCategoryDetailsQuery,filter,this.props.auth.isSignedIn);
       }
       
     render(){
@@ -37,10 +37,15 @@ class SampleCatergoryDetailsPage extends Component<any,any> {
                             <CRow>
                                 {
                                     this.props.data &&
-                                    this.props.data.map((item: any, index:any) => (
+                                    this.props.data[0]?.items.map((item: any, index:any) => (
                                         <CCol sm={4} key={index}>
-                                            <TestGroupCard name={item.name} description={item.description} 
-                                            imageName={'sampleCat1.jpg'} testGroupId={item.id}  />
+                                            <TestGroupCard 
+                                            name={item.name} 
+                                            description={item.description} 
+                                            imageName={"sampleCat1.jpg"} 
+                                            testGroupId={item.id} 
+                                            testGroupTestPacks={this.props.data[1].items} 
+                                            TestPackChemicalAnalysis={this.props.data[2].items}   />
                                         </CCol>
                                     ))
                                 }
@@ -56,15 +61,15 @@ class SampleCatergoryDetailsPage extends Component<any,any> {
 const mapStateToProps = (state: AppState) => {
     return {
       auth: state.authentication,
-      isDataLoading: state.package_admin.dataListState.isLoadingData,
-      isLoadingFailed:state.package_admin.dataListState.isLoadingFailed,
-      isLoadedSuccessfully: state.package_admin.dataListState.isLoadedSuccessfully,
-      data: state.package_admin.dataListState.data,
+      isDataLoading: state.package_admin.multiQuerydataListState.isLoadingData,
+      isLoadingFailed:state.package_admin.multiQuerydataListState.isLoadingFailed,
+      isLoadedSuccessfully: state.package_admin.multiQuerydataListState.isLoadedSuccessfully,
+      data: state.package_admin.multiQuerydataListState.data,
     }
   };
   
   const mapDispatchToProps  = {
-    getDataList: admindataActions.getDataList,
+    getDataList: admindataActions.getDataListMultiQuery,
   };
 
 
