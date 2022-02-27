@@ -14,7 +14,6 @@ import {
 import { userActions } from '../../../_actions';
 import { useSelector,connect } from 'react-redux';
 import { AppState } from '../../../_helpers/store';
-import { Link } from 'react-router-dom';
 
 
 import avatar8 from './../../../images/avatar.png'

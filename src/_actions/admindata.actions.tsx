@@ -1,6 +1,7 @@
 import API from "@aws-amplify/api";
 import { alertActions } from ".";
 import { dataAdminConstants } from "../_constants";
+import { history } from "../_helpers";
 
 export const admindataActions = {
     getDataListMultiQuery,
@@ -205,7 +206,7 @@ function deleteItem(mutation: string, id: string, dataListQuery: string){
 
 }
 
-function createItem(mutation: string, inputData: any){
+function createItem(mutation: string, inputData: any,redirect: any = null){
     
     return async (dispatch: (arg0: { type: string; error?: string; }) => void) => {
         dispatch(request());
@@ -214,6 +215,10 @@ function createItem(mutation: string, inputData: any){
             const createdItemData: any = await API.graphql({ query: mutation, variables: {input: inputData}});
             
             dispatch(success(createdItemData.data));
+            var rd = String(redirect);
+            if(rd !== "null") {
+                history.push(rd)
+            }
         } catch(error: any)
         {
             console.log(error);

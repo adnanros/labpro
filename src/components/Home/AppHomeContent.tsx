@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import { CCard, CCardBody, CCardText, CCardTitle, CCol, CContainer, CRow } from '@coreui/react'
 
 // routes config
@@ -16,9 +16,9 @@ class AppHomeContent extends Component<any,any> {
         }
       }
   
-      componentDidMount(){
-        this.props.getDataList(listSampleCategorys,null,this.props.auth.isSignedIn);
-      }
+    componentDidMount(){
+      this.props.getDataList(listSampleCategorys,null,this.props.auth.isSignedIn);
+    }
       
     render(){
         return (
@@ -26,7 +26,7 @@ class AppHomeContent extends Component<any,any> {
             <CCard className="mb-3"  style={{width: '100%'}}>
                 <CRow className="g-0">
                     <CCol md={8}>
-                    <img width={'100%'} height={'100%'} src={require('../../Assets/images/mainImage.jpg').default} />
+                    <img alt='main' width={'100%'} height={'100%'} src={require('../../Assets/images/mainImage.jpg').default} />
                     </CCol>
                     <CCol md={4}>
                     <CCardBody>

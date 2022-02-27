@@ -239,6 +239,7 @@ rules: [
   city: String!
   postalCode: String!
   company: String!
+  chemicalAnalysisIds: String!
   chemicalAnalysisOrder: [ChemicalAnalysisOrder] @connection(keyName: "ordersContainChemicalAnalysis", fields: ["id"])
 }
 
@@ -261,6 +262,13 @@ rules: [
   chemicalAnalysisResults: [ChemicalAnalysisResult] @connection(keyName: "byChemicalAnalysisOrder", fields: ["id"])
 }
 
+input CreateChemicalAnalysisOrderInput {
+  id: ID
+  orderId: ID!
+  chemicalAnalysisId: ID!
+}
+
+
 
 type ChemicalAnalysisResult @model 
 @auth(
@@ -280,3 +288,24 @@ rules: [
   resultType: String!
 }
 
+input CreateChemicalAnalysisResultInput {
+  id: ID
+  chemicalAnalysisOrderId: ID!
+  chemicalId: ID!
+  detection: Float!
+  resultType: String!
+}
+
+input UpdateChemicalAnalysisResultInput {
+  id: ID!
+  chemicalAnalysisOrderId: ID
+  chemicalId: ID
+  detection: Float
+  resultType: String
+}
+
+type Mutation {
+  batchCreateChemicalAnalysisOrders(CreateChemicalAnalysisOrders: [CreateChemicalAnalysisOrderInput]): [ChemicalAnalysisOrder]
+  batchCreateChemicalAnalysisResults(CreateChemicalAnalysisResults: [CreateChemicalAnalysisResultInput]): [ChemicalAnalysisResult]
+  batchUpdateChemicalAnalysisResults(UpdateChemicalAnalysisResults: [UpdateChemicalAnalysisResultInput]): [ChemicalAnalysisResult]
+}
