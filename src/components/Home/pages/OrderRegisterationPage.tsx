@@ -23,6 +23,7 @@ class OrderRegisterationPage extends Component<any,any> {
     doRegister = () => {
         
     }
+    
     render(){
         if(this.props.isLoaingItemDetail) {
             return (<div></div>);
