@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { CCard, CCardBody, CCardText, CCardTitle, CCol, CContainer, CRow } from '@coreui/react'
+import { CCard, CCol, CContainer, CRow } from '@coreui/react'
 
 // routes config
 // import routes from '../../routes/routes'

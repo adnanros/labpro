@@ -8,9 +8,7 @@ import awsconfig from './aws-exports'
 import Amplify  from 'aws-amplify'
 import { alertActions, userActions } from './_actions'
 import HomePage from './pages/HomePage'
-import { HomeRoute,ConfirmRegisterRoute, HomePackageAdminRoute,LoginRoute, IsSignedInRoute } from './routes'//
-import ResultListPage from './pages/resultListPage'
-import  OrderRegisterationPage from './components/Home/pages/OrderRegisterationPage'
+import { HomeRoute,ConfirmRegisterRoute, HomePackageAdminRoute,LoginRoute } from './routes'//
 import ConfirmRegisterPage from './pages/confirmRegisterPage'
 import UnknownRoute from './routes/unknownRoute';
 import ForgotPasswordPage from './pages/forgotPasswordPage';
@@ -77,8 +75,6 @@ class App extends Component<any,any> {
                       <LoginRoute exact path="/forgotPassword" component={ForgotPasswordPage} />
                       <LoginRoute exact path="/resetPassword" component={(props: any) => <ResetPasswordPage {...props} />} />
                       <ConfirmRegisterRoute exact path="/confirmRegister" component={ConfirmRegisterPage} />
-                      <IsSignedInRoute exact path="/orderRegisteration" component={(props: any) => <OrderRegisterationPage {...props} />} />
-                      <IsSignedInRoute exact path="/resulList" component={(props: any) => <ResultListPage {...props} />} />
                       {/* Order is important.*/}
                       <HomePackageAdminRoute path="/homeAdmin" render={(props: any) => <HomeAdmin {...props} />}  />
                       <HomeRoute name="Home" path="/" render={(props: any) => <HomePage {...props} />} />

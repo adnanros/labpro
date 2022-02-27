@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Route, Switch } from "react-router-dom";
 import AppHomeFooter from "../components/Home/AppHomeFooter";
 import AppHomeHeader from "../components/Home/AppHomeHeader";
+import { IsSignedInRoute } from "../routes";
 import routesHome from "../routes/routes_home";
 import { AppState } from "../_helpers";
 
@@ -18,8 +19,9 @@ class HomePage extends Component<any,any> {
                         <Switch>
                         {routesHome.map((route, idx) => {
                             return (
-                            route.component && (
-                                <Route
+                              route.isSignedInRequired ? 
+                              route.component && (
+                                <IsSignedInRoute
                                 key={idx}
                                 path={route.path}
                                 exact={route.exact}
@@ -30,8 +32,23 @@ class HomePage extends Component<any,any> {
                                     <route.component {...props} />
                                   </>
                                 )}
-                                ></Route>
-                            )
+                                ></IsSignedInRoute>
+                            ) 
+                            :
+                            route.component && (
+                              <Route
+                              key={idx}
+                              path={route.path}
+                              exact={route.exact}
+                              //name={route.name}
+                              
+                              render={(props: any) => (
+                                <>
+                                  <route.component {...props} />
+                                </>
+                              )}
+                              ></Route>
+                          )
                             )
                         })}
                         </Switch>

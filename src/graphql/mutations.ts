@@ -2,42 +2,134 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const updateOrder = /* GraphQL */ `
-  mutation UpdateOrder(
-    $input: UpdateOrderInput!
-    $condition: ModelOrderConditionInput
+export const batchCreateChemicalAnalysisOrders = /* GraphQL */ `
+  mutation BatchCreateChemicalAnalysisOrders(
+    $CreateChemicalAnalysisOrders: [CreateChemicalAnalysisOrderInput]
   ) {
-    updateOrder(input: $input, condition: $condition) {
+    batchCreateChemicalAnalysisOrders(
+      CreateChemicalAnalysisOrders: $CreateChemicalAnalysisOrders
+    ) {
       id
-      localUserId
-      count
-      purchasedDate
-      samplingDate
-      resultDate
-      orderStatus
-      paymentStatus
-      email
-      name
-      addressPart1
-      addressPart2
-      contactNumber
-      profileImageLink
-      country
-      city
-      postalCode
-      company
+      orderId
+      chemicalAnalysisId
+      order {
+        id
+        localUserId
+        count
+        purchasedDate
+        samplingDate
+        resultDate
+        orderStatus
+        paymentStatus
+        email
+        name
+        addressPart1
+        addressPart2
+        contactNumber
+        profileImageLink
+        country
+        city
+        postalCode
+        company
+        chemicalAnalysisIds
+        createdAt
+        updatedAt
+        owner
+        chemicalAnalysisOrder {
+          nextToken
+        }
+      }
       createdAt
       updatedAt
-      owner
-      chemicalAnalysisOrder {
+      chemicalAnalysis {
+        id
+        name
+        price
+        discount
+        description
+        createdAt
+        updatedAt
+        testPackChemicalAnalysis {
+          nextToken
+        }
+        chemicalAnalysisChemical {
+          nextToken
+        }
+        chemicalAnalysisOrder {
+          nextToken
+        }
+      }
+      chemicalAnalysisResults {
         items {
           id
-          orderId
-          chemicalAnalysisId
+          chemicalAnalysisOrderId
+          chemicalId
+          detection
+          resultType
           createdAt
           updatedAt
         }
         nextToken
+      }
+    }
+  }
+`;
+export const batchCreateChemicalAnalysisResults = /* GraphQL */ `
+  mutation BatchCreateChemicalAnalysisResults(
+    $CreateChemicalAnalysisResults: [CreateChemicalAnalysisResultInput]
+  ) {
+    batchCreateChemicalAnalysisResults(
+      CreateChemicalAnalysisResults: $CreateChemicalAnalysisResults
+    ) {
+      id
+      chemicalAnalysisOrderId
+      chemicalId
+      detection
+      resultType
+      createdAt
+      updatedAt
+      chemical {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        chemicalAnalysisChemical {
+          nextToken
+        }
+        chemicalImpacts {
+          nextToken
+        }
+      }
+    }
+  }
+`;
+export const batchUpdateChemicalAnalysisResults = /* GraphQL */ `
+  mutation BatchUpdateChemicalAnalysisResults(
+    $UpdateChemicalAnalysisResults: [UpdateChemicalAnalysisResultInput]
+  ) {
+    batchUpdateChemicalAnalysisResults(
+      UpdateChemicalAnalysisResults: $UpdateChemicalAnalysisResults
+    ) {
+      id
+      chemicalAnalysisOrderId
+      chemicalId
+      detection
+      resultType
+      createdAt
+      updatedAt
+      chemical {
+        id
+        name
+        description
+        createdAt
+        updatedAt
+        chemicalAnalysisChemical {
+          nextToken
+        }
+        chemicalImpacts {
+          nextToken
+        }
       }
     }
   }
@@ -58,9 +150,6 @@ export const createLocalUser = /* GraphQL */ `
       city
       postalCode
       company
-      createdAt
-      updatedAt
-      owner
       orders {
         items {
           id
@@ -81,12 +170,16 @@ export const createLocalUser = /* GraphQL */ `
           city
           postalCode
           company
+          chemicalAnalysisIds
           createdAt
           updatedAt
           owner
         }
         nextToken
       }
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;
@@ -106,9 +199,6 @@ export const updateLocalUser = /* GraphQL */ `
       city
       postalCode
       company
-      createdAt
-      updatedAt
-      owner
       orders {
         items {
           id
@@ -129,12 +219,16 @@ export const updateLocalUser = /* GraphQL */ `
           city
           postalCode
           company
+          chemicalAnalysisIds
           createdAt
           updatedAt
           owner
         }
         nextToken
       }
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;
@@ -154,9 +248,6 @@ export const deleteLocalUser = /* GraphQL */ `
       city
       postalCode
       company
-      createdAt
-      updatedAt
-      owner
       orders {
         items {
           id
@@ -177,12 +268,16 @@ export const deleteLocalUser = /* GraphQL */ `
           city
           postalCode
           company
+          chemicalAnalysisIds
           createdAt
           updatedAt
           owner
         }
         nextToken
       }
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;
@@ -1380,6 +1475,48 @@ export const createOrder = /* GraphQL */ `
       city
       postalCode
       company
+      chemicalAnalysisIds
+      createdAt
+      updatedAt
+      owner
+      chemicalAnalysisOrder {
+        items {
+          id
+          orderId
+          chemicalAnalysisId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const updateOrder = /* GraphQL */ `
+  mutation UpdateOrder(
+    $input: UpdateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    updateOrder(input: $input, condition: $condition) {
+      id
+      localUserId
+      count
+      purchasedDate
+      samplingDate
+      resultDate
+      orderStatus
+      paymentStatus
+      email
+      name
+      addressPart1
+      addressPart2
+      contactNumber
+      profileImageLink
+      country
+      city
+      postalCode
+      company
+      chemicalAnalysisIds
       createdAt
       updatedAt
       owner
@@ -1420,6 +1557,7 @@ export const deleteOrder = /* GraphQL */ `
       city
       postalCode
       company
+      chemicalAnalysisIds
       createdAt
       updatedAt
       owner
@@ -1445,26 +1583,6 @@ export const createChemicalAnalysisOrder = /* GraphQL */ `
       id
       orderId
       chemicalAnalysisId
-      createdAt
-      updatedAt
-      chemicalAnalysis {
-        id
-        name
-        price
-        discount
-        description
-        createdAt
-        updatedAt
-        testPackChemicalAnalysis {
-          nextToken
-        }
-        chemicalAnalysisChemical {
-          nextToken
-        }
-        chemicalAnalysisOrder {
-          nextToken
-        }
-      }
       order {
         id
         localUserId
@@ -1484,9 +1602,30 @@ export const createChemicalAnalysisOrder = /* GraphQL */ `
         city
         postalCode
         company
+        chemicalAnalysisIds
         createdAt
         updatedAt
         owner
+        chemicalAnalysisOrder {
+          nextToken
+        }
+      }
+      createdAt
+      updatedAt
+      chemicalAnalysis {
+        id
+        name
+        price
+        discount
+        description
+        createdAt
+        updatedAt
+        testPackChemicalAnalysis {
+          nextToken
+        }
+        chemicalAnalysisChemical {
+          nextToken
+        }
         chemicalAnalysisOrder {
           nextToken
         }
@@ -1515,26 +1654,6 @@ export const updateChemicalAnalysisOrder = /* GraphQL */ `
       id
       orderId
       chemicalAnalysisId
-      createdAt
-      updatedAt
-      chemicalAnalysis {
-        id
-        name
-        price
-        discount
-        description
-        createdAt
-        updatedAt
-        testPackChemicalAnalysis {
-          nextToken
-        }
-        chemicalAnalysisChemical {
-          nextToken
-        }
-        chemicalAnalysisOrder {
-          nextToken
-        }
-      }
       order {
         id
         localUserId
@@ -1554,9 +1673,30 @@ export const updateChemicalAnalysisOrder = /* GraphQL */ `
         city
         postalCode
         company
+        chemicalAnalysisIds
         createdAt
         updatedAt
         owner
+        chemicalAnalysisOrder {
+          nextToken
+        }
+      }
+      createdAt
+      updatedAt
+      chemicalAnalysis {
+        id
+        name
+        price
+        discount
+        description
+        createdAt
+        updatedAt
+        testPackChemicalAnalysis {
+          nextToken
+        }
+        chemicalAnalysisChemical {
+          nextToken
+        }
         chemicalAnalysisOrder {
           nextToken
         }
@@ -1585,26 +1725,6 @@ export const deleteChemicalAnalysisOrder = /* GraphQL */ `
       id
       orderId
       chemicalAnalysisId
-      createdAt
-      updatedAt
-      chemicalAnalysis {
-        id
-        name
-        price
-        discount
-        description
-        createdAt
-        updatedAt
-        testPackChemicalAnalysis {
-          nextToken
-        }
-        chemicalAnalysisChemical {
-          nextToken
-        }
-        chemicalAnalysisOrder {
-          nextToken
-        }
-      }
       order {
         id
         localUserId
@@ -1624,9 +1744,30 @@ export const deleteChemicalAnalysisOrder = /* GraphQL */ `
         city
         postalCode
         company
+        chemicalAnalysisIds
         createdAt
         updatedAt
         owner
+        chemicalAnalysisOrder {
+          nextToken
+        }
+      }
+      createdAt
+      updatedAt
+      chemicalAnalysis {
+        id
+        name
+        price
+        discount
+        description
+        createdAt
+        updatedAt
+        testPackChemicalAnalysis {
+          nextToken
+        }
+        chemicalAnalysisChemical {
+          nextToken
+        }
         chemicalAnalysisOrder {
           nextToken
         }

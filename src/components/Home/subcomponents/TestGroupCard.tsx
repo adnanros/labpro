@@ -1,4 +1,4 @@
-import { CButton, CCard, CCardBody, CCardText, CCardTitle, CCol, CLink, CRow, } from "@coreui/react";
+import { CCard, CCardBody, CCardTitle, CCol, CRow, } from "@coreui/react";
 import { Component } from "react";
 import { Link } from "react-router-dom";
 
@@ -30,7 +30,7 @@ class TestGroupCard extends Component<IProps,any> {
         return (
             <div>
             <CCard style={{ width: '18rem' }}>
-                <img width={'100%'} height={'100%'} src={require('../../../Assets/images/'+this.props.imageName).default}/>
+                <img alt={this.props.name} width={'100%'} height={'100%'} src={require('../../../Assets/images/'+this.props.imageName).default}/>
                 <CCardBody>
                     <CCardTitle>{this.props.name}</CCardTitle>
                     

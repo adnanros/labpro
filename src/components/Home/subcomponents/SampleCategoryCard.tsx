@@ -13,7 +13,7 @@ const SampleCategoryCard = (props: IProps) => {
     return (
         <div>
             <CCard style={{ width: '18rem' }}>
-                <img width={'100%'} height={'100%'} src={require('../../../Assets/images/'+props.imageName).default}/>
+                <img alt={props.name} width={'100%'} height={'100%'} src={require('../../../Assets/images/'+props.imageName).default}/>
                 <CCardBody>
                     <CCardTitle>{props.name}</CCardTitle>
                     <CCardText>
