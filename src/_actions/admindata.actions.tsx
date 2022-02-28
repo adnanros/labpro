@@ -2,6 +2,7 @@ import API from "@aws-amplify/api";
 import { alertActions } from ".";
 import { dataAdminConstants } from "../_constants";
 import { history } from "../_helpers";
+type BoolCallback = (n: Boolean) => any;
 
 export const admindataActions = {
     getDataListMultiQuery,
@@ -12,6 +13,7 @@ export const admindataActions = {
      createItem,
      updateItem,
      getItemDetail,
+     getItemDetail2,
      getItemDetailByKeyValue
 };
 
@@ -40,6 +42,46 @@ function getDataListMultiQuery(query: string,filter: any = null,isCognito: Boole
                 ) as Promise<any>
                 console.log('List-result',result.data);
                 
+                dispatch(success(result));
+            }
+            
+        } catch(error: any)
+        {
+            console.log(error);
+            dispatch(failure('load list failed'));
+            dispatch(alertActions.error(error.toString()));
+        }
+    };
+
+    function request() { return { type: dataAdminConstants.MULTI_QUERY_DATA_LIST_REQUEST } }
+    function success(result: any) { return { type: dataAdminConstants.MULTI_QUERY_DATA_LIST_SUCCESS, result } }
+    function failure(error: string) { return { type: dataAdminConstants.MULTI_QUERY_DATA_LIST_FAILURE, error } }
+}
+
+function mutateMultiQuery(query: string,inputData: any = null,isCognito: Boolean = true){
+    
+    return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
+        dispatch(request());
+        try{
+            if (isCognito) {
+                const result: any = await API.graphql(
+                    {
+                    query: query,
+                    variables: { input: inputData}
+                    }
+                ) as Promise<any>
+                console.log('List-result',result.data);
+                
+                dispatch(success(result));
+            }else {
+                const result: any = await API.graphql(
+                    {
+                    query: query,
+                    variables: { input: inputData},
+                    authMode: "AWS_IAM"
+                    }
+                ) as Promise<any>
+                console.log('List-result',result.data);
                 dispatch(success(result));
             }
             
@@ -282,6 +324,34 @@ function getItemDetail(query: string, itemId: any){
     function success(itemDetailData: any) { return { type: dataAdminConstants.ITEM_DETAIL_SUCCESS, itemDetailData } }
     function failure(error: string) { return { type: dataAdminConstants.ITEM_DETAIL_FAILURE, error } }
 
+}
+
+function getItemDetail2(query: string, itemId: any,myCompletionHandler: BoolCallback){
+    //console.log('XXXXX-Dispatch-ID', itemId);
+
+    return async (dispatch: (arg0: { type: string; error?: string; }) => void) => {
+        dispatch(request());
+        try{
+            
+            const itemDetailData: any = await API.graphql({ query: query, variables: {id: itemId}});
+            
+            dispatch(success(itemDetailData.data));
+            myCompletionHandler(true);
+            //console.log('xxxxx-toState',itemDetailData.data);
+            // var tempData: any= Object.values(itemDetailData.data)[0];
+            // console.log('xxxxx-testgroups',Object.values(tempData.testGroups.items));
+        } catch(error: any)
+        {
+            console.log(error);
+            dispatch(failure(error.toString()))
+            dispatch(alertActions.error(error.toString()));
+            myCompletionHandler(false);
+        }
+    };
+
+    function request() { return { type: dataAdminConstants.ITEM_DETAIL_REQUEST } }
+    function success(itemDetailData: any) { return { type: dataAdminConstants.ITEM_DETAIL_SUCCESS, itemDetailData } }
+    function failure(error: string) { return { type: dataAdminConstants.ITEM_DETAIL_FAILURE, error } }
 }
 
 function getItemDetailByKeyValue(query: string, variables: {}){

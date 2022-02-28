@@ -1,3 +1,4 @@
+import { CButton } from "@coreui/react";
 import React, { Component } from "react";
 //import { userActions } from '../_actions';
 import { connect } from 'react-redux';
@@ -6,22 +7,21 @@ import { admindataActions } from "../../../_actions";
 import { AppState } from "../../../_helpers";
 
 
-class ResultListPage extends Component<any,any> {
+class OrderResult extends Component<any,any> {
     constructor(props: any) {
         super(props)
-        console.log("pppppp");
+        
         this.state = {
             chemicalAnalysisIds: props.location.state.chemicalAnalysisIds,
             orderId: props.location.state.orderId,
+            isResultsExists: 0//0: unknown, 1: exist, 2: not exist
         }
+
+        this.createResults = this.createResults.bind(this);
     }
 
     componentDidMount() {
-      // this.loadData()
-    }
-
-    makeFilter(dic: {}) {
-
+       this.loadData()
     }
 
     loadData() {
@@ -38,19 +38,34 @@ class ResultListPage extends Component<any,any> {
                             or: f
                         }
                     });
+                    this.setState({isResultsExists: 0})
                     this.props.getDataList(listChemicalAnalysisResults,f,this.props.auth.isSignedIn)
                 }else {
                     //no data. show user that no data is ready
-
+                    this.setState({isResultsExists: 2})
                 }
             }
        })
     }
 
+    createResults() {
+
+    }
+
     render(){
         return (
         <div>
-            result List
+            {this.props.isGettingData && <div>loading</div>}
+            {(this.state.isResultsExists === 2) && <div>
+                <CButton onClick={()=> this.createResults()}>
+                    create results
+                </CButton>
+            {
+                this.props.data && {
+
+                }
+            }
+            </div>}
         </div>);
     }
 }
@@ -72,8 +87,8 @@ const mapStateToProps = (state: AppState) => {
   
   const mapDispatchToProps  = {
     getDataList: admindataActions.getDataList,
-    getItem: admindataActions.getItemDetail2
+    getItem: admindataActions.getItemDetail2,
+    
   };
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(ResultListPage);
+export default connect(mapStateToProps, mapDispatchToProps)(OrderResult);
