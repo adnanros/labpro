@@ -217,6 +217,7 @@ type Order @model
 rules: [
   { allow: owner, operations: [create, read]},
   { allow: groups, groups: ["AllowDelete"], operations: [delete]}
+  { allow: groups, groups: ["PackagesAdmin"], operations: [read] }
 ]
  )
  @key(name: "byLocalUser", fields: ["localUserId"])

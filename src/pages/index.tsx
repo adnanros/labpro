@@ -8,5 +8,5 @@ export * from './page500';
 export * from './forgotPasswordPage';
 export * from './resetPasswordPage';
 
-export * from './resultListPage';
-export * from '../components/Home/pages/OrderRegisterationPage';
+export * from '../components/Home/pages/resultListPage';
+export * from '../components/Home/pages/orderRegisterationPage';

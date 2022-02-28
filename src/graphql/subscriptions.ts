@@ -141,7 +141,7 @@ export const onDeleteLocalUser = /* GraphQL */ `
   }
 `;
 export const onCreateOrder = /* GraphQL */ `
-  subscription OnCreateOrder($owner: String!) {
+  subscription OnCreateOrder($owner: String) {
     onCreateOrder(owner: $owner) {
       id
       localUserId
@@ -179,7 +179,7 @@ export const onCreateOrder = /* GraphQL */ `
   }
 `;
 export const onUpdateOrder = /* GraphQL */ `
-  subscription OnUpdateOrder($owner: String!) {
+  subscription OnUpdateOrder($owner: String) {
     onUpdateOrder(owner: $owner) {
       id
       localUserId
@@ -217,7 +217,7 @@ export const onUpdateOrder = /* GraphQL */ `
   }
 `;
 export const onDeleteOrder = /* GraphQL */ `
-  subscription OnDeleteOrder($owner: String!) {
+  subscription OnDeleteOrder($owner: String) {
     onDeleteOrder(owner: $owner) {
       id
       localUserId

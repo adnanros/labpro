@@ -32,8 +32,8 @@ const AppHomeHeaderDropdown = (props: any) => {
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">{email}</CDropdownHeader>
-        <CLink href='/resulList'>
-                Resuls
+        <CLink href='/orderList'>
+                Orders
         </CLink>
         <CDropdownDivider />
         <CDropdownItem href="#">
