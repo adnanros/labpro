@@ -99,7 +99,7 @@ function mutateMultiQuery(query: string,inputData: any = null,isCognito: Boolean
     function failure(error: string) { return { type: dataAdminConstants.MULTI_QUERY_DATA_LIST_FAILURE, error } }
 }
 
-function getDataList(query: string,filter: any = null,isCognito: Boolean = true){
+function getDataList(query: string,filter: any = null,isCognito: Boolean = true, completionHandler?: BoolCallback){
     
     return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
         dispatch(request());
@@ -114,6 +114,10 @@ function getDataList(query: string,filter: any = null,isCognito: Boolean = true)
                 console.log('List-result',result.data);
                 
                 dispatch(success(result));
+                if(typeof completionHandler !== 'undefined'){
+                    completionHandler(true);
+                }
+                
             }else {
                 const result: any = await API.graphql(
                     {
@@ -125,6 +129,9 @@ function getDataList(query: string,filter: any = null,isCognito: Boolean = true)
                 console.log('List-result',result.data);
                 
                 dispatch(success(result));
+                if(typeof completionHandler !== 'undefined'){
+                    completionHandler(true);
+                }
             }
             
         } catch(error: any)
@@ -132,6 +139,9 @@ function getDataList(query: string,filter: any = null,isCognito: Boolean = true)
             console.log(error);
             dispatch(failure('load list failed'));
             dispatch(alertActions.error(error.toString()));
+            if(typeof completionHandler !== 'undefined'){
+                completionHandler(false);
+            }
         }
     };
 

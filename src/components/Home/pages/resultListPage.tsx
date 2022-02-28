@@ -1,3 +1,4 @@
+import { CCol, CRow } from "@coreui/react";
 import React, { Component } from "react";
 //import { userActions } from '../_actions';
 import { connect } from 'react-redux';
@@ -12,6 +13,8 @@ class ResultListPage extends Component<any,any> {
         this.state = {
             chemicalAnalysisIds: props.location.state.chemicalAnalysisIds,
             orderId: props.location.state.orderId,
+            orderLoadState: 0,//0: unknown, 1: suuccess,2 failure
+            chemicalAnalysisResultsStatus: 0//0: unknown, 1: suuccess,2 failure
         }
     }
 
@@ -19,31 +22,46 @@ class ResultListPage extends Component<any,any> {
        this.loadData()
     }
 
-    makeFilter(dic: {}) {
-
-    }
-
     loadData() {
         this.props.getItem(getOrder,this.state.orderId, (success: Boolean) => {
             if(success) {
+                this.setState({orderLoadState: 1})
                 var order = this.props.data2["getOrder"]
                 
                 var chemicalAnalysisOrdersIds = order.chemicalAnalysisOrder.items.map((x:any)=> {return x.id})
                 if (Array.isArray(chemicalAnalysisOrdersIds) && chemicalAnalysisOrdersIds.length > 0) {
-                    var first = chemicalAnalysisOrdersIds.shift();
-                    var f: any = {chemicalAnalysisOrderId: {eq: first } };
+                    var ors: any[] = []
+                    // export type ModelChemicalAnalysisResultFilterInput = {
+                    //     id?: ModelIDInput | null,
+                    //     chemicalAnalysisOrderId?: ModelIDInput | null,
+                    //     chemicalId?: ModelIDInput | null,
+                    //     detection?: ModelFloatInput | null,
+                    //     resultType?: ModelStringInput | null,
+                    //     and?: Array< ModelChemicalAnalysisResultFilterInput | null > | null,
+                    //     or?: Array< ModelChemicalAnalysisResultFilterInput | null > | null,
+                    //     not?: ModelChemicalAnalysisResultFilterInput | null,
+                    //   };
                     chemicalAnalysisOrdersIds.forEach((element:any) => {
-                        f = {
-                            chemicalAnalysisOrderId: {eq: element},
-                            or: f
-                        }
+                        ors.push(
+                            {
+                                chemicalAnalysisOrderId: {eq: element}
+                            }
+                        );
                     });
-                    console.log("ffff",f);
-                    this.props.getDataList(listChemicalAnalysisResults,f,this.props.auth.isSignedIn)
+                    var filter: any = {or: ors };
+                    this.props.getDataList(listChemicalAnalysisResults,filter,this.props.auth.isSignedIn,(succes: boolean)=> {
+                        if(succes) {
+                            this.setState({chemicalAnalysisResultsStatus: 1})
+                        }else {
+                            this.setState({chemicalAnalysisResultsStatus: 2})
+                        }
+                    })
                 }else {
                     //no data. show user that no data is ready
-
+                    this.setState({chemicalAnalysisResultsStatus: 2})
                 }
+            }else {
+                this.setState({orderLoadState: 2})
             }
        })
     }
@@ -51,7 +69,20 @@ class ResultListPage extends Component<any,any> {
     render(){
         return (
         <div>
-            result List
+            {(this.state.chemicalAnalysisResultsStatus == 2) && <div> your results is not ready</div>}
+            {(this.state.chemicalAnalysisResultsStatus == 1) && <div> 
+                {
+                    this.props.data &&
+                    this.props.data.map((item: any, index:any) => (
+                        <CRow key={index}>
+                            <CCol sm={4} >
+                               detection:  {item.detection}
+                            </CCol>
+                        </CRow>
+                        
+                    ))
+                }
+                </div>}
         </div>);
     }
 }
