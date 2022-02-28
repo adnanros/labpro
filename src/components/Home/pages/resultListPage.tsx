@@ -51,7 +51,12 @@ class ResultListPage extends Component<any,any> {
                     var filter: any = {or: ors };
                     this.props.getDataList(listChemicalAnalysisResults,filter,this.props.auth.isSignedIn,(succes: boolean)=> {
                         if(succes) {
-                            this.setState({chemicalAnalysisResultsStatus: 1})
+                            if(this.props.data.length === 0) {
+                                this.setState({chemicalAnalysisResultsStatus: 2})
+                            }else {
+                                this.setState({chemicalAnalysisResultsStatus: 1})
+                            }
+                            
                         }else {
                             this.setState({chemicalAnalysisResultsStatus: 2})
                         }
@@ -69,6 +74,7 @@ class ResultListPage extends Component<any,any> {
     render(){
         return (
         <div>
+            {(this.state.chemicalAnalysisResultsStatus == 0) && <div> loading</div>}
             {(this.state.chemicalAnalysisResultsStatus == 2) && <div> your results is not ready</div>}
             {(this.state.chemicalAnalysisResultsStatus == 1) && <div> 
                 {
