@@ -39,6 +39,9 @@ export const onCreateLocalUser = /* GraphQL */ `
           createdAt
           updatedAt
           owner
+          chemicalAnalysisOrder {
+            nextToken
+          }
         }
         nextToken
       }
@@ -85,6 +88,9 @@ export const onUpdateLocalUser = /* GraphQL */ `
           createdAt
           updatedAt
           owner
+          chemicalAnalysisOrder {
+            nextToken
+          }
         }
         nextToken
       }
@@ -131,6 +137,9 @@ export const onDeleteLocalUser = /* GraphQL */ `
           createdAt
           updatedAt
           owner
+          chemicalAnalysisOrder {
+            nextToken
+          }
         }
         nextToken
       }
@@ -170,8 +179,44 @@ export const onCreateOrder = /* GraphQL */ `
           id
           orderId
           chemicalAnalysisId
+          order {
+            id
+            localUserId
+            count
+            purchasedDate
+            samplingDate
+            resultDate
+            orderStatus
+            paymentStatus
+            email
+            name
+            addressPart1
+            addressPart2
+            contactNumber
+            profileImageLink
+            country
+            city
+            postalCode
+            company
+            chemicalAnalysisIds
+            createdAt
+            updatedAt
+            owner
+          }
           createdAt
           updatedAt
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
+          chemicalAnalysisResults {
+            nextToken
+          }
         }
         nextToken
       }
@@ -208,8 +253,44 @@ export const onUpdateOrder = /* GraphQL */ `
           id
           orderId
           chemicalAnalysisId
+          order {
+            id
+            localUserId
+            count
+            purchasedDate
+            samplingDate
+            resultDate
+            orderStatus
+            paymentStatus
+            email
+            name
+            addressPart1
+            addressPart2
+            contactNumber
+            profileImageLink
+            country
+            city
+            postalCode
+            company
+            chemicalAnalysisIds
+            createdAt
+            updatedAt
+            owner
+          }
           createdAt
           updatedAt
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
+          chemicalAnalysisResults {
+            nextToken
+          }
         }
         nextToken
       }
@@ -246,8 +327,44 @@ export const onDeleteOrder = /* GraphQL */ `
           id
           orderId
           chemicalAnalysisId
+          order {
+            id
+            localUserId
+            count
+            purchasedDate
+            samplingDate
+            resultDate
+            orderStatus
+            paymentStatus
+            email
+            name
+            addressPart1
+            addressPart2
+            contactNumber
+            profileImageLink
+            country
+            city
+            postalCode
+            company
+            chemicalAnalysisIds
+            createdAt
+            updatedAt
+            owner
+          }
           createdAt
           updatedAt
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
+          chemicalAnalysisResults {
+            nextToken
+          }
         }
         nextToken
       }
@@ -272,6 +389,9 @@ export const onCreateSampleCategory = /* GraphQL */ `
           sampleCategoryId
           createdAt
           updatedAt
+          testGroupTestPack {
+            nextToken
+          }
         }
         nextToken
       }
@@ -296,6 +416,9 @@ export const onUpdateSampleCategory = /* GraphQL */ `
           sampleCategoryId
           createdAt
           updatedAt
+          testGroupTestPack {
+            nextToken
+          }
         }
         nextToken
       }
@@ -320,6 +443,9 @@ export const onDeleteSampleCategory = /* GraphQL */ `
           sampleCategoryId
           createdAt
           updatedAt
+          testGroupTestPack {
+            nextToken
+          }
         }
         nextToken
       }
@@ -344,6 +470,23 @@ export const onCreateTestGroup = /* GraphQL */ `
           testGroupId
           createdAt
           updatedAt
+          testgroup {
+            id
+            name
+            description
+            includedTestsDesc
+            includedReportsDesc
+            sampleCategoryId
+            createdAt
+            updatedAt
+          }
+          testpack {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -368,6 +511,23 @@ export const onUpdateTestGroup = /* GraphQL */ `
           testGroupId
           createdAt
           updatedAt
+          testgroup {
+            id
+            name
+            description
+            includedTestsDesc
+            includedReportsDesc
+            sampleCategoryId
+            createdAt
+            updatedAt
+          }
+          testpack {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -392,6 +552,23 @@ export const onDeleteTestGroup = /* GraphQL */ `
           testGroupId
           createdAt
           updatedAt
+          testgroup {
+            id
+            name
+            description
+            includedTestsDesc
+            includedReportsDesc
+            sampleCategoryId
+            createdAt
+            updatedAt
+          }
+          testpack {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -416,6 +593,13 @@ export const onCreateTestGroupTestPack = /* GraphQL */ `
         createdAt
         updatedAt
         testGroupTestPack {
+          items {
+            id
+            testPackId
+            testGroupId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -426,9 +610,23 @@ export const onCreateTestGroupTestPack = /* GraphQL */ `
         createdAt
         updatedAt
         testGroupTestPack {
+          items {
+            id
+            testPackId
+            testGroupId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -453,6 +651,13 @@ export const onUpdateTestGroupTestPack = /* GraphQL */ `
         createdAt
         updatedAt
         testGroupTestPack {
+          items {
+            id
+            testPackId
+            testGroupId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -463,9 +668,23 @@ export const onUpdateTestGroupTestPack = /* GraphQL */ `
         createdAt
         updatedAt
         testGroupTestPack {
+          items {
+            id
+            testPackId
+            testGroupId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -490,6 +709,13 @@ export const onDeleteTestGroupTestPack = /* GraphQL */ `
         createdAt
         updatedAt
         testGroupTestPack {
+          items {
+            id
+            testPackId
+            testGroupId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -500,9 +726,23 @@ export const onDeleteTestGroupTestPack = /* GraphQL */ `
         createdAt
         updatedAt
         testGroupTestPack {
+          items {
+            id
+            testPackId
+            testGroupId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -524,6 +764,23 @@ export const onCreateTestPack = /* GraphQL */ `
           testGroupId
           createdAt
           updatedAt
+          testgroup {
+            id
+            name
+            description
+            includedTestsDesc
+            includedReportsDesc
+            sampleCategoryId
+            createdAt
+            updatedAt
+          }
+          testpack {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -534,6 +791,22 @@ export const onCreateTestPack = /* GraphQL */ `
           chemicalAnalysisId
           createdAt
           updatedAt
+          testpack {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -555,6 +828,23 @@ export const onUpdateTestPack = /* GraphQL */ `
           testGroupId
           createdAt
           updatedAt
+          testgroup {
+            id
+            name
+            description
+            includedTestsDesc
+            includedReportsDesc
+            sampleCategoryId
+            createdAt
+            updatedAt
+          }
+          testpack {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -565,6 +855,22 @@ export const onUpdateTestPack = /* GraphQL */ `
           chemicalAnalysisId
           createdAt
           updatedAt
+          testpack {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -586,6 +892,23 @@ export const onDeleteTestPack = /* GraphQL */ `
           testGroupId
           createdAt
           updatedAt
+          testgroup {
+            id
+            name
+            description
+            includedTestsDesc
+            includedReportsDesc
+            sampleCategoryId
+            createdAt
+            updatedAt
+          }
+          testpack {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -596,6 +919,22 @@ export const onDeleteTestPack = /* GraphQL */ `
           chemicalAnalysisId
           createdAt
           updatedAt
+          testpack {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -619,6 +958,22 @@ export const onCreateChemicalAnalysis = /* GraphQL */ `
           chemicalAnalysisId
           createdAt
           updatedAt
+          testpack {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -629,6 +984,22 @@ export const onCreateChemicalAnalysis = /* GraphQL */ `
           chemicalAnalysisId
           createdAt
           updatedAt
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -637,8 +1008,44 @@ export const onCreateChemicalAnalysis = /* GraphQL */ `
           id
           orderId
           chemicalAnalysisId
+          order {
+            id
+            localUserId
+            count
+            purchasedDate
+            samplingDate
+            resultDate
+            orderStatus
+            paymentStatus
+            email
+            name
+            addressPart1
+            addressPart2
+            contactNumber
+            profileImageLink
+            country
+            city
+            postalCode
+            company
+            chemicalAnalysisIds
+            createdAt
+            updatedAt
+            owner
+          }
           createdAt
           updatedAt
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
+          chemicalAnalysisResults {
+            nextToken
+          }
         }
         nextToken
       }
@@ -662,6 +1069,22 @@ export const onUpdateChemicalAnalysis = /* GraphQL */ `
           chemicalAnalysisId
           createdAt
           updatedAt
+          testpack {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -672,6 +1095,22 @@ export const onUpdateChemicalAnalysis = /* GraphQL */ `
           chemicalAnalysisId
           createdAt
           updatedAt
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -680,8 +1119,44 @@ export const onUpdateChemicalAnalysis = /* GraphQL */ `
           id
           orderId
           chemicalAnalysisId
+          order {
+            id
+            localUserId
+            count
+            purchasedDate
+            samplingDate
+            resultDate
+            orderStatus
+            paymentStatus
+            email
+            name
+            addressPart1
+            addressPart2
+            contactNumber
+            profileImageLink
+            country
+            city
+            postalCode
+            company
+            chemicalAnalysisIds
+            createdAt
+            updatedAt
+            owner
+          }
           createdAt
           updatedAt
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
+          chemicalAnalysisResults {
+            nextToken
+          }
         }
         nextToken
       }
@@ -705,6 +1180,22 @@ export const onDeleteChemicalAnalysis = /* GraphQL */ `
           chemicalAnalysisId
           createdAt
           updatedAt
+          testpack {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -715,6 +1206,22 @@ export const onDeleteChemicalAnalysis = /* GraphQL */ `
           chemicalAnalysisId
           createdAt
           updatedAt
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -723,8 +1230,44 @@ export const onDeleteChemicalAnalysis = /* GraphQL */ `
           id
           orderId
           chemicalAnalysisId
+          order {
+            id
+            localUserId
+            count
+            purchasedDate
+            samplingDate
+            resultDate
+            orderStatus
+            paymentStatus
+            email
+            name
+            addressPart1
+            addressPart2
+            contactNumber
+            profileImageLink
+            country
+            city
+            postalCode
+            company
+            chemicalAnalysisIds
+            createdAt
+            updatedAt
+            owner
+          }
           createdAt
           updatedAt
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
+          chemicalAnalysisResults {
+            nextToken
+          }
         }
         nextToken
       }
@@ -746,9 +1289,23 @@ export const onCreateTestPackChemicalAnalysis = /* GraphQL */ `
         createdAt
         updatedAt
         testGroupTestPack {
+          items {
+            id
+            testPackId
+            testGroupId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -761,12 +1318,33 @@ export const onCreateTestPackChemicalAnalysis = /* GraphQL */ `
         createdAt
         updatedAt
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisOrder {
+          items {
+            id
+            orderId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -788,9 +1366,23 @@ export const onUpdateTestPackChemicalAnalysis = /* GraphQL */ `
         createdAt
         updatedAt
         testGroupTestPack {
+          items {
+            id
+            testPackId
+            testGroupId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -803,12 +1395,33 @@ export const onUpdateTestPackChemicalAnalysis = /* GraphQL */ `
         createdAt
         updatedAt
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisOrder {
+          items {
+            id
+            orderId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -830,9 +1443,23 @@ export const onDeleteTestPackChemicalAnalysis = /* GraphQL */ `
         createdAt
         updatedAt
         testGroupTestPack {
+          items {
+            id
+            testPackId
+            testGroupId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -845,12 +1472,33 @@ export const onDeleteTestPackChemicalAnalysis = /* GraphQL */ `
         createdAt
         updatedAt
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisOrder {
+          items {
+            id
+            orderId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -872,6 +1520,22 @@ export const onCreateChemical = /* GraphQL */ `
           chemicalAnalysisId
           createdAt
           updatedAt
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -882,6 +1546,22 @@ export const onCreateChemical = /* GraphQL */ `
           impactId
           createdAt
           updatedAt
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
+          impact {
+            id
+            name
+            description
+            iconLink
+            impactCategoryId
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -903,6 +1583,22 @@ export const onUpdateChemical = /* GraphQL */ `
           chemicalAnalysisId
           createdAt
           updatedAt
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -913,6 +1609,22 @@ export const onUpdateChemical = /* GraphQL */ `
           impactId
           createdAt
           updatedAt
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
+          impact {
+            id
+            name
+            description
+            iconLink
+            impactCategoryId
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -934,6 +1646,22 @@ export const onDeleteChemical = /* GraphQL */ `
           chemicalAnalysisId
           createdAt
           updatedAt
+          chemicalAnalysis {
+            id
+            name
+            price
+            discount
+            description
+            createdAt
+            updatedAt
+          }
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -944,6 +1672,22 @@ export const onDeleteChemical = /* GraphQL */ `
           impactId
           createdAt
           updatedAt
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
+          impact {
+            id
+            name
+            description
+            iconLink
+            impactCategoryId
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -967,12 +1711,33 @@ export const onCreateChemicalAnalysisChemical = /* GraphQL */ `
         createdAt
         updatedAt
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisOrder {
+          items {
+            id
+            orderId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -983,9 +1748,23 @@ export const onCreateChemicalAnalysisChemical = /* GraphQL */ `
         createdAt
         updatedAt
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalImpacts {
+          items {
+            id
+            chemicalId
+            impactId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1009,12 +1788,33 @@ export const onUpdateChemicalAnalysisChemical = /* GraphQL */ `
         createdAt
         updatedAt
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisOrder {
+          items {
+            id
+            orderId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1025,9 +1825,23 @@ export const onUpdateChemicalAnalysisChemical = /* GraphQL */ `
         createdAt
         updatedAt
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalImpacts {
+          items {
+            id
+            chemicalId
+            impactId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1051,12 +1865,33 @@ export const onDeleteChemicalAnalysisChemical = /* GraphQL */ `
         createdAt
         updatedAt
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisOrder {
+          items {
+            id
+            orderId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1067,9 +1902,23 @@ export const onDeleteChemicalAnalysisChemical = /* GraphQL */ `
         createdAt
         updatedAt
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalImpacts {
+          items {
+            id
+            chemicalId
+            impactId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1094,6 +1943,9 @@ export const onCreateImpactCategory = /* GraphQL */ `
           impactCategoryId
           createdAt
           updatedAt
+          chemicalImpacts {
+            nextToken
+          }
         }
         nextToken
       }
@@ -1118,6 +1970,9 @@ export const onUpdateImpactCategory = /* GraphQL */ `
           impactCategoryId
           createdAt
           updatedAt
+          chemicalImpacts {
+            nextToken
+          }
         }
         nextToken
       }
@@ -1142,6 +1997,9 @@ export const onDeleteImpactCategory = /* GraphQL */ `
           impactCategoryId
           createdAt
           updatedAt
+          chemicalImpacts {
+            nextToken
+          }
         }
         nextToken
       }
@@ -1165,6 +2023,22 @@ export const onCreateImpact = /* GraphQL */ `
           impactId
           createdAt
           updatedAt
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
+          impact {
+            id
+            name
+            description
+            iconLink
+            impactCategoryId
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -1188,6 +2062,22 @@ export const onUpdateImpact = /* GraphQL */ `
           impactId
           createdAt
           updatedAt
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
+          impact {
+            id
+            name
+            description
+            iconLink
+            impactCategoryId
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -1211,6 +2101,22 @@ export const onDeleteImpact = /* GraphQL */ `
           impactId
           createdAt
           updatedAt
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
+          impact {
+            id
+            name
+            description
+            iconLink
+            impactCategoryId
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -1232,9 +2138,23 @@ export const onCreateChemicalImpact = /* GraphQL */ `
         createdAt
         updatedAt
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalImpacts {
+          items {
+            id
+            chemicalId
+            impactId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1247,6 +2167,13 @@ export const onCreateChemicalImpact = /* GraphQL */ `
         createdAt
         updatedAt
         chemicalImpacts {
+          items {
+            id
+            chemicalId
+            impactId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1268,9 +2195,23 @@ export const onUpdateChemicalImpact = /* GraphQL */ `
         createdAt
         updatedAt
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalImpacts {
+          items {
+            id
+            chemicalId
+            impactId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1283,6 +2224,13 @@ export const onUpdateChemicalImpact = /* GraphQL */ `
         createdAt
         updatedAt
         chemicalImpacts {
+          items {
+            id
+            chemicalId
+            impactId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1304,9 +2252,23 @@ export const onDeleteChemicalImpact = /* GraphQL */ `
         createdAt
         updatedAt
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalImpacts {
+          items {
+            id
+            chemicalId
+            impactId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1319,6 +2281,13 @@ export const onDeleteChemicalImpact = /* GraphQL */ `
         createdAt
         updatedAt
         chemicalImpacts {
+          items {
+            id
+            chemicalId
+            impactId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1355,6 +2324,13 @@ export const onCreateChemicalAnalysisOrder = /* GraphQL */ `
         updatedAt
         owner
         chemicalAnalysisOrder {
+          items {
+            id
+            orderId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1369,12 +2345,33 @@ export const onCreateChemicalAnalysisOrder = /* GraphQL */ `
         createdAt
         updatedAt
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisOrder {
+          items {
+            id
+            orderId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1387,6 +2384,13 @@ export const onCreateChemicalAnalysisOrder = /* GraphQL */ `
           resultType
           createdAt
           updatedAt
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -1423,6 +2427,13 @@ export const onUpdateChemicalAnalysisOrder = /* GraphQL */ `
         updatedAt
         owner
         chemicalAnalysisOrder {
+          items {
+            id
+            orderId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1437,12 +2448,33 @@ export const onUpdateChemicalAnalysisOrder = /* GraphQL */ `
         createdAt
         updatedAt
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisOrder {
+          items {
+            id
+            orderId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1455,6 +2487,13 @@ export const onUpdateChemicalAnalysisOrder = /* GraphQL */ `
           resultType
           createdAt
           updatedAt
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -1491,6 +2530,13 @@ export const onDeleteChemicalAnalysisOrder = /* GraphQL */ `
         updatedAt
         owner
         chemicalAnalysisOrder {
+          items {
+            id
+            orderId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1505,12 +2551,33 @@ export const onDeleteChemicalAnalysisOrder = /* GraphQL */ `
         createdAt
         updatedAt
         testPackChemicalAnalysis {
+          items {
+            id
+            testPackId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalAnalysisOrder {
+          items {
+            id
+            orderId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1523,6 +2590,13 @@ export const onDeleteChemicalAnalysisOrder = /* GraphQL */ `
           resultType
           createdAt
           updatedAt
+          chemical {
+            id
+            name
+            description
+            createdAt
+            updatedAt
+          }
         }
         nextToken
       }
@@ -1546,9 +2620,23 @@ export const onCreateChemicalAnalysisResult = /* GraphQL */ `
         createdAt
         updatedAt
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalImpacts {
+          items {
+            id
+            chemicalId
+            impactId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1572,9 +2660,23 @@ export const onUpdateChemicalAnalysisResult = /* GraphQL */ `
         createdAt
         updatedAt
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalImpacts {
+          items {
+            id
+            chemicalId
+            impactId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }
@@ -1598,9 +2700,23 @@ export const onDeleteChemicalAnalysisResult = /* GraphQL */ `
         createdAt
         updatedAt
         chemicalAnalysisChemical {
+          items {
+            id
+            chemicalId
+            chemicalAnalysisId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chemicalImpacts {
+          items {
+            id
+            chemicalId
+            impactId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
       }

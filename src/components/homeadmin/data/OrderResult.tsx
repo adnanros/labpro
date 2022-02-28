@@ -2,18 +2,19 @@ import { CButton } from "@coreui/react";
 import React, { Component } from "react";
 //import { userActions } from '../_actions';
 import { connect } from 'react-redux';
+import { batchCreateOrderData } from "../../../graphql/customMutations";
 import { getOrder, listChemicalAnalysisResults } from "../../../graphql/queries";
 import { admindataActions } from "../../../_actions";
 import { AppState } from "../../../_helpers";
-
+import { v4 as uuidv4 } from 'uuid';//npm install -D @types/uuid
 
 class OrderResult extends Component<any,any> {
     constructor(props: any) {
         super(props)
         
         this.state = {
-            chemicalAnalysisIds: props.location.state.chemicalAnalysisIds,
-            orderId: props.location.state.orderId,
+            chemicalAnalysisIds: props.chemicalAnalysisIds,
+            orderId: props.orderId,
             isResultsExists: 0//0: unknown, 1: exist, 2: not exist
         }
 
@@ -27,9 +28,9 @@ class OrderResult extends Component<any,any> {
     loadData() {
         this.props.getItem(getOrder,this.state.orderId, (success: Boolean) => {
             if(success) {
-                var order = this.props.data2
+                var order = this.props.data2["getOrder"]
                 var chemicalAnalysisOrdersIds = order.chemicalAnalysisOrder.items.map((x:any)=> {return x.id})
-                if (Array.isArray(chemicalAnalysisOrdersIds), chemicalAnalysisOrdersIds.length > 0) {
+                if (Array.isArray(chemicalAnalysisOrdersIds) && chemicalAnalysisOrdersIds.length > 0) {
                     var first = chemicalAnalysisOrdersIds.shift();
                     var f: any = {chemicalAnalysisOrderId: {eq: first } };
                     chemicalAnalysisOrdersIds.forEach((element:any) => {
@@ -44,12 +45,45 @@ class OrderResult extends Component<any,any> {
                     //no data. show user that no data is ready
                     this.setState({isResultsExists: 2})
                 }
+            }else {
+                ///
             }
        })
     }
 
     createResults() {
+        //$CreateChemicalAnalysisOrders: [CreateChemicalAnalysisOrderInput]
+        //$CreateChemicalAnalysisResults: [CreateChemicalAnalysisResultInput]
+        var CreateChemicalAnalysisOrderInput: any[] = []
+        var CreateChemicalAnalysisResultsInput: any[] = []
+       
+        var cIds = this.state.chemicalAnalysisIds.split(',');
+        cIds.forEach((element: any) => {
+            var id = uuidv4();
+            CreateChemicalAnalysisOrderInput.push(
+                {
+                id: id,
+                orderId: this.state.orderId,
+                chemicalAnalysisId: element,
+                }
+            );
+            CreateChemicalAnalysisResultsInput.push(
+                {
+                    chemicalAnalysisOrderId: id,
+                    chemicalId: "what",
+                    detection: 0,
+                    resultType: "",
+                }
+            );
+        });
+        
+        var input = {
+             CreateChemicalAnalysisOrders: CreateChemicalAnalysisOrderInput,
+             CreateChemicalAnalysisResults: CreateChemicalAnalysisResultsInput
+        }
+        console.log("kkkk",input);
 
+        this.props.mutateMulti(batchCreateOrderData,input,true);
     }
 
     render(){
@@ -60,12 +94,10 @@ class OrderResult extends Component<any,any> {
                 <CButton onClick={()=> this.createResults()}>
                     create results
                 </CButton>
-            {
-                this.props.data && {
-
-                }
+            </div>
             }
-            </div>}
+            
+            
         </div>);
     }
 }
@@ -81,14 +113,19 @@ const mapStateToProps = (state: AppState) => {
       
       isGettingData: state.package_admin.dataDetailState.isLoaingItemDetail,
       isGetSuccessfully: state.package_admin.dataDetailState.isLoadedItemDetailSuccessfully,
-      data2: state.package_admin.dataDetailState.loadedItemDetailData
+      data2: state.package_admin.dataDetailState.loadedItemDetailData,
+
+      isCreating: state.package_admin.multiQuerydataListState.isLoadingData,
+      isCreationFailed:state.package_admin.multiQuerydataListState.isLoadingFailed,
+      isCreateSuccesfully: state.package_admin.multiQuerydataListState.isLoadedSuccessfully,
+      data3: state.package_admin.multiQuerydataListState.data,
     }
   };
   
   const mapDispatchToProps  = {
     getDataList: admindataActions.getDataList,
     getItem: admindataActions.getItemDetail2,
-    
+    mutateMulti: admindataActions.mutateMultiQuery
   };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderResult);

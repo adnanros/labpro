@@ -3,9 +3,7 @@ export const batchCreateOrderData = /* GraphQL */ `
     $CreateChemicalAnalysisOrders: [CreateChemicalAnalysisOrderInput]
     $CreateChemicalAnalysisResults: [CreateChemicalAnalysisResultInput]
   ) {
-    batchCreateChemicalAnalysisOrders(
-      CreateChemicalAnalysisOrders: $CreateChemicalAnalysisOrders
-    ) {
+    batchCreateChemicalAnalysisOrders(CreateChemicalAnalysisOrders: $CreateChemicalAnalysisOrders) {
       id
       orderId
       chemicalAnalysisId
@@ -69,9 +67,7 @@ export const batchCreateOrderData = /* GraphQL */ `
         nextToken
       }
     },
-    batchCreateChemicalAnalysisResults(
-      CreateChemicalAnalysisResults: $CreateChemicalAnalysisResults
-    ) {
+    batchCreateChemicalAnalysisResults(CreateChemicalAnalysisResults: $CreateChemicalAnalysisResults) {
       id
       chemicalAnalysisOrderId
       chemicalId

@@ -31,6 +31,7 @@ import { admindataActions} from '../../../_actions';
 import { getOrder, listOrders,   } from '../../../graphql/queries';
 import React from 'react';
 import { createOrder,  deleteOrder, updateOrder,  } from '../../../graphql/mutations';
+import OrderResult from './OrderResult';
 
 
 /// in class component we cannot use useState functionality
@@ -39,10 +40,14 @@ interface IState {
   showDetail: boolean,
   showEdit: boolean,
   showCreate: boolean,
+  showResults: boolean,
   showDeleteAlert: boolean,
   toBeDeletedId: string,
   toBeDeletedName: string,
   toBeUpdatedId: string,
+
+  orderId: string,
+  chemicalAnalysisIds: string
 }
 class Order extends Component<any,IState> {
   
@@ -53,9 +58,12 @@ class Order extends Component<any,IState> {
         showEdit: false,
         showCreate: false,
         showDeleteAlert: false,
+        showResults: false,
         toBeDeletedId: '',
         toBeDeletedName: '',
         toBeUpdatedId: '',
+        orderId:'',
+        chemicalAnalysisIds:''
       }
     }
 
@@ -89,6 +97,7 @@ class Order extends Component<any,IState> {
                           <CButton className='primary' color="link" onClick={()=>{this.setState({showDetail: true}); this.props.getItemDetail(getOrder,item.id);}} disabled={this.props.isLoaingItemDetail}>Detail</CButton>
                           <CButton className='primary' color="link" onClick={()=>{this.setState({toBeUpdatedId: item.id ,showEdit: true})}} disabled={this.props.isUpdatingItem}>Edit</CButton>
                           <CButton className='danger' color="link" onClick={()=>{this.setState({toBeDeletedId: item.id,toBeDeletedName:item.name, showDeleteAlert: true})}} disabled={this.props.isDeletingItem}>Delete</CButton>
+                          <CButton className='danger' color="link" onClick={()=>{this.setState({showResults: true,orderId: item.id,chemicalAnalysisIds: item.chemicalAnalysisIds})}} disabled={this.props.isDeletingItem}>Results</CButton>
                         </div>
                         </CTableDataCell>
                     </CTableRow>
@@ -160,6 +169,21 @@ class Order extends Component<any,IState> {
               </CModalBody>
             </CModal>
 
+            <CModal
+             backdrop={false}
+             keyboard={false}
+             portal={false}
+             visible= {this.state.showResults}
+             onClose = {()=> this.setState({showDetail: false})}
+             >
+              <CModalHeader>
+                  <CModalTitle>Order results</CModalTitle>
+                </CModalHeader>
+                <CModalBody>
+                  <OrderResult chemicalAnalysisIds= {this.state.chemicalAnalysisIds} orderId= {this.state.orderId}/>
+                  {/* <GetOrderComponent onclick={()=> this.setState({showDetail: false})} fetchedItem={this.props.fetchedItem}/> */}
+                </CModalBody>
+            </CModal>
         </div>
       );
     }

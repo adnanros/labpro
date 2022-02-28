@@ -9,7 +9,6 @@ import { AppState } from "../../../_helpers";
 class ResultListPage extends Component<any,any> {
     constructor(props: any) {
         super(props)
-        console.log("pppppp");
         this.state = {
             chemicalAnalysisIds: props.location.state.chemicalAnalysisIds,
             orderId: props.location.state.orderId,
@@ -17,7 +16,7 @@ class ResultListPage extends Component<any,any> {
     }
 
     componentDidMount() {
-      // this.loadData()
+       this.loadData()
     }
 
     makeFilter(dic: {}) {
@@ -27,9 +26,10 @@ class ResultListPage extends Component<any,any> {
     loadData() {
         this.props.getItem(getOrder,this.state.orderId, (success: Boolean) => {
             if(success) {
-                var order = this.props.data2
+                var order = this.props.data2["getOrder"]
+                
                 var chemicalAnalysisOrdersIds = order.chemicalAnalysisOrder.items.map((x:any)=> {return x.id})
-                if (Array.isArray(chemicalAnalysisOrdersIds), chemicalAnalysisOrdersIds.length > 0) {
+                if (Array.isArray(chemicalAnalysisOrdersIds) && chemicalAnalysisOrdersIds.length > 0) {
                     var first = chemicalAnalysisOrdersIds.shift();
                     var f: any = {chemicalAnalysisOrderId: {eq: first } };
                     chemicalAnalysisOrdersIds.forEach((element:any) => {
@@ -38,6 +38,7 @@ class ResultListPage extends Component<any,any> {
                             or: f
                         }
                     });
+                    console.log("ffff",f);
                     this.props.getDataList(listChemicalAnalysisResults,f,this.props.auth.isSignedIn)
                 }else {
                     //no data. show user that no data is ready

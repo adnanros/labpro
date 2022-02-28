@@ -9,7 +9,7 @@ const routesHome = [
     { path: '/', exact:true, name: 'Home', component: AppHomeContent,isSignedInRequired: false },
     { path: '/sampleCategoryDetails', exact:true, name: 'Sample category details', component: SampleCategoryDetailsPage ,isSignedInRequired: false},
     { path: '/orderRegisteration', exact:true, name: 'Order registration', component: OrderRegisterationPage ,isSignedInRequired: true},
-    { path: '/resulList', exact:true, name: 'Results list', component: ResultListPage ,isSignedInRequired: true},
+    { path: '/resultList', exact:true, name: 'Results list', component: ResultListPage ,isSignedInRequired: true},
     { path: '/orderList', exact:true, name: 'Order list', component: OrderListPage ,isSignedInRequired: true},
     
   ]

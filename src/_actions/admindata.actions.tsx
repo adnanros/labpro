@@ -6,6 +6,7 @@ type BoolCallback = (n: Boolean) => any;
 
 export const admindataActions = {
     getDataListMultiQuery,
+    mutateMultiQuery,
     getDataList,
     getDataList2,
     getDataList3,
@@ -67,7 +68,7 @@ function mutateMultiQuery(query: string,inputData: any = null,isCognito: Boolean
                 const result: any = await API.graphql(
                     {
                     query: query,
-                    variables: { input: inputData}
+                    variables: inputData
                     }
                 ) as Promise<any>
                 console.log('List-result',result.data);
@@ -77,7 +78,7 @@ function mutateMultiQuery(query: string,inputData: any = null,isCognito: Boolean
                 const result: any = await API.graphql(
                     {
                     query: query,
-                    variables: { input: inputData},
+                    variables: inputData,
                     authMode: "AWS_IAM"
                     }
                 ) as Promise<any>
