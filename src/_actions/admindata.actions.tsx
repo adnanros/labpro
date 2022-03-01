@@ -18,7 +18,7 @@ export const admindataActions = {
      getItemDetailByKeyValue
 };
 
-function getDataListMultiQuery(query: string,filter: any = null,isCognito: Boolean = true){
+function getDataListMultiQuery(query: string,filter: any = null,isCognito: Boolean = true, completionHandler?: BoolCallback){
     
     return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
         dispatch(request());
@@ -33,6 +33,9 @@ function getDataListMultiQuery(query: string,filter: any = null,isCognito: Boole
                 console.log('List-result',result.data);
                 
                 dispatch(success(result));
+                if(typeof completionHandler !== "undefined") {
+                    completionHandler(true)
+                }
             }else {
                 const result: any = await API.graphql(
                     {
@@ -44,6 +47,9 @@ function getDataListMultiQuery(query: string,filter: any = null,isCognito: Boole
                 console.log('List-result',result.data);
                 
                 dispatch(success(result));
+                if(typeof completionHandler !== "undefined") {
+                    completionHandler(true)
+                }
             }
             
         } catch(error: any)
@@ -51,6 +57,9 @@ function getDataListMultiQuery(query: string,filter: any = null,isCognito: Boole
             console.log(error);
             dispatch(failure('load list failed'));
             dispatch(alertActions.error(error.toString()));
+            if(typeof completionHandler !== "undefined") {
+                completionHandler(false)
+            }
         }
     };
 
@@ -59,7 +68,7 @@ function getDataListMultiQuery(query: string,filter: any = null,isCognito: Boole
     function failure(error: string) { return { type: dataAdminConstants.MULTI_QUERY_DATA_LIST_FAILURE, error } }
 }
 
-function mutateMultiQuery(query: string,inputData: any = null,isCognito: Boolean = true){
+function mutateMultiQuery(query: string,inputData: any = null,isCognito: Boolean = true, completionHandler?: BoolCallback){
     
     return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
         dispatch(request());
@@ -74,6 +83,9 @@ function mutateMultiQuery(query: string,inputData: any = null,isCognito: Boolean
                 console.log('List-result',result.data);
                 
                 dispatch(success(result));
+                if(typeof completionHandler !== "undefined") {
+                    completionHandler(true)
+                }
             }else {
                 const result: any = await API.graphql(
                     {
@@ -84,6 +96,9 @@ function mutateMultiQuery(query: string,inputData: any = null,isCognito: Boolean
                 ) as Promise<any>
                 console.log('List-result',result.data);
                 dispatch(success(result));
+                if(typeof completionHandler !== "undefined") {
+                    completionHandler(true)
+                }
             }
             
         } catch(error: any)
@@ -91,6 +106,9 @@ function mutateMultiQuery(query: string,inputData: any = null,isCognito: Boolean
             console.log(error);
             dispatch(failure('load list failed'));
             dispatch(alertActions.error(error.toString()));
+            if(typeof completionHandler !== "undefined") {
+                completionHandler(false)
+            }
         }
     };
 
@@ -150,7 +168,7 @@ function getDataList(query: string,filter: any = null,isCognito: Boolean = true,
     function failure(error: string) { return { type: dataAdminConstants.DATA_LIST_FAILURE, error } }
 }
 
-function getDataList2(query: string,filter: any = null,isCognito: Boolean = true){
+function getDataList2(query: string,filter: any = null,isCognito: Boolean = true, completionHandler?: BoolCallback){
 
     return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
         dispatch(request());
@@ -165,6 +183,9 @@ function getDataList2(query: string,filter: any = null,isCognito: Boolean = true
                 console.log('List-result',result.data);
                 
                 dispatch(success(result));
+                if(typeof completionHandler !== 'undefined'){
+                    completionHandler(true);
+                }
             }else {
                 const result: any = await API.graphql(
                     {
@@ -176,12 +197,18 @@ function getDataList2(query: string,filter: any = null,isCognito: Boolean = true
                 console.log('List-result',result.data);
                 
                 dispatch(success(result));
+                if(typeof completionHandler !== 'undefined'){
+                    completionHandler(true);
+                }
             }
         } catch(error: any)
         {
             console.log(error);
             dispatch(failure('load list failed'));
             dispatch(alertActions.error(error.toString()));
+            if(typeof completionHandler !== 'undefined'){
+                completionHandler(false);
+            }
         }
     };
 
@@ -191,7 +218,7 @@ function getDataList2(query: string,filter: any = null,isCognito: Boolean = true
 
 }
 
-function getDataList3(query: string,filter: any = null,isCognito: Boolean = true){
+function getDataList3(query: string,filter: any = null,isCognito: Boolean = true, completionHandler?: BoolCallback){
 
     return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
         dispatch(request());
@@ -206,6 +233,9 @@ function getDataList3(query: string,filter: any = null,isCognito: Boolean = true
                 console.log('List-result',result.data);
                 
                 dispatch(success(result));
+                if(typeof completionHandler !== 'undefined'){
+                    completionHandler(true);
+                }
             }else {
                 const result: any = await API.graphql(
                     {
@@ -217,12 +247,18 @@ function getDataList3(query: string,filter: any = null,isCognito: Boolean = true
                 console.log('List-result',result.data);
                 
                 dispatch(success(result));
+                if(typeof completionHandler !== 'undefined'){
+                    completionHandler(true);
+                }
             }
         } catch(error: any)
         {
             console.log(error);
             dispatch(failure('load list failed'));
             dispatch(alertActions.error(error.toString()));
+            if(typeof completionHandler !== 'undefined'){
+                completionHandler(false);
+            }
         }
     };
 

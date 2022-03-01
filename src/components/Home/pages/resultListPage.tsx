@@ -74,15 +74,17 @@ class ResultListPage extends Component<any,any> {
     render(){
         return (
         <div>
-            {(this.state.chemicalAnalysisResultsStatus == 0) && <div> loading</div>}
-            {(this.state.chemicalAnalysisResultsStatus == 2) && <div> your results is not ready</div>}
-            {(this.state.chemicalAnalysisResultsStatus == 1) && <div> 
+            {(this.state.chemicalAnalysisResultsStatus === 0) && <div> loading</div>}
+            {(this.state.chemicalAnalysisResultsStatus === 2) && <div> your results is not ready</div>}
+            {(this.state.chemicalAnalysisResultsStatus === 1) && <div> 
                 {
                     this.props.data &&
                     this.props.data.map((item: any, index:any) => (
                         <CRow key={index}>
                             <CCol sm={4} >
+                               chemical:  {item.chemical.name}
                                detection:  {item.detection}
+
                             </CCol>
                         </CRow>
                         

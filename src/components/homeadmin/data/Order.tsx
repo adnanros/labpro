@@ -47,7 +47,8 @@ interface IState {
   toBeUpdatedId: string,
 
   orderId: string,
-  chemicalAnalysisIds: string
+  chemicalAnalysisIds: string,
+  chemicalAnalysisOrders: [{}]
 }
 class Order extends Component<any,IState> {
   
@@ -63,7 +64,8 @@ class Order extends Component<any,IState> {
         toBeDeletedName: '',
         toBeUpdatedId: '',
         orderId:'',
-        chemicalAnalysisIds:''
+        chemicalAnalysisIds:'',
+        chemicalAnalysisOrders: [{}]
       }
     }
 
@@ -97,7 +99,7 @@ class Order extends Component<any,IState> {
                           <CButton className='primary' color="link" onClick={()=>{this.setState({showDetail: true}); this.props.getItemDetail(getOrder,item.id);}} disabled={this.props.isLoaingItemDetail}>Detail</CButton>
                           <CButton className='primary' color="link" onClick={()=>{this.setState({toBeUpdatedId: item.id ,showEdit: true})}} disabled={this.props.isUpdatingItem}>Edit</CButton>
                           <CButton className='danger' color="link" onClick={()=>{this.setState({toBeDeletedId: item.id,toBeDeletedName:item.name, showDeleteAlert: true})}} disabled={this.props.isDeletingItem}>Delete</CButton>
-                          <CButton className='danger' color="link" onClick={()=>{this.setState({showResults: true,orderId: item.id,chemicalAnalysisIds: item.chemicalAnalysisIds})}} disabled={this.props.isDeletingItem}>Results</CButton>
+                          <CButton className='danger' color="link" onClick={()=>{this.setState({showResults: true,orderId: item.id,chemicalAnalysisIds: item.chemicalAnalysisIds,chemicalAnalysisOrders: item.chemicalAnalysisOrder.items})}} disabled={this.props.isDeletingItem}>Results</CButton>
                         </div>
                         </CTableDataCell>
                     </CTableRow>
@@ -180,7 +182,7 @@ class Order extends Component<any,IState> {
                   <CModalTitle>Order results</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
-                  <OrderResult chemicalAnalysisIds= {this.state.chemicalAnalysisIds} orderId= {this.state.orderId}/>
+                  <OrderResult chemicalAnalysisIds= {this.state.chemicalAnalysisIds} chemicalAnalysisOrders= {this.state.chemicalAnalysisOrders} orderId= {this.state.orderId}/>
                   {/* <GetOrderComponent onclick={()=> this.setState({showDetail: false})} fetchedItem={this.props.fetchedItem}/> */}
                 </CModalBody>
             </CModal>

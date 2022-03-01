@@ -1,9 +1,9 @@
-import { CButton } from "@coreui/react";
+import { CButton, CCol, CRow } from "@coreui/react";
 import React, { Component } from "react";
 //import { userActions } from '../_actions';
 import { connect } from 'react-redux';
 import { batchCreateOrderData } from "../../../graphql/customMutations";
-import { getOrder, listChemicalAnalysisResults } from "../../../graphql/queries";
+import { listChemicalAnalysisChemicals, listChemicalAnalysisResults } from "../../../graphql/queries";
 import { admindataActions } from "../../../_actions";
 import { AppState } from "../../../_helpers";
 import { v4 as uuidv4 } from 'uuid';//npm install -D @types/uuid
@@ -11,11 +11,13 @@ import { v4 as uuidv4 } from 'uuid';//npm install -D @types/uuid
 class OrderResult extends Component<any,any> {
     constructor(props: any) {
         super(props)
-        
+        var caids = props.chemicalAnalysisIds.split(',');
         this.state = {
-            chemicalAnalysisIds: props.chemicalAnalysisIds,
+            chemicalAnalysisIds: caids,
+            chemicalAnalysisOrders: props.chemicalAnalysisOrders,
             orderId: props.orderId,
-            isResultsExists: 0//0: unknown, 1: exist, 2: not exist
+            isResultsExists: 0,//0: unknown, 1: exist, 2: not exist
+            isResultsReady: 0//1: data, 2: data3
         }
 
         this.createResults = this.createResults.bind(this);
@@ -26,67 +28,106 @@ class OrderResult extends Component<any,any> {
     }
 
     loadData() {
-        this.props.getItem(getOrder,this.state.orderId, (success: Boolean) => {
-            if(success) {
-                var order = this.props.data2["getOrder"]
-                var chemicalAnalysisOrdersIds = order.chemicalAnalysisOrder.items.map((x:any)=> {return x.id})
-                if (Array.isArray(chemicalAnalysisOrdersIds) && chemicalAnalysisOrdersIds.length > 0) {
-                    var first = chemicalAnalysisOrdersIds.shift();
-                    var f: any = {chemicalAnalysisOrderId: {eq: first } };
-                    chemicalAnalysisOrdersIds.forEach((element:any) => {
-                        f = {
-                            chemicalAnalysisOrderId: {eq: element},
-                            or: f
-                        }
-                    });
-                    this.setState({isResultsExists: 0})
-                    this.props.getDataList(listChemicalAnalysisResults,f,this.props.auth.isSignedIn)
-                }else {
-                    //no data. show user that no data is ready
-                    this.setState({isResultsExists: 2})
+        if (this.state.chemicalAnalysisOrders.length > 0) {
+            var chemicalAnalysisOrdersIds = this.state.chemicalAnalysisOrders.map((x:any)=> {return x.id})
+            var ors: any[] = []
+            // export type ModelChemicalAnalysisResultFilterInput = {
+            //     id?: ModelIDInput | null,
+            //     chemicalAnalysisOrderId?: ModelIDInput | null,
+            //     chemicalId?: ModelIDInput | null,
+            //     detection?: ModelFloatInput | null,
+            //     resultType?: ModelStringInput | null,
+            //     and?: Array< ModelChemicalAnalysisResultFilterInput | null > | null,
+            //     or?: Array< ModelChemicalAnalysisResultFilterInput | null > | null,
+            //     not?: ModelChemicalAnalysisResultFilterInput | null,
+            //   };
+            chemicalAnalysisOrdersIds.forEach((element:any) => {
+                ors.push(
+                    {
+                        chemicalAnalysisOrderId: {eq: element}
+                    }
+                );
+            });
+            var filter: any = {or: ors };
+            this.setState({isResultsExists: 0})
+            this.props.getDataList(listChemicalAnalysisResults,filter,this.props.auth.isSignedIn,(success: boolean)=> {
+                if(success){
+                    this.setState({isResultsExists: 1,isResultsReady: 1})
                 }
-            }else {
-                ///
-            }
-       })
+            })
+        }else {
+            this.setState({isResultsExists: 2})
+        }
     }
 
     createResults() {
-        //$CreateChemicalAnalysisOrders: [CreateChemicalAnalysisOrderInput]
-        //$CreateChemicalAnalysisResults: [CreateChemicalAnalysisResultInput]
-        var CreateChemicalAnalysisOrderInput: any[] = []
-        var CreateChemicalAnalysisResultsInput: any[] = []
-       
-        var cIds = this.state.chemicalAnalysisIds.split(',');
-        cIds.forEach((element: any) => {
-            var id = uuidv4();
-            CreateChemicalAnalysisOrderInput.push(
+        // export type ModelChemicalAnalysisChemicalFilterInput = {
+        //     id?: ModelIDInput | null,
+        //     chemicalId?: ModelIDInput | null,
+        //     chemicalAnalysisId?: ModelIDInput | null,
+        //     and?: Array< ModelChemicalAnalysisChemicalFilterInput | null > | null,
+        //     or?: Array< ModelChemicalAnalysisChemicalFilterInput | null > | null,
+        //     not?: ModelChemicalAnalysisChemicalFilterInput | null,
+        //   };
+        var ors: any[] = []
+        this.state.chemicalAnalysisIds.forEach((element:any) => {
+            ors.push(
                 {
-                id: id,
-                orderId: this.state.orderId,
-                chemicalAnalysisId: element,
-                }
-            );
-            CreateChemicalAnalysisResultsInput.push(
-                {
-                    chemicalAnalysisOrderId: id,
-                    chemicalId: "what",
-                    detection: 0,
-                    resultType: "",
+                    chemicalAnalysisId: {eq: element}
                 }
             );
         });
-        
-        var input = {
-             CreateChemicalAnalysisOrders: CreateChemicalAnalysisOrderInput,
-             CreateChemicalAnalysisResults: CreateChemicalAnalysisResultsInput
-        }
-        console.log("kkkk",input);
+        var filter: any = {or: ors };
+        this.props.getDataList(listChemicalAnalysisChemicals,filter,true,(success: boolean)=> {
+            if (success) {
+                //$CreateChemicalAnalysisOrders: [CreateChemicalAnalysisOrderInput]
+                //$CreateChemicalAnalysisResults: [CreateChemicalAnalysisResultInput]
+                var CreateChemicalAnalysisOrderInput: any[] = []
+                var CreateChemicalAnalysisResultsInput: any[] = []
+                var ChemicalAnalysisChemicals = this.props.data
+                
+                this.state.chemicalAnalysisIds.forEach((element: any) => {
+                    var id = uuidv4();
+                    CreateChemicalAnalysisOrderInput.push(
+                        {
+                        id: id,
+                        orderId: this.state.orderId,
+                        chemicalAnalysisId: element,
+                        }
+                    );
+                    let chemicalId = ChemicalAnalysisChemicals.find(function (el: any) {
+                        return el.chemicalAnalysisId === element;
+                    }).chemicalId
+                    CreateChemicalAnalysisResultsInput.push(
+                        {
+                            chemicalAnalysisOrderId: id,
+                            chemicalId: chemicalId,
+                            detection: 0,
+                            resultType: "",
+                        }
+                    );
+                });
+                
+                var input = {
+                    CreateChemicalAnalysisOrders: CreateChemicalAnalysisOrderInput,
+                    CreateChemicalAnalysisResults: CreateChemicalAnalysisResultsInput
+                }
+                console.log("kkkk",input);
 
-        this.props.mutateMulti(batchCreateOrderData,input,true);
+                this.props.mutateMulti(batchCreateOrderData,input,true, (success: boolean)=> {
+                    if(success) {
+                        this.setState({isResultsReady: 2,isResultsExists: 1})
+                    }
+                });
+
+            }else {
+                this.setState({isResultsExists: 2})
+            }
+        })
     }
 
     render(){
+        console.log("Hiiiiiii",this.props.data)
         return (
         <div>
             {this.props.isGettingData && <div>loading</div>}
@@ -96,7 +137,34 @@ class OrderResult extends Component<any,any> {
                 </CButton>
             </div>
             }
-            
+            {
+                this.state.isResultsReady == 2 && this.props.data3 && <div>
+                {
+                    this.props.data3[1].map((item: any,index: any)=> {
+                        <CRow key={index}>
+                            <CCol>
+                            {item.chemical.name}
+                            {item.detection}
+                            </CCol>
+                        </CRow>
+                    })
+                }
+                </div>
+            }
+             {
+                this.state.isResultsReady === 1 && this.props.data && <div>
+                {
+                    this.props.data.map((item: any,index: any)=> (
+                        <CRow key={index}>
+                            <CCol>
+                            {item.chemical.name}
+                            {item.detection}
+                            </CCol>
+                        </CRow>
+                    ))
+                }
+                </div>
+            }
             
         </div>);
     }
@@ -106,10 +174,10 @@ class OrderResult extends Component<any,any> {
 const mapStateToProps = (state: AppState) => {
     return {
       auth: state.authentication,
-      isDataLoading: state.package_admin.dataListState.isLoadingData,
-      isLoadingFailed:state.package_admin.dataListState.isLoadingFailed,
-      isLoadedSuccessfully: state.package_admin.dataListState.isLoadedSuccessfully,
-      data: state.package_admin.dataListState.data,
+      isDataLoading: state.package_admin.dataList2State.isLoadingData,
+      isLoadingFailed:state.package_admin.dataList2State.isLoadingFailed,
+      isLoadedSuccessfully: state.package_admin.dataList2State.isLoadedSuccessfully,
+      data: state.package_admin.dataList2State.data,
       
       isGettingData: state.package_admin.dataDetailState.isLoaingItemDetail,
       isGetSuccessfully: state.package_admin.dataDetailState.isLoadedItemDetailSuccessfully,
@@ -123,7 +191,7 @@ const mapStateToProps = (state: AppState) => {
   };
   
   const mapDispatchToProps  = {
-    getDataList: admindataActions.getDataList,
+    getDataList: admindataActions.getDataList2,
     getItem: admindataActions.getItemDetail2,
     mutateMulti: admindataActions.mutateMultiQuery
   };

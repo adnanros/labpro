@@ -318,8 +318,8 @@ const mapDispatchToProps2  = {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm className="needs-validation" onSubmit={handleSubmit(onSubmit)} >
-                    <h1>Test Group / Test Pack</h1>
-                    <p className="text-medium-emphasis">Create a new Test Group / Test Pack Connection</p>
+                    <h1>TestPack/Chemical Analysis</h1>
+                    <p className="text-medium-emphasis">Create a new Test Pack / Chemical Analysis Connection</p>
                     
                     <CFormSelect aria-label="Default select example" 
                     {...register('testPackId')}
