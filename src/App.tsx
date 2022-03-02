@@ -61,7 +61,10 @@ class App extends Component<any,any> {
               }
               {
                  this.props.isLoadingAuthStatus && 
-                <div style={{width:100,height:100,backgroundColor:'red'}}> </div>
+                 <button className="btn btn-primary" type="button" disabled>
+                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span className="sr-only">Loading...</span>
+                </button>
               }
               {
                 !this.props.isLoadingAuthStatus &&

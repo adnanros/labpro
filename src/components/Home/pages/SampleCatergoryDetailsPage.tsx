@@ -28,7 +28,11 @@ class SampleCatergoryDetailsPage extends Component<any,any> {
     render(){
         return (
             <div>
-            {this.props.isDataLoading && <div>loding</div>}
+            {this.props.isDataLoading && 
+            <button className="btn btn-primary" type="button" disabled>
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span className="sr-only">Loading...</span>
+            </button>}
             {this.props.isLoadingFailed && <div>a refresh button</div>}
             {this.props.isLoadedSuccessfully && <div>
                 <CContainer fluid>

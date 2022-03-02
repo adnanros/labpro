@@ -82,20 +82,28 @@ class OrderRegisterationPage extends Component<any,any> {
     
     render(){
         return (
-            <div className="bg-light min-vh-50 d-flex flex-row align-items-center">
-                 {
-            this.state.chemicalAnalysis.map((item: any,index: any) => (
-                <CRow key={index}>
-                    <CCol>
-                        {item.chemicalAnalysis.name}
-                    </CCol>
-                </CRow>
-            )
-            )
-            }
-            <CContainer>
-                <CRow className="justify-content-center">
-                <CCol md={8}>
+            <div className="bg-light p-5">
+               <CContainer>
+                   <CRow>
+
+                   
+
+                  <CCol md={6} className=''>
+                      <CCard className="p-4">
+                        {
+                            this.state.chemicalAnalysis.map((item: any,index: any) => (
+                                <div key={index}>
+                                    {item.chemicalAnalysis.name}
+                                </div>
+                        )
+                        )
+                        }  
+                      </CCard>
+                      
+                 </CCol>
+            
+            
+                <CCol md={6}>
                     <CCardGroup>
                     <CCard className="p-4">
                         <CCardBody>
@@ -145,9 +153,11 @@ class OrderRegisterationPage extends Component<any,any> {
                     </CCard>
                     </CCardGroup>
                 </CCol>
-                </CRow>
-            </CContainer>
+            </CRow>
+
             <CButton onClick={()=> this.doRegister()} disabled={this.props.isCreating}>register </CButton>
+            </CContainer>
+
             </div>
         )
     }
