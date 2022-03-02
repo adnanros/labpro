@@ -19,7 +19,6 @@ class OrderResult extends Component<any,any> {
             isResultsExists: 0,//0: unknown, 1: exist, 2: not exist
             isResultsReady: 0//1: data, 2: data3
         }
-
         this.createResults = this.createResults.bind(this);
     }
 
@@ -112,8 +111,6 @@ class OrderResult extends Component<any,any> {
                     CreateChemicalAnalysisOrders: CreateChemicalAnalysisOrderInput,
                     CreateChemicalAnalysisResults: CreateChemicalAnalysisResultsInput
                 }
-                console.log("kkkk",input);
-
                 this.props.mutateMulti(batchCreateOrderData,input,true, (success: boolean)=> {
                     if(success) {
                         this.setState({isResultsReady: 2,isResultsExists: 1})
@@ -127,7 +124,6 @@ class OrderResult extends Component<any,any> {
     }
 
     render(){
-        console.log("Hiiiiiii",this.props.data)
         return (
         <div>
             {this.props.isGettingData && <div>loading</div>}
@@ -138,7 +134,7 @@ class OrderResult extends Component<any,any> {
             </div>
             }
             {
-                this.state.isResultsReady == 2 && this.props.data3 && <div>
+                this.state.isResultsReady === 2 && this.props.data3 && <div>
                 {
                     this.props.data3[1].map((item: any,index: any)=> {
                         <CRow key={index}>
@@ -178,10 +174,6 @@ const mapStateToProps = (state: AppState) => {
       isLoadingFailed:state.package_admin.dataList2State.isLoadingFailed,
       isLoadedSuccessfully: state.package_admin.dataList2State.isLoadedSuccessfully,
       data: state.package_admin.dataList2State.data,
-      
-      isGettingData: state.package_admin.dataDetailState.isLoaingItemDetail,
-      isGetSuccessfully: state.package_admin.dataDetailState.isLoadedItemDetailSuccessfully,
-      data2: state.package_admin.dataDetailState.loadedItemDetailData,
 
       isCreating: state.package_admin.multiQuerydataListState.isLoadingData,
       isCreationFailed:state.package_admin.multiQuerydataListState.isLoadingFailed,
@@ -192,7 +184,6 @@ const mapStateToProps = (state: AppState) => {
   
   const mapDispatchToProps  = {
     getDataList: admindataActions.getDataList2,
-    getItem: admindataActions.getItemDetail2,
     mutateMulti: admindataActions.mutateMultiQuery
   };
 
