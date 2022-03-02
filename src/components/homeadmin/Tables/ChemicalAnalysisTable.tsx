@@ -2,23 +2,27 @@ import { connect } from 'react-redux';
 import { Component } from "react"
 import { AppState } from '../../../_helpers';
 import { admindataActions} from '../../../_actions';
-import { listTestPacks,  } from '../../../graphql/queries';
+import { listChemicalAnalysiss  } from '../../../graphql/queries';
 import AdminMainComponent, { DataLoadCallBack } from '../Base/AdminMainComponent';
 import { CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from '@coreui/react';
-import { createTestPack, deleteTestPack, updateTestPack } from '../../../graphql/mutations';
+import { createChemicalAnalysis, deleteChemicalAnalysis, updateChemicalAnalysis } from '../../../graphql/mutations';
 import React from 'react';
 
-interface TestPackModel {
-    name: string;
-    description: string;
+interface ChemicalAnalysisModel {
+    name: string,
+    price: string,
+    discount: string,
+    description: string
 }
-const queryIdentifier = "TestPack"
-class TestPacksTable extends Component<any ,TestPackModel> {
+const queryIdentifier = "ChemicalAnalysis"
+class ChemicalAnalysisTable extends Component<any ,ChemicalAnalysisModel> {
   
     constructor(props: any){
       super(props);
       this.state = {
         name: '',
+        price: '0',
+        discount: '0',
         description: ''
       }
 
@@ -35,7 +39,7 @@ class TestPacksTable extends Component<any ,TestPackModel> {
     }
 
     loadData(callBack?: DataLoadCallBack) {
-        this.props.getDataList(queryIdentifier,listTestPacks,null,true,(success: Boolean)=> {
+        this.props.getDataList(queryIdentifier,listChemicalAnalysiss,null,true,(success: Boolean)=> {
             if(success) {
                 var data = this.props.data[0].items
                 if (callBack !== undefined) {
@@ -55,33 +59,39 @@ class TestPacksTable extends Component<any ,TestPackModel> {
             <CTableRow>
             <CTableHeaderCell scope="col">#</CTableHeaderCell>
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Price</CTableHeaderCell>
             </CTableRow>
         </CTableHead>
         );
     }
     createRow(item: any) {
         return(
+            <>
             <CTableDataCell>{item.name}</CTableDataCell>
+            <CTableDataCell>{item.price}</CTableDataCell>
+            </>
         );
     }
 
     //Whenever we show SampleCategoryDetailsComponent, we listen to change to its values by pasing this function to it.
-    modelItemChangeListener(state: TestPackModel) {
-        this.setState({name: state.name, description: state.description })
+    modelItemChangeListener(state: ChemicalAnalysisModel) {
+        this.setState({name: state.name, description: state.description, price: state.price,discount: state.discount })
     }
 
     showCreateNewItem() {
         return(
-            <TestPackDetailsComponent onChange={this.modelItemChangeListener}/>
+            <ChemicalAnalysisDetailsComponent onChange={this.modelItemChangeListener}/>
         );
     }
 
     doCreateNewItem (callBack?: DataLoadCallBack){
         const inputData= {
             name: this.state.name,
-            description: this.state.description
+            description: this.state.description,
+            price: this.state.price,
+            discount: this.state.discount
           } 
-          this.props.createItem(createTestPack,inputData,(success: boolean)=> {
+          this.props.createItem(createChemicalAnalysis,inputData,(success: boolean)=> {
             if(success) {
                 var data = this.props.data[0].items
                 if (callBack !== undefined) {
@@ -97,10 +107,12 @@ class TestPacksTable extends Component<any ,TestPackModel> {
 
     showUpdateItem (Item?: any){
         return(
-            <TestPackDetailsComponent 
+            <ChemicalAnalysisDetailsComponent 
             onChange={this.modelItemChangeListener} 
             name = { Item?.name} 
             description = {Item?.description}
+            price = { Item?.price} 
+            discount = {Item?.discount}
             />
         );
     }
@@ -108,9 +120,11 @@ class TestPacksTable extends Component<any ,TestPackModel> {
         const inputData= {
             id: itemId,
             name: this.state.name,
-            description: this.state.description
+            description: this.state.description,
+            price: this.state.price,
+            discount: this.state.discount
           } 
-          this.props.updateItem(updateTestPack,inputData,(success: boolean)=> {
+          this.props.updateItem(updateChemicalAnalysis,inputData,(success: boolean)=> {
             if(success) {
                 var data = this.props.data[0].items
                 if (callBack !== undefined) {
@@ -125,7 +139,7 @@ class TestPacksTable extends Component<any ,TestPackModel> {
     }
 
     doDeleteItem(itemId: any,callBack?: DataLoadCallBack){
-          this.props.deleteItem(deleteTestPack,itemId,(success: boolean)=> {
+          this.props.deleteItem(deleteChemicalAnalysis,itemId,(success: boolean)=> {
             if(success) {
                 var data = this.props.data[0].items
                 if (callBack !== undefined) {
@@ -141,10 +155,12 @@ class TestPacksTable extends Component<any ,TestPackModel> {
 
     showViewItem (Item?: any){
       return(
-          <TestPackDetailsComponent 
+          <ChemicalAnalysisDetailsComponent 
           onChange={this.modelItemChangeListener} 
           name = { Item?.name} 
           description = {Item?.description}
+          price = { Item?.price} 
+          discount = {Item?.discount}
           editable = {false}
           />
       );
@@ -189,22 +205,24 @@ class TestPacksTable extends Component<any ,TestPackModel> {
     updateItem: admindataActions.updateItem,
   };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestPacksTable)
+export default connect(mapStateToProps, mapDispatchToProps)(ChemicalAnalysisTable)
 
 
-function TestPackDetailsComponent(props: any) {
+function ChemicalAnalysisDetailsComponent(props: any) {
     const editable = props.editable !== undefined ? props.editable : true
     const name = props.name !== undefined ? props.name : ''
     const description = props.description !== undefined ? props.description : ''
-    const [formData, setFormData] = React.useState({ name: name, description: description });
+    const price = props.price !== undefined ? props.price : '0'
+    const discount = props.discount !== undefined ? props.discount : '0'
+    const [formData, setFormData] = React.useState({ name: name, description: description, price: price,discount: discount });
   
-    const handleChange = (e: { target: { name: any; value: any; }; }) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value });
   
     React.useEffect(() => {
       if (props.onChange) {
         props.onChange(formData)
       }
-    }, [formData.name, formData.description])
+    }, [formData.name, formData.description,formData.price,formData.discount])
   
     return (
         <>
@@ -218,6 +236,15 @@ function TestPackDetailsComponent(props: any) {
             <input name="description" defaultValue={description} onChange={handleChange} disabled = {!editable} />
           </div>
           <br />
+          <div>
+            <div>Price:</div>
+            <input name="price" defaultValue={price} onChange={handleChange} disabled = {!editable} />
+          </div>
+          <br/>
+          <div>
+            <div>Discount:</div>
+            <input name="discount" defaultValue={discount} onChange={handleChange} disabled = {!editable} />
+          </div>
         </>
       );
   }

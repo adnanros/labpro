@@ -7,7 +7,6 @@ import AdminMainComponent, { DataLoadCallBack } from '../Base/AdminMainComponent
 import { CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from '@coreui/react';
 import { createSampleCategory, deleteSampleCategory, updateSampleCategory } from '../../../graphql/mutations';
 import React from 'react';
-import { stat } from 'fs';
 
 interface SampleCategoryModel {
     name: string;

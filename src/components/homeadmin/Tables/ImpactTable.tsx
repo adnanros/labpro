@@ -4,22 +4,24 @@ import { AppState } from '../../../_helpers';
 import { admindataActions} from '../../../_actions';
 import AdminMainComponent, { DataLoadCallBack } from '../Base/AdminMainComponent';
 import { CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from '@coreui/react';
-import { createTestGroupTestPack, deleteTestGroupTestPack, updateTestGroupTestPack } from '../../../graphql/mutations';
+import { createImpact, deleteImpact, updateImpact } from '../../../graphql/mutations';
 import React from 'react';
 
-const queryIdentifier = "TestGroupTestPacks"
-interface TestGroupTestPackTableModel {
-    testGroupId: string,
-    testPackId: string
+const queryIdentifier = "Impacts"
+interface ImpactModel {
+    name: string;
+    description: string;
+    impactCategoryId: string;
 }
 
-class TestGroupTestPackTable extends Component<any ,TestGroupTestPackTableModel> {
+class ImpactTable extends Component<any ,ImpactModel> {
   
     constructor(props: any){
       super(props);
       this.state = {
-        testGroupId: '',
-        testPackId: ''
+        name: '',
+        description: '',
+        impactCategoryId: '',
       }
 
       this.loadData = this.loadData.bind(this);
@@ -54,55 +56,49 @@ class TestGroupTestPackTable extends Component<any ,TestGroupTestPackTableModel>
         <CTableHead>
             <CTableRow>
             <CTableHeaderCell scope="col">#</CTableHeaderCell>
-            <CTableHeaderCell scope="col">TestGroup</CTableHeaderCell>
-            <CTableHeaderCell scope="col">TestPack</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+            <CTableHeaderCell scope="col">ImapctCategory</CTableHeaderCell>
             </CTableRow>
         </CTableHead>
         );
     }
     createRow(item: any) {
-        var testGroupName = ''
-        var testPackName = ''
+        var parentImactCategory = ''
         if(this.props.data && this.props.queryIdentifier === queryIdentifier) {
-            testGroupName = this.props.data[1].items.find((i: any)=> i.id === item.testGroupId )?.name
-            testPackName = this.props.data[2].items.find((i: any)=> i.id === item.testPackId )?.name
+            parentImactCategory = this.props.data[1].items.find((i: any)=> i.id === item.impactCategoryId )?.name
         }
         return(
             <>
-            <CTableDataCell>{testGroupName}</CTableDataCell>
-            <CTableDataCell>{testPackName}</CTableDataCell>
+            <CTableDataCell>{item.name}</CTableDataCell>
+            <CTableDataCell>{parentImactCategory}</CTableDataCell>
             </>
         );
     }
 
     //Whenever we show SampleCategoryDetailsComponent, we listen to change to its values by pasing this function to it.
-    modelItemChangeListener(state: TestGroupTestPackTableModel) {
-        this.setState({testGroupId: state.testGroupId, testPackId: state.testPackId })
+    modelItemChangeListener(state: ImpactModel) {
+        this.setState({name: state.name, description: state.description,impactCategoryId: state.impactCategoryId })
     }
 
     showCreateNewItem() {
-        var testGroups = []
-        var testPacks = []
+        var impactCategories = []
         if(this.props.data && this.props.queryIdentifier === queryIdentifier) {
-            testGroups = this.props.data[1].items
-            testPacks = this.props.data[2].items
+            impactCategories = this.props.data[1].items
         }
         return(
-            <TestGroupsTestPacksDetailsComponent 
+            <ImpactDetailsComponent 
             onChange={this.modelItemChangeListener}
-            testGroups = {testGroups}
-            testPacks = {testPacks}
-            />
+            impactCategories = {impactCategories}/>
         );
     }
 
     doCreateNewItem (callBack?: DataLoadCallBack){
-        console.log("wwww",this.state)
-        const inputData = {
-            testGroupId: this.state.testGroupId,
-            testPackId: this.state.testPackId
-          }
-          this.props.createItem(createTestGroupTestPack,inputData,(success: boolean)=> {
+        const inputData= {
+            name: this.state.name,
+            description: this.state.description,
+            impactCategoryId: this.state.impactCategoryId,
+          } 
+          this.props.createItem(createImpact,inputData,(success: boolean)=> {
             if(success) {
                 var data = this.props.data[0].items
                 if (callBack !== undefined) {
@@ -117,32 +113,30 @@ class TestGroupTestPackTable extends Component<any ,TestGroupTestPackTableModel>
     }
 
     showUpdateItem (Item?: any){
-        var testGroupId = Item === undefined ? '' : Item.testGroupId
-        var testPackId = Item === undefined ? '' : Item.testPackId
-        var testGroups = []
-        var testPacks = []
-        if(this.props.data && this.props.queryIdentifier === queryIdentifier) {
-            testGroups = this.props.data[1].items
-            testPacks = this.props.data[2].items
+        var parentimpactCategoryId = ""
+        var impactCategories = []
+        if(Item !== undefined && this.props.data && this.props.queryIdentifier === queryIdentifier) {
+            parentimpactCategoryId = this.props.data[1].items.find((i: any)=> i.id === Item.impactCategoryId )?.id
+            impactCategories = this.props.data[1].items
         }
-
         return(
-            <TestGroupsTestPacksDetailsComponent 
+            <ImpactDetailsComponent 
             onChange={this.modelItemChangeListener} 
-            testGroupId = {testGroupId}
-            testPackId = {testPackId}
-            testGroups = {testGroups}
-            testPacks = {testPacks}
+            name = { Item?.name} 
+            description = {Item?.description}
+            parentimpactCategoryId = {parentimpactCategoryId}
+            impactCategories = {impactCategories}
             />
         );
     }
     doUpdateItem(itemId: any,callBack?: DataLoadCallBack){
         const inputData= {
             id: itemId,
-            testGroupId: this.state.testGroupId,
-            testPackId: this.state.testPackId
+            name: this.state.name,
+            description: this.state.description,
+            impactCategoryId: this.state.impactCategoryId,
           } 
-          this.props.updateItem(updateTestGroupTestPack,inputData,(success: boolean)=> {
+          this.props.updateItem(updateImpact,inputData,(success: boolean)=> {
             if(success) {
                 var data = this.props.data[0].items
                 if (callBack !== undefined) {
@@ -157,7 +151,7 @@ class TestGroupTestPackTable extends Component<any ,TestGroupTestPackTableModel>
     }
 
     doDeleteItem(itemId: any,callBack?: DataLoadCallBack){
-          this.props.deleteItem(deleteTestGroupTestPack,itemId,(success: boolean)=> {
+          this.props.deleteItem(deleteImpact,itemId,(success: boolean)=> {
             if(success) {
                 var data = this.props.data[0].items
                 if (callBack !== undefined) {
@@ -172,22 +166,20 @@ class TestGroupTestPackTable extends Component<any ,TestGroupTestPackTableModel>
     }
 
     showViewItem (Item?: any){
-        var testGroupId = Item === undefined ? '' : Item.testGroupId
-        var testPackId = Item === undefined ? '' : Item.testPackId
-        var testGroups = []
-        var testPacks = []
-        if(this.props.data && this.props.queryIdentifier === queryIdentifier) {
-            testGroups = this.props.data[1].items
-            testPacks = this.props.data[2].items
+        var parentimpactCategoryId = ""
+        var impactCategories = []
+        if(Item !== undefined && this.props.data && this.props.queryIdentifier === queryIdentifier) {
+            parentimpactCategoryId = this.props.data[1].items.find((i: any)=> i.id === Item.impactCategoryId )?.id
+            impactCategories = this.props.data[1].items
         }
       return(
-          <TestGroupsTestPacksDetailsComponent 
+          <ImpactDetailsComponent 
           onChange={this.modelItemChangeListener} 
+          name = { Item?.name} 
+          description = {Item?.description}
           editable = {false}
-          testGroupId = {testGroupId}
-          testPackId = {testPackId}
-          testGroups = {testGroups}
-          testPacks = {testPacks}
+          parentimpactCategoryId = {parentimpactCategoryId}
+          impactCategories = {impactCategories}
           />
       );
   }
@@ -231,108 +223,93 @@ class TestGroupTestPackTable extends Component<any ,TestGroupTestPackTableModel>
     updateItem: admindataActions.updateItem,
   };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestGroupTestPackTable)
+export default connect(mapStateToProps, mapDispatchToProps)(ImpactTable)
 
 
-function TestGroupsTestPacksDetailsComponent(props: any) {
+function ImpactDetailsComponent(props: any) {
     const editable = props.editable !== undefined ? props.editable : true
-    const testGroups = props.testGroups !== undefined ? props.testGroups : undefined
-    const testPacks = props.testPacks !== undefined ? props.testPacks : undefined
-    const testGroupId = props.testGroupId !== undefined ? props.testGroupId : (testGroups !== undefined ? testGroups[0].id : '')
-    const testPackId = props.testPackId !== undefined ? props.testPackId : (testPacks !== undefined ? testPacks[0].id : '')
-    const [formData, setFormData] = React.useState({ testGroupId: testGroupId, testPackId: testPackId });
+    const name = props.name !== undefined ? props.name : ''
+    const description = props.description !== undefined ? props.description : ''
+    const parentimpactCategoryId = props.parentimpactCategoryId !== undefined ? props.parentimpactCategoryId : ''
+    const impactCategories = props.impactCategories !== undefined ? props.impactCategories : []
+    const [formData, setFormData] = React.useState({ name: name, description: description,impactCategoryId: parentimpactCategoryId });
   
-    const handleChange = (e: any) => setFormData({ ...formData, testGroupId: e.target.value });
-    const handleChange2 = (e: any) => setFormData({ ...formData, testPackId: e.target.value });
+    const handleChange = (e: any) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleChange2 = (e: any) => setFormData({ ...formData, impactCategoryId: e.target.value });
   
     React.useEffect(() => {
       if (props.onChange) {
         props.onChange(formData)
       }
-    }, [formData.testGroupId, formData.testPackId])
+    }, [formData.name, formData.description,formData.impactCategoryId])
   
     return (
         <>
           <div>
-            <div>Test Group</div>
-            <select defaultValue={testGroupId}  onChange={handleChange}  disabled = {!editable}>
-            {/* <option  value={parentSampleCategoryId} selected>{parentSampleCategoryName}</option> */}
+            <div>Name:</div>
+            <input name="name" defaultValue={name} onChange={handleChange} disabled = {!editable} />
+          </div>
+          <br />
+          <div>
+            <div>Description:</div>
+            <input name="description" defaultValue={description} onChange={handleChange} disabled = {!editable} />
+          </div>
+          <br />
+          
+          <div>
+            <div>parent Impact Category:</div>
+            <select defaultValue={parentimpactCategoryId}  onChange={handleChange2}  disabled = {!editable}>
+            {/* <option  value={parentimpactCategoryId} selected>{parentSampleCategoryName}</option> */}
                 {
-                    testGroups && testGroups.map((item: any,index:any)=> (
+                    impactCategories.map((item: any,index:any)=> (
                         <option  key = {index} value={item.id}>{item.name}</option>
                     ))
                 }
             </select>
           </div>
           <br />
-          <div>
-            <div>Test Packs</div>
-            <select defaultValue={testPackId}  onChange={handleChange2}  disabled = {!editable}>
-            {/* <option  value={parentSampleCategoryId} selected>{parentSampleCategoryName}</option> */}
-                {
-                    testPacks && testPacks.map((item: any,index:any)=> (
-                        <option  key = {index} value={item.id}>{item.name}</option>
-                    ))
-                }
-            </select>
-          </div>
         </>
       );
   }
 
 
   const listData = /* GraphQL */ `
-  query ListTestGroupTestPacks(
-    $filter: ModelTestGroupTestPackFilterInput
+  query ListImpacts(
+    $filter: ModelImpactFilterInput
     $limit: Int
     $nextToken: String
-    $filter2: ModelTestGroupFilterInput
+    $filter2: ModelImpactCategoryFilterInput
     $limit2: Int
     $nextToken2: String
-    $filter3: ModelTestPackFilterInput
-    $limit3: Int
-    $nextToken3: String
   ) {
-    listTestGroupTestPacks(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
+    listImpacts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        testPackId
-        testGroupId
-        testgroup {
-          id
-          name
-          testGroupTestPack {
-            nextToken
+        name
+        description
+        iconLink
+        impactCategoryId
+        createdAt
+        updatedAt
+        chemicalImpacts {
+          items {
+            id
+            chemicalId
+            impactId
+            createdAt
+            updatedAt
           }
-        }
-        testpack {
-          id
-          name
-          testGroupTestPack {
-            nextToken
-          }
-          testPackChemicalAnalysis {
-            nextToken
-          }
+          nextToken
         }
       }
       nextToken
     },
-    listTestGroups(filter: $filter2, limit: $limit2, nextToken: $nextToken2) {
+    listImpactCategorys(filter: $filter2, limit: $limit2, nextToken: $nextToken2) {
       items {
         id
         name
-      }
-      nextToken
-    },
-    listTestPacks(filter: $filter3, limit: $limit3, nextToken: $nextToken3) {
-      items {
-        id
-        name
+        description
+        iconLink
       }
       nextToken
     }

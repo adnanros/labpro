@@ -2,18 +2,18 @@ import { connect } from 'react-redux';
 import { Component } from "react"
 import { AppState } from '../../../_helpers';
 import { admindataActions} from '../../../_actions';
-import { listTestPacks,  } from '../../../graphql/queries';
+import { listImpactCategorys } from '../../../graphql/queries';
 import AdminMainComponent, { DataLoadCallBack } from '../Base/AdminMainComponent';
 import { CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from '@coreui/react';
-import { createTestPack, deleteTestPack, updateTestPack } from '../../../graphql/mutations';
+import { createImpactCategory, deleteImpactCategory, updateImpactCategory } from '../../../graphql/mutations';
 import React from 'react';
 
-interface TestPackModel {
+interface ImpactCategoryModel {
     name: string;
     description: string;
 }
-const queryIdentifier = "TestPack"
-class TestPacksTable extends Component<any ,TestPackModel> {
+const queryIdentifier = "ImpactCategory"
+class ImpactCategoryTable extends Component<any ,ImpactCategoryModel> {
   
     constructor(props: any){
       super(props);
@@ -35,7 +35,7 @@ class TestPacksTable extends Component<any ,TestPackModel> {
     }
 
     loadData(callBack?: DataLoadCallBack) {
-        this.props.getDataList(queryIdentifier,listTestPacks,null,true,(success: Boolean)=> {
+        this.props.getDataList(queryIdentifier,listImpactCategorys,null,true,(success: Boolean)=> {
             if(success) {
                 var data = this.props.data[0].items
                 if (callBack !== undefined) {
@@ -65,14 +65,14 @@ class TestPacksTable extends Component<any ,TestPackModel> {
         );
     }
 
-    //Whenever we show SampleCategoryDetailsComponent, we listen to change to its values by pasing this function to it.
-    modelItemChangeListener(state: TestPackModel) {
+    //Whenever we show ImpactCategoryDetailsComponent, we listen to change to its values by pasing this function to it.
+    modelItemChangeListener(state: ImpactCategoryModel) {
         this.setState({name: state.name, description: state.description })
     }
 
     showCreateNewItem() {
         return(
-            <TestPackDetailsComponent onChange={this.modelItemChangeListener}/>
+            <ImpactCategoryDetailsComponent onChange={this.modelItemChangeListener}/>
         );
     }
 
@@ -81,7 +81,7 @@ class TestPacksTable extends Component<any ,TestPackModel> {
             name: this.state.name,
             description: this.state.description
           } 
-          this.props.createItem(createTestPack,inputData,(success: boolean)=> {
+          this.props.createItem(createImpactCategory,inputData,(success: boolean)=> {
             if(success) {
                 var data = this.props.data[0].items
                 if (callBack !== undefined) {
@@ -97,7 +97,7 @@ class TestPacksTable extends Component<any ,TestPackModel> {
 
     showUpdateItem (Item?: any){
         return(
-            <TestPackDetailsComponent 
+            <ImpactCategoryDetailsComponent 
             onChange={this.modelItemChangeListener} 
             name = { Item?.name} 
             description = {Item?.description}
@@ -110,7 +110,7 @@ class TestPacksTable extends Component<any ,TestPackModel> {
             name: this.state.name,
             description: this.state.description
           } 
-          this.props.updateItem(updateTestPack,inputData,(success: boolean)=> {
+          this.props.updateItem(updateImpactCategory,inputData,(success: boolean)=> {
             if(success) {
                 var data = this.props.data[0].items
                 if (callBack !== undefined) {
@@ -125,7 +125,7 @@ class TestPacksTable extends Component<any ,TestPackModel> {
     }
 
     doDeleteItem(itemId: any,callBack?: DataLoadCallBack){
-          this.props.deleteItem(deleteTestPack,itemId,(success: boolean)=> {
+          this.props.deleteItem(deleteImpactCategory,itemId,(success: boolean)=> {
             if(success) {
                 var data = this.props.data[0].items
                 if (callBack !== undefined) {
@@ -141,7 +141,7 @@ class TestPacksTable extends Component<any ,TestPackModel> {
 
     showViewItem (Item?: any){
       return(
-          <TestPackDetailsComponent 
+          <ImpactCategoryDetailsComponent 
           onChange={this.modelItemChangeListener} 
           name = { Item?.name} 
           description = {Item?.description}
@@ -189,10 +189,10 @@ class TestPacksTable extends Component<any ,TestPackModel> {
     updateItem: admindataActions.updateItem,
   };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestPacksTable)
+export default connect(mapStateToProps, mapDispatchToProps)(ImpactCategoryTable)
 
 
-function TestPackDetailsComponent(props: any) {
+function ImpactCategoryDetailsComponent(props: any) {
     const editable = props.editable !== undefined ? props.editable : true
     const name = props.name !== undefined ? props.name : ''
     const description = props.description !== undefined ? props.description : ''

@@ -4,21 +4,21 @@ import { AppState } from '../../../_helpers';
 import { admindataActions} from '../../../_actions';
 import AdminMainComponent, { DataLoadCallBack } from '../Base/AdminMainComponent';
 import { CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from '@coreui/react';
-import { createTestGroupTestPack, deleteTestGroupTestPack, updateTestGroupTestPack } from '../../../graphql/mutations';
+import { createTestPackChemicalAnalysis, deleteTestPackChemicalAnalysis, updateTestPackChemicalAnalysis } from '../../../graphql/mutations';
 import React from 'react';
 
-const queryIdentifier = "TestGroupTestPacks"
-interface TestGroupTestPackTableModel {
-    testGroupId: string,
+const queryIdentifier = "TestPackChemicalAnalysis"
+interface TestPackChemicalAnalysisModel {
+    chemicalAnalysisId: string,
     testPackId: string
 }
 
-class TestGroupTestPackTable extends Component<any ,TestGroupTestPackTableModel> {
+class TestPackChemicalAnalysisTable extends Component<any ,TestPackChemicalAnalysisModel> {
   
     constructor(props: any){
       super(props);
       this.state = {
-        testGroupId: '',
+        chemicalAnalysisId: '',
         testPackId: ''
       }
 
@@ -54,55 +54,54 @@ class TestGroupTestPackTable extends Component<any ,TestGroupTestPackTableModel>
         <CTableHead>
             <CTableRow>
             <CTableHeaderCell scope="col">#</CTableHeaderCell>
-            <CTableHeaderCell scope="col">TestGroup</CTableHeaderCell>
+            <CTableHeaderCell scope="col">chemicalAnalysis</CTableHeaderCell>
             <CTableHeaderCell scope="col">TestPack</CTableHeaderCell>
             </CTableRow>
         </CTableHead>
         );
     }
     createRow(item: any) {
-        var testGroupName = ''
+        var chemicalAnalysisName = ''
         var testPackName = ''
         if(this.props.data && this.props.queryIdentifier === queryIdentifier) {
-            testGroupName = this.props.data[1].items.find((i: any)=> i.id === item.testGroupId )?.name
+            chemicalAnalysisName = this.props.data[1].items.find((i: any)=> i.id === item.chemicalAnalysisId )?.name
             testPackName = this.props.data[2].items.find((i: any)=> i.id === item.testPackId )?.name
         }
         return(
             <>
-            <CTableDataCell>{testGroupName}</CTableDataCell>
+            <CTableDataCell>{chemicalAnalysisName}</CTableDataCell>
             <CTableDataCell>{testPackName}</CTableDataCell>
             </>
         );
     }
 
     //Whenever we show SampleCategoryDetailsComponent, we listen to change to its values by pasing this function to it.
-    modelItemChangeListener(state: TestGroupTestPackTableModel) {
-        this.setState({testGroupId: state.testGroupId, testPackId: state.testPackId })
+    modelItemChangeListener(state: TestPackChemicalAnalysisModel) {
+        this.setState({chemicalAnalysisId: state.chemicalAnalysisId, testPackId: state.testPackId })
     }
 
     showCreateNewItem() {
-        var testGroups = []
+        var chemicalAnalysis = []
         var testPacks = []
         if(this.props.data && this.props.queryIdentifier === queryIdentifier) {
-            testGroups = this.props.data[1].items
+            chemicalAnalysis = this.props.data[1].items
             testPacks = this.props.data[2].items
         }
         return(
-            <TestGroupsTestPacksDetailsComponent 
+            <TestPackChemicalAnalysisDetailsComponent 
             onChange={this.modelItemChangeListener}
-            testGroups = {testGroups}
+            chemicalAnalysis = {chemicalAnalysis}
             testPacks = {testPacks}
             />
         );
     }
 
     doCreateNewItem (callBack?: DataLoadCallBack){
-        console.log("wwww",this.state)
         const inputData = {
-            testGroupId: this.state.testGroupId,
+            chemicalAnalysisId: this.state.chemicalAnalysisId,
             testPackId: this.state.testPackId
           }
-          this.props.createItem(createTestGroupTestPack,inputData,(success: boolean)=> {
+          this.props.createItem(createTestPackChemicalAnalysis,inputData,(success: boolean)=> {
             if(success) {
                 var data = this.props.data[0].items
                 if (callBack !== undefined) {
@@ -117,21 +116,21 @@ class TestGroupTestPackTable extends Component<any ,TestGroupTestPackTableModel>
     }
 
     showUpdateItem (Item?: any){
-        var testGroupId = Item === undefined ? '' : Item.testGroupId
+        var chemicalAnalysisId = Item === undefined ? '' : Item.chemicalAnalysisId
         var testPackId = Item === undefined ? '' : Item.testPackId
-        var testGroups = []
+        var chemicalAnalysis = []
         var testPacks = []
         if(this.props.data && this.props.queryIdentifier === queryIdentifier) {
-            testGroups = this.props.data[1].items
+            chemicalAnalysis = this.props.data[1].items
             testPacks = this.props.data[2].items
         }
 
         return(
-            <TestGroupsTestPacksDetailsComponent 
+            <TestPackChemicalAnalysisDetailsComponent 
             onChange={this.modelItemChangeListener} 
-            testGroupId = {testGroupId}
+            chemicalAnalysisId = {chemicalAnalysisId}
             testPackId = {testPackId}
-            testGroups = {testGroups}
+            chemicalAnalysis = {chemicalAnalysis}
             testPacks = {testPacks}
             />
         );
@@ -139,10 +138,10 @@ class TestGroupTestPackTable extends Component<any ,TestGroupTestPackTableModel>
     doUpdateItem(itemId: any,callBack?: DataLoadCallBack){
         const inputData= {
             id: itemId,
-            testGroupId: this.state.testGroupId,
+            chemicalAnalysisId: this.state.chemicalAnalysisId,
             testPackId: this.state.testPackId
           } 
-          this.props.updateItem(updateTestGroupTestPack,inputData,(success: boolean)=> {
+          this.props.updateItem(updateTestPackChemicalAnalysis,inputData,(success: boolean)=> {
             if(success) {
                 var data = this.props.data[0].items
                 if (callBack !== undefined) {
@@ -157,7 +156,7 @@ class TestGroupTestPackTable extends Component<any ,TestGroupTestPackTableModel>
     }
 
     doDeleteItem(itemId: any,callBack?: DataLoadCallBack){
-          this.props.deleteItem(deleteTestGroupTestPack,itemId,(success: boolean)=> {
+          this.props.deleteItem(deleteTestPackChemicalAnalysis,itemId,(success: boolean)=> {
             if(success) {
                 var data = this.props.data[0].items
                 if (callBack !== undefined) {
@@ -172,21 +171,21 @@ class TestGroupTestPackTable extends Component<any ,TestGroupTestPackTableModel>
     }
 
     showViewItem (Item?: any){
-        var testGroupId = Item === undefined ? '' : Item.testGroupId
+        var chemicalAnalysisId = Item === undefined ? '' : Item.chemicalAnalysisId
         var testPackId = Item === undefined ? '' : Item.testPackId
-        var testGroups = []
+        var chemicalAnalysis = []
         var testPacks = []
         if(this.props.data && this.props.queryIdentifier === queryIdentifier) {
-            testGroups = this.props.data[1].items
+            chemicalAnalysis = this.props.data[1].items
             testPacks = this.props.data[2].items
         }
       return(
-          <TestGroupsTestPacksDetailsComponent 
+          <TestPackChemicalAnalysisDetailsComponent 
           onChange={this.modelItemChangeListener} 
           editable = {false}
-          testGroupId = {testGroupId}
+          chemicalAnalysisId = {chemicalAnalysisId}
           testPackId = {testPackId}
-          testGroups = {testGroups}
+          chemicalAnalysis = {chemicalAnalysis}
           testPacks = {testPacks}
           />
       );
@@ -231,34 +230,34 @@ class TestGroupTestPackTable extends Component<any ,TestGroupTestPackTableModel>
     updateItem: admindataActions.updateItem,
   };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestGroupTestPackTable)
+export default connect(mapStateToProps, mapDispatchToProps)(TestPackChemicalAnalysisTable)
 
 
-function TestGroupsTestPacksDetailsComponent(props: any) {
+function TestPackChemicalAnalysisDetailsComponent(props: any) {
     const editable = props.editable !== undefined ? props.editable : true
-    const testGroups = props.testGroups !== undefined ? props.testGroups : undefined
+    const chemicalAnalysis = props.chemicalAnalysis !== undefined ? props.chemicalAnalysis : undefined
     const testPacks = props.testPacks !== undefined ? props.testPacks : undefined
-    const testGroupId = props.testGroupId !== undefined ? props.testGroupId : (testGroups !== undefined ? testGroups[0].id : '')
+    const chemicalAnalysisId = props.chemicalAnalysisId !== undefined ? props.chemicalAnalysisId : (chemicalAnalysis !== undefined ? chemicalAnalysis[0].id : '')
     const testPackId = props.testPackId !== undefined ? props.testPackId : (testPacks !== undefined ? testPacks[0].id : '')
-    const [formData, setFormData] = React.useState({ testGroupId: testGroupId, testPackId: testPackId });
+    const [formData, setFormData] = React.useState({ chemicalAnalysisId: chemicalAnalysisId, testPackId: testPackId });
   
-    const handleChange = (e: any) => setFormData({ ...formData, testGroupId: e.target.value });
+    const handleChange = (e: any) => setFormData({ ...formData, chemicalAnalysisId: e.target.value });
     const handleChange2 = (e: any) => setFormData({ ...formData, testPackId: e.target.value });
   
     React.useEffect(() => {
       if (props.onChange) {
         props.onChange(formData)
       }
-    }, [formData.testGroupId, formData.testPackId])
+    }, [formData.chemicalAnalysisId, formData.testPackId])
   
     return (
         <>
           <div>
-            <div>Test Group</div>
-            <select defaultValue={testGroupId}  onChange={handleChange}  disabled = {!editable}>
+            <div>Chemical Analysis</div>
+            <select defaultValue={chemicalAnalysisId}  onChange={handleChange}  disabled = {!editable}>
             {/* <option  value={parentSampleCategoryId} selected>{parentSampleCategoryName}</option> */}
                 {
-                    testGroups && testGroups.map((item: any,index:any)=> (
+                    chemicalAnalysis && chemicalAnalysis.map((item: any,index:any)=> (
                         <option  key = {index} value={item.id}>{item.name}</option>
                     ))
                 }
@@ -282,18 +281,18 @@ function TestGroupsTestPacksDetailsComponent(props: any) {
 
 
   const listData = /* GraphQL */ `
-  query ListTestGroupTestPacks(
-    $filter: ModelTestGroupTestPackFilterInput
+  query ListTestPackChemicalAnalysiss(
+    $filter: ModelTestPackChemicalAnalysisFilterInput
     $limit: Int
     $nextToken: String
-    $filter2: ModelTestGroupFilterInput
+    $filter2: ModelChemicalAnalysisFilterInput
     $limit2: Int
     $nextToken2: String
     $filter3: ModelTestPackFilterInput
     $limit3: Int
     $nextToken3: String
   ) {
-    listTestGroupTestPacks(
+    listTestPackChemicalAnalysiss(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -301,31 +300,30 @@ function TestGroupsTestPacksDetailsComponent(props: any) {
       items {
         id
         testPackId
-        testGroupId
-        testgroup {
-          id
-          name
-          testGroupTestPack {
-            nextToken
-          }
-        }
+        chemicalAnalysisId
+        
         testpack {
           id
           name
-          testGroupTestPack {
-            nextToken
-          }
-          testPackChemicalAnalysis {
-            nextToken
-          }
+        }
+        chemicalAnalysis {
+          id
+          name
         }
       }
       nextToken
     },
-    listTestGroups(filter: $filter2, limit: $limit2, nextToken: $nextToken2) {
+    listChemicalAnalysiss(
+      filter: $filter2
+      limit: $limit2
+      nextToken: $nextToken2
+    ) {
       items {
         id
         name
+        price
+        discount
+        description
       }
       nextToken
     },
@@ -333,6 +331,7 @@ function TestGroupsTestPacksDetailsComponent(props: any) {
       items {
         id
         name
+        description
       }
       nextToken
     }
