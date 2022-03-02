@@ -6,17 +6,20 @@ const initialState: IPackageAdminState = {
     isLoadingData: false,
     isLoadedSuccessfully: false,
     isLoadingFailed: false,
+    QueryIdentifier: '',
     data: null,
   },
   dataList2State: {
     isLoadingData: false,
     isLoadedSuccessfully: false,
     isLoadingFailed: false,
+    QueryIdentifier: '',
     data: null,
   },
   dataList3State: {
     isLoadingData: false,
     isLoadedSuccessfully: false,
+    QueryIdentifier: '',
     isLoadingFailed: false,
     data: null,
   },
@@ -24,6 +27,7 @@ const initialState: IPackageAdminState = {
     isLoadingData: false,
     isLoadedSuccessfully: false,
     isLoadingFailed: false,
+    QueryIdentifier: '',
     data: null,
   },
   dataDeleteState:
@@ -60,21 +64,22 @@ const initialState: IPackageAdminState = {
           {
             isLoadingData : true,
             isLoadedSuccessfully: false,
-            isLoadingFailed: false,    
+            isLoadingFailed: false,
+            QueryIdentifier: '',    
             data : null
           }
          }
       
       case dataAdminConstants.DATA_LIST_SUCCESS: 
-      console.log("adnan",action.result.data);
-      const items = Object.values(action.result.data)[0] as any;
+      const items = Object.values(action.result.data) as any;
          return {
           ...state,
            dataListState: {
             isLoadingData : false,
             isLoadedSuccessfully: true,
-            isLoadingFailed: false,    
-            data: items.items
+            isLoadingFailed: false,
+            QueryIdentifier: action.queryIdentifier,
+            data: items
            }
          }
 
@@ -85,6 +90,7 @@ const initialState: IPackageAdminState = {
             isLoadingData: false,
             isLoadedSuccessfully: false,
             isLoadingFailed: true,
+            QueryIdentifier: '',
             data: null
           }
         }   
@@ -97,6 +103,7 @@ const initialState: IPackageAdminState = {
             isLoadingData : true,
             isLoadedSuccessfully: false,
             isLoadingFailed: false,
+            QueryIdentifier: '', 
             data : null
           }
          }
@@ -109,6 +116,7 @@ const initialState: IPackageAdminState = {
             isLoadingData : false,
             isLoadedSuccessfully: true,
             isLoadingFailed: false,
+            QueryIdentifier: '', 
             data: items2.items
            }
          }
@@ -120,6 +128,7 @@ const initialState: IPackageAdminState = {
             isLoadingData: false,
             isLoadedSuccessfully: false,
             isLoadingFailed: true,
+            QueryIdentifier: '', 
             data: null
           }
         }   
@@ -132,6 +141,7 @@ const initialState: IPackageAdminState = {
             isLoadingData : true,
             isLoadedSuccessfully: false,
             isLoadingFailed: false,
+            QueryIdentifier: '', 
             data : null
           }
         }
@@ -144,6 +154,7 @@ const initialState: IPackageAdminState = {
             isLoadingData : false,
             isLoadedSuccessfully: true,
             isLoadingFailed: false,
+            QueryIdentifier: '', 
             data: items3.items
            }
          }
@@ -155,6 +166,7 @@ const initialState: IPackageAdminState = {
             isLoadingData: false,
             isLoadedSuccessfully: false,
             isLoadingFailed: true,
+            QueryIdentifier: '', 
             data: null
           }
         }   
@@ -167,6 +179,7 @@ const initialState: IPackageAdminState = {
               isLoadingData : true,
               isLoadedSuccessfully: false,
               isLoadingFailed: false,
+              QueryIdentifier: '', 
               data : null
             }
           }
@@ -179,6 +192,7 @@ const initialState: IPackageAdminState = {
               isLoadingData : false,
               isLoadedSuccessfully: true,
               isLoadingFailed: false,
+              QueryIdentifier: '', 
               data: multiQueryItems
              }
            }
@@ -190,6 +204,7 @@ const initialState: IPackageAdminState = {
               isLoadingData: false,
               isLoadedSuccessfully: false,
               isLoadingFailed: true,
+              QueryIdentifier: '', 
               data: null
             }
           }  
@@ -205,13 +220,18 @@ const initialState: IPackageAdminState = {
 
         case dataAdminConstants.ITEM_DELETE_SUCCESS:
           const deletedId = action.deletedId;
-          const data = state.dataListState.data?.filter((x: any) => x.id !== deletedId);
+          var data: any[] = state.dataListState.data
+          if(data !== undefined && data !== null) {
+            data[0].items = data[0].items.filter((x: any) => x.id !== deletedId);
+          }
+          
           return {
             ...state,
             dataListState: {
               isLoadingData: state.dataListState.isLoadingData,
               isLoadedSuccessfully: state.dataListState.isLoadedSuccessfully,
               isLoadingFailed: state.dataListState.isLoadingFailed,
+              QueryIdentifier: state.dataListState.QueryIdentifier, 
               data: data
             },
             dataDeleteState: {
@@ -238,25 +258,22 @@ const initialState: IPackageAdminState = {
               createdItemData: null
             }
           }
-        case dataAdminConstants.ITEM_CREATE_SUCCESS: 
-          console.log('yyyy',action.createdItemData)
+        case dataAdminConstants.ITEM_CREATE_SUCCESS:
           const newItem1 = Object.values(action.createdItemData)[0] as any;
-          console.log('xxxx',newItem1)
-          var itemsData = state.dataListState.data;
+          var itemsData: any[] = state.dataListState.data;
           
-          if(itemsData===null)
+          if(itemsData!==undefined && itemsData!==null)
           {
-            itemsData = [];
+            itemsData[0]?.items.push(newItem1);
           }
 
-          itemsData?.push(newItem1);
-          
           return {
             ...state,
             dataListState:{
               isLoadingData : state.dataListState.isLoadingData,
               isLoadedSuccessfully: state.dataListState.isLoadedSuccessfully,
               isLoadingFailed: state.dataListState.isLoadingFailed,
+              QueryIdentifier: state.dataListState.QueryIdentifier, 
               data: itemsData
             },
             dataCreateState: {
@@ -286,18 +303,14 @@ const initialState: IPackageAdminState = {
           }
         }
         case dataAdminConstants.ITEM_UPDATE_SUCCESS: 
-          console.log('yyyy',action.updatedItemData)
           const newItem = Object.values(action.updatedItemData)[0] as any;
-          console.log('xxxx',newItem)
-          var itemsData1 = state.dataListState.data as any;
+          var itemsData1: any[] = state.dataListState.data;
   
-          if(itemsData1===null)
+          if(itemsData1!==undefined && itemsData1!==null)
             {
-              itemsData1 = [];
+              //replace updated item
+              itemsData1[0].items = itemsData1[0].items.map((item:any) => item.id !== newItem.id ? item : newItem);
             }
-
-          itemsData1 = itemsData1.map((item:any) => item.id !== newItem.id ? item : newItem);
-          console.log('xxxxConcat', itemsData1);
           
           return {
             ...state,
@@ -305,6 +318,7 @@ const initialState: IPackageAdminState = {
               isLoadingData : state.dataListState.isLoadingData,
               isLoadedSuccessfully: state.dataListState.isLoadedSuccessfully,
               isLoadingFailed: state.dataListState.isLoadingFailed,
+              QueryIdentifier: state.dataListState.QueryIdentifier, 
               data: itemsData1
             },
             dataUpdateState: {
@@ -332,10 +346,8 @@ const initialState: IPackageAdminState = {
               }
           }
           case dataAdminConstants.ITEM_DETAIL_SUCCESS: 
-            console.log('yyyy',action.itemDetailData)
-            const itemDetail = Object.values(action.itemDetailData)[0] as any;
-            console.log('xxxxToState[0',itemDetail)
             
+            //const itemDetail = Object.values(action.itemDetailData)[0] as any;
             
             return {
               ...state,
