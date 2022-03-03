@@ -92,8 +92,11 @@ class OrderRegisterationPage extends Component<any,any> {
                       <CCard className="p-4">
                         {
                             this.state.chemicalAnalysis.map((item: any,index: any) => (
-                                <div key={index}>
-                                    {item.chemicalAnalysis.name}
+                                <div key={index} className="align-middle d-flex align-items-center">
+                                   <span className="material-icons-outlined d-block ">
+                                    check_circle
+                                    </span> 
+                                    <span className="d-block m-1">{item.chemicalAnalysis.name}</span>
                                 </div>
                         )
                         )
@@ -155,7 +158,8 @@ class OrderRegisterationPage extends Component<any,any> {
                 </CCol>
             </CRow>
 
-            <CButton onClick={()=> this.doRegister()} disabled={this.props.isCreating}>register </CButton>
+            <CButton onClick={()=> this.doRegister()} disabled={this.props.isCreating}
+            style={{float:'right'}}>register </CButton>
             </CContainer>
 
             </div>
