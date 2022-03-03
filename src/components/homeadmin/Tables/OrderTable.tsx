@@ -152,9 +152,7 @@ class OrderTable extends Component<any ,OrderModel> {
         var orderId = Item !== undefined ? Item.id : ''
       return(
         <OrderResult 
-        chemicalAnalysisIds= {chemicalAnalysisIds} 
-        chemicalAnalysisOrders= {chemicalAnalysisOrders}
-        orderId= {orderId}
+        order= {Item}
          />
       );
   }

@@ -109,15 +109,15 @@ const initialState: IPackageAdminState = {
          }
       
       case dataAdminConstants.DATA_LIST2_SUCCESS: 
-      const items2 = Object.values(action.result.data)[0] as any;
+      const items2 = Object.values(action.result.data) as any;
          return {
           ...state,
            dataList2State: {
             isLoadingData : false,
             isLoadedSuccessfully: true,
             isLoadingFailed: false,
-            QueryIdentifier: '', 
-            data: items2.items
+            QueryIdentifier: action.queryIdentifier, 
+            data: items2
            }
          }
 
@@ -147,15 +147,15 @@ const initialState: IPackageAdminState = {
         }
       
       case dataAdminConstants.DATA_LIST3_SUCCESS: 
-      const items3 = Object.values(action.result.data)[0] as any;
+      const items3 = Object.values(action.result.data) as any;
          return {
           ...state,
            dataList3State: {
             isLoadingData : false,
             isLoadedSuccessfully: true,
             isLoadingFailed: false,
-            QueryIdentifier: '', 
-            data: items3.items
+            QueryIdentifier: action.queryIdentifier,
+            data: items3
            }
          }
 
@@ -192,7 +192,7 @@ const initialState: IPackageAdminState = {
               isLoadingData : false,
               isLoadedSuccessfully: true,
               isLoadingFailed: false,
-              QueryIdentifier: '', 
+              QueryIdentifier: action.queryIdentifier,
               data: multiQueryItems
              }
            }
