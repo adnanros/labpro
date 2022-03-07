@@ -25,31 +25,51 @@ class OrderListPage extends Component<any,any> {
         this.props.getDataList(listOrders,filter,this.props.auth.isSignedIn);
       }
       
+
+      
     render(){
+         
         console.log("eee",this.props.data);
+
         return (
             <div>
-            {this.props.isDataLoading && <div>loding</div>}
+            {this.props.isDataLoading && 
+            <button className="btn btn-primary" type="button" disabled>
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span className="sr-only">Loading...</span>
+            </button>}
             {this.props.isLoadingFailed && <div>a refresh button</div>}
             {this.props.data && <div>
                 <CContainer fluid>
                     
-                        <CCard style={{width: '100%'}}>
+                        <CCard className='p-4' style={{width: '100%'}}>
                             
+                            <table className="table table-hover">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Order Date</th>
+                                    <th scope="col">Detail</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                 {
                                     this.props.data?.map((item: any, index:any) => (
-                                        <CRow key={index}>
-                                            <CCol sm={4} >
-                                                <div>{item.purchasedDate}</div>
-                                                <Link to={{
-                                                    pathname: "/resultList",
-                                                    state: {chemicalAnalysisIds: item.chemicalAnalysisIds,orderId: item.id }//to get: this.props.location.state.chemicalAnalysisIds
-                                                }}>Results</Link>
-                                            </CCol>
-                                        </CRow>
+                                        <tr key={index}>
+                                            <th scope="row">{index+1}</th>
+                                            <td>{item.purchasedDate}</td>
+                                            <td>
+                                            <Link to={{
+                                                        pathname: "/resultList",
+                                                        state: {chemicalAnalysisIds: item.chemicalAnalysisIds,orderId: item.id }//to get: this.props.location.state.chemicalAnalysisIds
+                                                    }}>Results
+                                                </Link>
+                                            </td>
+                                        </tr>
                                     ))
                                 }
-                            
+                                </tbody>
+                            </table>  
                         </CCard>
                 </CContainer>
             </div>}

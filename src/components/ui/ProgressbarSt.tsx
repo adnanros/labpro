@@ -15,8 +15,8 @@ export const ProgressbarSt: React.FC<inputs> = (props: inputs)=> {
     let w= props.width * props.amount / max;
 
     return (
-        <div style={{width: props.width, height: 50, backgroundColor: 'gray'}} >
-        <div style={{width: w, height: 50, backgroundColor: props.amount <= props.standard? 'green': 'red'}}>
+        <div style={{width: props.width, height: 20, backgroundColor: 'gray', borderRadius:2}} >
+        <div style={{width: w, height: 20, backgroundColor: props.amount <= props.standard? 'green': 'red', borderRadius:2}}>
         </div>
         <div style={{
             backgroundImage: 'url(' + IndicatorImage + ')',
