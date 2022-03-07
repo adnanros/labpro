@@ -1,4 +1,3 @@
-import SampleCategory from "../components/homeadmin/data/SampleCategory"
 import ChemicalAnalysisChemicalTable from "../components/homeadmin/Tables/ChemicalAnalysisChemicalTable"
 import ChemicalAnalysisTable from "../components/homeadmin/Tables/ChemicalAnalysisTable"
 import ChemicalImpactTable from "../components/homeadmin/Tables/ChemicalImpactTable"
@@ -13,7 +12,7 @@ import TestPackChemicalAnalysisTable from "../components/homeadmin/Tables/TestPa
 import TestPacksTable from "../components/homeadmin/Tables/TestPacksTable"
 
 const routes = [
-  { path: '/homeAdmin',exact:true, name: 'Home Admin', component: SampleCategory },
+  { path: '/homeAdmin',exact:true, name: 'Home Admin', component: SampleCategoryTable },
   { path: '/homeAdmin/samplecategory', name: 'SampleCategory', component: SampleCategoryTable },
   { path: '/homeAdmin/testgroup', name: 'TestGroup', component: TestGroupsTable },
   { path: '/homeAdmin/testpack', name: 'TestPacks', component: TestPacksTable },

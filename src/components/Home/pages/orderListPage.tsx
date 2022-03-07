@@ -9,6 +9,7 @@ import { AppState } from '../../../_helpers';
 import { listOrders } from '../../../graphql/queries';
 import { Link } from 'react-router-dom';
 
+const queryIdentifier = "OrderList";
 class OrderListPage extends Component<any,any> {
     constructor(props: any){
         super(props);
@@ -22,7 +23,7 @@ class OrderListPage extends Component<any,any> {
                 eq: this.props.auth.email
             }
         };
-        this.props.getDataList(listOrders,filter,this.props.auth.isSignedIn);
+        this.props.getDataList(queryIdentifier,listOrders,filter,this.props.auth.isSignedIn);
       }
       
 
@@ -39,7 +40,7 @@ class OrderListPage extends Component<any,any> {
                 <span className="sr-only">Loading...</span>
             </button>}
             {this.props.isLoadingFailed && <div>a refresh button</div>}
-            {this.props.data && <div>
+            {this.props.queryIdentifier === queryIdentifier && this.props.data && <div>
                 <CContainer fluid>
                     
                         <CCard className='p-4' style={{width: '100%'}}>
@@ -54,14 +55,14 @@ class OrderListPage extends Component<any,any> {
                                 </thead>
                                 <tbody>
                                 {
-                                    this.props.data?.map((item: any, index:any) => (
+                                    this.props.data[0].items.map((item: any, index:any) => (
                                         <tr key={index}>
                                             <th scope="row">{index+1}</th>
                                             <td>{item.purchasedDate}</td>
                                             <td>
                                                 <Link to={{
                                                         pathname: "/resultList",
-                                                        state: {chemicalAnalysisIds: item.chemicalAnalysisIds,orderId: item.id }//to get: this.props.location.state.chemicalAnalysisIds
+                                                        state: {order: item }//to get: this.props.location.state.chemicalAnalysisIds
                                                     }}>Results
                                                 </Link>
                                             </td>
@@ -85,6 +86,7 @@ const mapStateToProps = (state: AppState) => {
       isLoadingFailed:state.package_admin.dataListState.isLoadingFailed,
       isLoadedSuccessfully: state.package_admin.dataListState.isLoadedSuccessfully,
       data: state.package_admin.dataListState.data,
+      queryIdentifier: state.package_admin.dataListState.QueryIdentifier
     }
   };
   

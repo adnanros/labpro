@@ -246,7 +246,7 @@ function deleteItem(mutation: string, id: string, completionHandler?: BoolCallba
 
 }
 
-function createItem(mutation: string, inputData: any, completionHandler?: BoolCallback){
+function createItem(mutation: string, inputData: any,completionHandler?: BoolCallback){
     
     return async (dispatch: (arg0: { type: string; error?: string; }) => void) => {
         dispatch(request());
@@ -255,6 +255,7 @@ function createItem(mutation: string, inputData: any, completionHandler?: BoolCa
             const createdItemData: any = await API.graphql({ query: mutation, variables: {input: inputData}});
             
             dispatch(success(createdItemData.data));
+
             if(completionHandler !== undefined){
                 completionHandler(true);
             }
