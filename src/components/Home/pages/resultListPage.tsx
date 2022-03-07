@@ -1,10 +1,12 @@
-import { CCol, CRow } from "@coreui/react";
+import { CCard, CCol, CContainer, CRow } from "@coreui/react";
 import React, { Component } from "react";
 //import { userActions } from '../_actions';
 import { connect } from 'react-redux';
+import { Link } from "react-router-dom";
 import { getOrder, listChemicalAnalysisResults } from "../../../graphql/queries";
 import { admindataActions } from "../../../_actions";
 import { AppState } from "../../../_helpers";
+import { ProgressbarSt } from "../../ui/ProgressbarSt";
 
 
 class ResultListPage extends Component<any,any> {
@@ -21,6 +23,8 @@ class ResultListPage extends Component<any,any> {
     componentDidMount() {
        this.loadData()
     }
+
+    progressBarContainer = 200;
 
     loadData() {
         this.props.getItem(getOrder,this.state.orderId, (success: Boolean) => {
@@ -74,23 +78,54 @@ class ResultListPage extends Component<any,any> {
     render(){
         return (
         <div>
-            {(this.state.chemicalAnalysisResultsStatus === 0) && <div> loading</div>}
-            {(this.state.chemicalAnalysisResultsStatus === 2) && <div> your results is not ready</div>}
-            {(this.state.chemicalAnalysisResultsStatus === 1) && <div> 
-                {
-                    this.props.data &&
-                    this.props.data.map((item: any, index:any) => (
-                        <CRow key={index}>
-                            <CCol sm={4} >
-                               chemical:  {item.chemical.name}
-                               detection:  {item.detection}
-
-                            </CCol>
-                        </CRow>
-                        
-                    ))
-                }
-                </div>}
+            <CContainer fluid>
+                    
+                <CCard className='p-4' style={{width: '100%'}}>
+                {(this.state.chemicalAnalysisResultsStatus === 0) && <div> loading</div>}
+                {(this.state.chemicalAnalysisResultsStatus === 2) && <div> your results is not ready</div>}
+                {(this.state.chemicalAnalysisResultsStatus === 1) && <div>
+                    <table className="table table-hover">
+                        <thead>
+                            <tr>
+                            <th scope="col">Chemical Title</th>
+                            <th scope="col">Detection</th>
+                            <th scope="col">Comparison</th>
+                            <th scope="col">Impacts</th>
+                            <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.props.data &&
+                                this.props.data.map((item: any, index:any) => (
+                                    <tr key={index} className="clickable-row">
+                                        <th scope="row">{item.chemical.name}</th>
+                                        <td>{item.detection}</td>
+                                        <td>
+                                            <ProgressbarSt 
+                                            width={this.progressBarContainer}
+                                            height={10}
+                                            standard={2.1} 
+                                            amount={2}/>    
+                                        </td>
+                                        <td>
+                                            health
+                                        </td>
+                                        <td>
+                                            <Link to={{
+                                                pathname: "/resultDetail",
+                                                state: {chemicalAnalysisIds: item.chemicalAnalysisIds,orderId: item.id }//to get: this.props.location.state.chemicalAnalysisIds
+                                                }}>Details
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table> 
+                    </div>}
+                </CCard>
+            </CContainer>
         </div>);
     }
 }

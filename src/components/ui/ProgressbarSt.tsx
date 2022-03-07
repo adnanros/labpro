@@ -3,6 +3,7 @@ import IndicatorImage from '../../images/arraw.png';
 
 interface inputs {
     width: number,
+    height: number,
     standard: number, 
     amount: number
 }
@@ -15,21 +16,21 @@ export const ProgressbarSt: React.FC<inputs> = (props: inputs)=> {
     let w= props.width * props.amount / max;
 
     return (
-        <div style={{width: props.width, height: 20, backgroundColor: 'gray', borderRadius:2}} >
-        <div style={{width: w, height: 20, backgroundColor: props.amount <= props.standard? 'green': 'red', borderRadius:2}}>
-        </div>
-        <div style={{
+        <div>
+            <div style={{
             backgroundImage: 'url(' + IndicatorImage + ')',
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
-            width:"20px", height: "20px",
-            position: 'relative', left: w - 10
-        }}>
-
+            width:"10px", height: "10px",
+            position: 'relative', left: w - 5
+            }}></div>
+            <div style={{width: props.width, height: props.height, backgroundColor: '#e1e1e1', borderRadius:2}} >
+                <div style={{width: w, height: props.height, backgroundColor: props.amount <= props.standard? 'green': 'red', borderRadius:2}}>
+                </div>
+            </div>
         </div>
-
-    </div>
+        
     );
   
 }

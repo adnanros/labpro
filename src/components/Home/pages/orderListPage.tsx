@@ -59,7 +59,7 @@ class OrderListPage extends Component<any,any> {
                                             <th scope="row">{index+1}</th>
                                             <td>{item.purchasedDate}</td>
                                             <td>
-                                            <Link to={{
+                                                <Link to={{
                                                         pathname: "/resultList",
                                                         state: {chemicalAnalysisIds: item.chemicalAnalysisIds,orderId: item.id }//to get: this.props.location.state.chemicalAnalysisIds
                                                     }}>Results
