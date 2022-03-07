@@ -31,9 +31,6 @@ import { admindataActions} from '../../../_actions';
 import { getOrder, listOrders,   } from '../../../graphql/queries';
 import React from 'react';
 import { createOrder,  deleteOrder, updateOrder,  } from '../../../graphql/mutations';
-import OrderResult from './OrderResult';
-
-
 /// in class component we cannot use useState functionality
 
 interface IState {
@@ -182,7 +179,7 @@ class Order extends Component<any,IState> {
                   <CModalTitle>Order results</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
-                  <OrderResult chemicalAnalysisIds= {this.state.chemicalAnalysisIds} chemicalAnalysisOrders= {this.state.chemicalAnalysisOrders} orderId= {this.state.orderId}/>
+                  {/* <OrderResult chemicalAnalysisIds= {this.state.chemicalAnalysisIds} chemicalAnalysisOrders= {this.state.chemicalAnalysisOrders} orderId= {this.state.orderId}/> */}
                   {/* <GetOrderComponent onclick={()=> this.setState({showDetail: false})} fetchedItem={this.props.fetchedItem}/> */}
                 </CModalBody>
             </CModal>

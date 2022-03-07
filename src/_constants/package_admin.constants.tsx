@@ -39,6 +39,7 @@ export interface DataListState{
     isLoadingData: boolean,
     isLoadedSuccessfully: boolean,
     isLoadingFailed: boolean,
+    QueryIdentifier: string,
     data: any,
 }
 

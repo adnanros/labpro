@@ -1,11 +1,9 @@
 import API from "@aws-amplify/api";
 import { alertActions } from ".";
 import { dataAdminConstants } from "../_constants";
-import { history } from "../_helpers";
 type BoolCallback = (n: Boolean) => any;
 
 export const admindataActions = {
-    getDataListMultiQuery,
     mutateMultiQuery,
     getDataList,
     getDataList2,
@@ -18,57 +16,7 @@ export const admindataActions = {
      getItemDetailByKeyValue
 };
 
-function getDataListMultiQuery(query: string,filter: any = null,isCognito: Boolean = true, completionHandler?: BoolCallback){
-    
-    return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
-        dispatch(request());
-        try{
-            if (isCognito) {
-                const result: any = await API.graphql(
-                    {
-                    query: query,
-                    variables: { filter: filter}
-                    }
-                ) as Promise<any>
-                console.log('List-result',result.data);
-                
-                dispatch(success(result));
-                if(typeof completionHandler !== "undefined") {
-                    completionHandler(true)
-                }
-            }else {
-                const result: any = await API.graphql(
-                    {
-                    query: query,
-                    variables: { filter: filter},
-                    authMode: "AWS_IAM"
-                    }
-                ) as Promise<any>
-                console.log('List-result',result.data);
-                
-                dispatch(success(result));
-                if(typeof completionHandler !== "undefined") {
-                    completionHandler(true)
-                }
-            }
-            
-        } catch(error: any)
-        {
-            console.log(error);
-            dispatch(failure('load list failed'));
-            dispatch(alertActions.error(error.toString()));
-            if(typeof completionHandler !== "undefined") {
-                completionHandler(false)
-            }
-        }
-    };
-
-    function request() { return { type: dataAdminConstants.MULTI_QUERY_DATA_LIST_REQUEST } }
-    function success(result: any) { return { type: dataAdminConstants.MULTI_QUERY_DATA_LIST_SUCCESS, result } }
-    function failure(error: string) { return { type: dataAdminConstants.MULTI_QUERY_DATA_LIST_FAILURE, error } }
-}
-
-function mutateMultiQuery(query: string,inputData: any = null,isCognito: Boolean = true, completionHandler?: BoolCallback){
+function mutateMultiQuery(queryIdentifier: string,query: string,inputData: any = null,isCognito: Boolean = true, completionHandler?: BoolCallback){
     
     return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
         dispatch(request());
@@ -82,7 +30,7 @@ function mutateMultiQuery(query: string,inputData: any = null,isCognito: Boolean
                 ) as Promise<any>
                 console.log('List-result',result.data);
                 
-                dispatch(success(result));
+                dispatch(success(result,queryIdentifier));
                 if(typeof completionHandler !== "undefined") {
                     completionHandler(true)
                 }
@@ -95,7 +43,7 @@ function mutateMultiQuery(query: string,inputData: any = null,isCognito: Boolean
                     }
                 ) as Promise<any>
                 console.log('List-result',result.data);
-                dispatch(success(result));
+                dispatch(success(result,queryIdentifier));
                 if(typeof completionHandler !== "undefined") {
                     completionHandler(true)
                 }
@@ -113,11 +61,11 @@ function mutateMultiQuery(query: string,inputData: any = null,isCognito: Boolean
     };
 
     function request() { return { type: dataAdminConstants.MULTI_QUERY_DATA_LIST_REQUEST } }
-    function success(result: any) { return { type: dataAdminConstants.MULTI_QUERY_DATA_LIST_SUCCESS, result } }
+    function success(result: any,queryIdentifier: string) { return { type: dataAdminConstants.MULTI_QUERY_DATA_LIST_SUCCESS, result, queryIdentifier } }
     function failure(error: string) { return { type: dataAdminConstants.MULTI_QUERY_DATA_LIST_FAILURE, error } }
 }
 
-function getDataList(query: string,filter: any = null,isCognito: Boolean = true, completionHandler?: BoolCallback){
+function getDataList(queryIdentifier: string,query: string,filter: any = null,isCognito: Boolean = true, completionHandler?: BoolCallback){
     
     return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
         dispatch(request());
@@ -131,8 +79,8 @@ function getDataList(query: string,filter: any = null,isCognito: Boolean = true,
                 ) as Promise<any>
                 console.log('List-result',result.data);
                 
-                dispatch(success(result));
-                if(typeof completionHandler !== 'undefined'){
+                dispatch(success(result,queryIdentifier));
+                if(completionHandler !== undefined){
                     completionHandler(true);
                 }
                 
@@ -146,8 +94,8 @@ function getDataList(query: string,filter: any = null,isCognito: Boolean = true,
                 ) as Promise<any>
                 console.log('List-result',result.data);
                 
-                dispatch(success(result));
-                if(typeof completionHandler !== 'undefined'){
+                dispatch(success(result,queryIdentifier));
+                if(completionHandler !== undefined){
                     completionHandler(true);
                 }
             }
@@ -157,18 +105,18 @@ function getDataList(query: string,filter: any = null,isCognito: Boolean = true,
             console.log(error);
             dispatch(failure('load list failed'));
             dispatch(alertActions.error(error.toString()));
-            if(typeof completionHandler !== 'undefined'){
+            if(completionHandler !== undefined){
                 completionHandler(false);
             }
         }
     };
 
     function request() { return { type: dataAdminConstants.DATA_LIST_REQUEST } }
-    function success(result: any) { return { type: dataAdminConstants.DATA_LIST_SUCCESS, result } }
+    function success(result: any, queryIdentifier: string) { return { type: dataAdminConstants.DATA_LIST_SUCCESS, result, queryIdentifier } }
     function failure(error: string) { return { type: dataAdminConstants.DATA_LIST_FAILURE, error } }
 }
 
-function getDataList2(query: string,filter: any = null,isCognito: Boolean = true, completionHandler?: BoolCallback){
+function getDataList2(queryIdentifier: string, query: string,filter: any = null,isCognito: Boolean = true, completionHandler?: BoolCallback){
 
     return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
         dispatch(request());
@@ -182,8 +130,8 @@ function getDataList2(query: string,filter: any = null,isCognito: Boolean = true
                 ) as Promise<any>
                 console.log('List-result',result.data);
                 
-                dispatch(success(result));
-                if(typeof completionHandler !== 'undefined'){
+                dispatch(success(result,queryIdentifier));
+                if(completionHandler !== undefined){
                     completionHandler(true);
                 }
             }else {
@@ -196,8 +144,8 @@ function getDataList2(query: string,filter: any = null,isCognito: Boolean = true
                 ) as Promise<any>
                 console.log('List-result',result.data);
                 
-                dispatch(success(result));
-                if(typeof completionHandler !== 'undefined'){
+                dispatch(success(result,queryIdentifier));
+                if(completionHandler !== undefined){
                     completionHandler(true);
                 }
             }
@@ -206,19 +154,19 @@ function getDataList2(query: string,filter: any = null,isCognito: Boolean = true
             console.log(error);
             dispatch(failure('load list failed'));
             dispatch(alertActions.error(error.toString()));
-            if(typeof completionHandler !== 'undefined'){
+            if(completionHandler !== undefined){
                 completionHandler(false);
             }
         }
     };
 
     function request() { return { type: dataAdminConstants.DATA_LIST2_REQUEST } }
-    function success(result: any) { return { type: dataAdminConstants.DATA_LIST2_SUCCESS, result } }
+    function success(result: any,queryIdentifier: string) { return { type: dataAdminConstants.DATA_LIST2_SUCCESS, result, queryIdentifier } }
     function failure(error: string) { return { type: dataAdminConstants.DATA_LIST2_FAILURE, error } }
 
 }
 
-function getDataList3(query: string,filter: any = null,isCognito: Boolean = true, completionHandler?: BoolCallback){
+function getDataList3(queryIdentifier: string,query: string,filter: any = null,isCognito: Boolean = true, completionHandler?: BoolCallback){
 
     return async (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
         dispatch(request());
@@ -232,8 +180,8 @@ function getDataList3(query: string,filter: any = null,isCognito: Boolean = true
                 ) as Promise<any>
                 console.log('List-result',result.data);
                 
-                dispatch(success(result));
-                if(typeof completionHandler !== 'undefined'){
+                dispatch(success(result,queryIdentifier));
+                if(completionHandler !== undefined){
                     completionHandler(true);
                 }
             }else {
@@ -246,8 +194,8 @@ function getDataList3(query: string,filter: any = null,isCognito: Boolean = true
                 ) as Promise<any>
                 console.log('List-result',result.data);
                 
-                dispatch(success(result));
-                if(typeof completionHandler !== 'undefined'){
+                dispatch(success(result,queryIdentifier));
+                if(completionHandler !== undefined){
                     completionHandler(true);
                 }
             }
@@ -256,21 +204,19 @@ function getDataList3(query: string,filter: any = null,isCognito: Boolean = true
             console.log(error);
             dispatch(failure('load list failed'));
             dispatch(alertActions.error(error.toString()));
-            if(typeof completionHandler !== 'undefined'){
+            if(completionHandler !== undefined){
                 completionHandler(false);
             }
         }
     };
 
     function request() { return { type: dataAdminConstants.DATA_LIST3_REQUEST } }
-    function success(result: any) { return { type: dataAdminConstants.DATA_LIST3_SUCCESS, result } }
+    function success(result: any,queryIdentifier: string) { return { type: dataAdminConstants.DATA_LIST3_SUCCESS, result,queryIdentifier } }
     function failure(error: string) { return { type: dataAdminConstants.DATA_LIST3_FAILURE, error } }
 
 }
 
-
-function deleteItem(mutation: string, id: string, dataListQuery: string){
-    console.log('deleting:', id);
+function deleteItem(mutation: string, id: string, completionHandler?: BoolCallback){
     return async (dispatch: (arg0: { type: string; error?: string; }) => void) => {
         dispatch(request());
         try{
@@ -280,12 +226,17 @@ function deleteItem(mutation: string, id: string, dataListQuery: string){
             await API.graphql({ query: mutation, variables: {input: ids}});
             
             dispatch(success(id));
-            //HERE++++++++++++ getDataList(dataListQuery);
+            if(completionHandler !== undefined){
+                completionHandler(true);
+            }
         } catch(error: any)
         {
             console.log(error);
             dispatch(failure(error.toString()))
             dispatch(alertActions.error(error.toString()));
+            if(completionHandler !== undefined){
+                completionHandler(false);
+            }
         }
     };
 
@@ -295,7 +246,7 @@ function deleteItem(mutation: string, id: string, dataListQuery: string){
 
 }
 
-function createItem(mutation: string, inputData: any,redirect: any = null){
+function createItem(mutation: string, inputData: any, completionHandler?: BoolCallback){
     
     return async (dispatch: (arg0: { type: string; error?: string; }) => void) => {
         dispatch(request());
@@ -304,15 +255,17 @@ function createItem(mutation: string, inputData: any,redirect: any = null){
             const createdItemData: any = await API.graphql({ query: mutation, variables: {input: inputData}});
             
             dispatch(success(createdItemData.data));
-            var rd = String(redirect);
-            if(rd !== "null") {
-                history.push(rd)
+            if(completionHandler !== undefined){
+                completionHandler(true);
             }
         } catch(error: any)
         {
             console.log(error);
             dispatch(failure(error.toString()))
             dispatch(alertActions.error(error.toString()));
+            if(completionHandler !== undefined){
+                completionHandler(false);
+            }
         }
     };
 
@@ -322,7 +275,7 @@ function createItem(mutation: string, inputData: any,redirect: any = null){
 }
 
 
-function updateItem(mutation: string, inputData: any){
+function updateItem(mutation: string, inputData: any, completionHandler?: BoolCallback){
     
     return async (dispatch: (arg0: { type: string; error?: string; }) => void) => {
         dispatch(request());
@@ -331,11 +284,17 @@ function updateItem(mutation: string, inputData: any){
             const updatedItemData: any = await API.graphql({ query: mutation, variables: {input: inputData}});
             
             dispatch(success(updatedItemData.data));
+            if(completionHandler !== undefined){
+                completionHandler(true);
+            }
         } catch(error: any)
         {
             console.log(error);
             dispatch(failure(error.toString()))
             dispatch(alertActions.error(error.toString()));
+            if(completionHandler !== undefined){
+                completionHandler(false);
+            }
         }
     };
 

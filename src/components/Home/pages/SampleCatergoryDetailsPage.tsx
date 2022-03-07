@@ -61,15 +61,15 @@ class SampleCatergoryDetailsPage extends Component<any,any> {
 const mapStateToProps = (state: AppState) => {
     return {
       auth: state.authentication,
-      isDataLoading: state.package_admin.multiQuerydataListState.isLoadingData,
-      isLoadingFailed:state.package_admin.multiQuerydataListState.isLoadingFailed,
-      isLoadedSuccessfully: state.package_admin.multiQuerydataListState.isLoadedSuccessfully,
-      data: state.package_admin.multiQuerydataListState.data,
+      isDataLoading: state.package_admin.dataListState.isLoadingData,
+      isLoadingFailed:state.package_admin.dataListState.isLoadingFailed,
+      isLoadedSuccessfully: state.package_admin.dataListState.isLoadedSuccessfully,
+      data: state.package_admin.dataListState.data,
     }
   };
   
   const mapDispatchToProps  = {
-    getDataList: admindataActions.getDataListMultiQuery,
+    getDataList: admindataActions.getDataList,
   };
 
 
