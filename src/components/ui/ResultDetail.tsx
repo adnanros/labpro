@@ -9,7 +9,7 @@ const ResultDetail: React.FC = () => {
             <CCard>
                 <CRow>
                     <CCol sm={3}>
-                        <img src="" alt="" />
+                        <img src="../../Assets/images/icon-benzene.png" alt="" />
 
                     </CCol>
                     <CCol sm={9}>
