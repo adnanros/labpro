@@ -20,26 +20,27 @@ const AppHeader = () => {
   const [visible, setVisible] = useState(false);
 
   return (
-    <CNavbar expand="lg" colorScheme="light" className="" style={{backgroundColor: '#e3f2fd'}}>
+   <div className='bg-white'>
+    <CNavbar expand="lg" colorScheme="light" className="bg-white" style={{backgroundColor: ''}}>
       <CContainer fluid>
       <CNavbarToggler onClick={() => setVisible(!visible)} />
        <CCollapse className="navbar-collapse" visible={visible}>
         <CNavbarNav className="me-auto mb-2 mb-lg-0">
           <CNavItem>
-            <CNavLink to={"/"} component={NavLink} className="active">
+            <CNavLink to={"/"} component={NavLink} className="active" style={{color:'#555555',}}>
               Home
             </CNavLink>
             </CNavItem>
             <CNavItem>
 
-            <CNavLink to="/" component={NavLink} className="active">
+            <CNavLink to="/" component={NavLink} className="">
               Contact
             </CNavLink>
             </CNavItem>
 
             <CNavItem>
 
-            <CNavLink to="/" component={NavLink} className="active">
+            <CNavLink to="/" component={NavLink} className="">
               About
             </CNavLink>
 
@@ -69,7 +70,11 @@ const AppHeader = () => {
           }
         </CCollapse>  
       </CContainer>
+
     </CNavbar>
+    <hr style={{backgroundColor:'#555555'}}/>
+
+  </div> 
   )
 }
 

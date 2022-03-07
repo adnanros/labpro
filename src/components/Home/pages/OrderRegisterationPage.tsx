@@ -82,20 +82,31 @@ class OrderRegisterationPage extends Component<any,any> {
     
     render(){
         return (
-            <div className="bg-light min-vh-50 d-flex flex-row align-items-center">
-                 {
-            this.state.chemicalAnalysis.map((item: any,index: any) => (
-                <CRow key={index}>
-                    <CCol>
-                        {item.chemicalAnalysis.name}
-                    </CCol>
-                </CRow>
-            )
-            )
-            }
-            <CContainer>
-                <CRow className="justify-content-center">
-                <CCol md={8}>
+            <div className="bg-light p-5">
+               <CContainer>
+                   <CRow>
+
+                   
+
+                  <CCol md={6} className=''>
+                      <CCard className="p-4">
+                        {
+                            this.state.chemicalAnalysis.map((item: any,index: any) => (
+                                <div key={index} className="align-middle d-flex align-items-center">
+                                   <span className="material-icons-outlined d-block ">
+                                    check_circle
+                                    </span> 
+                                    <span className="d-block m-1">{item.chemicalAnalysis.name}</span>
+                                </div>
+                        )
+                        )
+                        }  
+                      </CCard>
+                      
+                 </CCol>
+            
+            
+                <CCol md={6}>
                     <CCardGroup>
                     <CCard className="p-4">
                         <CCardBody>
@@ -145,9 +156,12 @@ class OrderRegisterationPage extends Component<any,any> {
                     </CCard>
                     </CCardGroup>
                 </CCol>
-                </CRow>
+            </CRow>
+
+            <CButton onClick={()=> this.doRegister()} disabled={this.props.isCreating}
+            style={{float:'right'}}>register </CButton>
             </CContainer>
-            <CButton onClick={()=> this.doRegister()} disabled={this.props.isCreating}>register </CButton>
+
             </div>
         )
     }

@@ -1,4 +1,4 @@
-import { CCard, CCardBody, CCardTitle, CCol, CRow, } from "@coreui/react";
+import { CButton, CCard, CCardBody, CCardTitle, CCol, CRow, } from "@coreui/react";
 import { Component } from "react";
 import { Link } from "react-router-dom";
 
@@ -43,12 +43,17 @@ class TestGroupCard extends Component<IProps,any> {
                         ))
                       }
                       {
-                        this.state.price
+                        this.state.price + "NZ$"
                       }
+                      
                       <Link to={{
                         pathname: "/orderRegisteration",
                         state: {chemicalAnalysis: this.state.chemicalAnalysis }//to get: this.props.location.state.chemicalAnalysis
-                    }}>Order</Link>
+                      }}
+                      className="btn btn-primary d-block"
+                       >
+                            Order
+                      </Link>
                 </CCardBody>
             </CCard>
         </div>

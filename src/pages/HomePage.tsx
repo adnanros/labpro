@@ -12,50 +12,50 @@ import { AppState } from "../_helpers";
 class HomePage extends Component<any,any> {
     render(){
         return (
-        <div>
+        <div className="" style={{backgroundColor: '#f7f9ff'}}>
           <AppHomeHeader />
-                    <CContainer >
-                    <Suspense fallback={<CSpinner color="primary" />}>
-                        <Switch>
-                        {routesHome.map((route, idx) => {
-                            return (
-                              route.isSignedInRequired ? 
-                              route.component && (
-                                <IsSignedInRoute
-                                key={idx}
-                                path={route.path}
-                                exact={route.exact}
-                                //name={route.name}
-                                
-                                render={(props: any) => (
-                                  <>
-                                    <route.component {...props} />
-                                  </>
-                                )}
-                                ></IsSignedInRoute>
-                            ) 
-                            :
-                            route.component && (
-                              <Route
-                              key={idx}
-                              path={route.path}
-                              exact={route.exact}
-                              //name={route.name}
-                              
-                              render={(props: any) => (
-                                <>
-                                  <route.component {...props} />
-                                </>
-                              )}
-                              ></Route>
-                          )
-                            )
-                        })}
-                        </Switch>
-                    </Suspense>
+          <CContainer className="py-2">
+          <Suspense fallback={<CSpinner color="primary" />}>
+              <Switch>
+              {routesHome.map((route, idx) => {
+                  return (
+                    route.isSignedInRequired ? 
+                    route.component && (
+                      <IsSignedInRoute
+                      key={idx}
+                      path={route.path}
+                      exact={route.exact}
+                      //name={route.name}
+                      
+                      render={(props: any) => (
+                        <>
+                          <route.component {...props} />
+                        </>
+                      )}
+                      ></IsSignedInRoute>
+                  ) 
+                  :
+                  route.component && (
+                    <Route
+                    key={idx}
+                    path={route.path}
+                    exact={route.exact}
+                    //name={route.name}
                     
-                    </CContainer>
-                    <AppHomeFooter />
+                    render={(props: any) => (
+                      <>
+                        <route.component {...props} />
+                      </>
+                    )}
+                    ></Route>
+                )
+                  )
+              })}
+              </Switch>
+          </Suspense>
+          
+          </CContainer>
+          <AppHomeFooter />
         </div>);
     }
 }

@@ -22,7 +22,7 @@ class AppHomeContent extends Component<any,any> {
       
     render(){
         return (
-            <CContainer fluid>
+            <CContainer fluid className='py-2'>
             <CCard className="mb-3"  style={{width: '100%'}}>
                 <CRow className="g-0">
                     <CCol md={8}>
@@ -42,18 +42,16 @@ class AppHomeContent extends Component<any,any> {
                     </CCol>
                 </CRow>
                 </CCard>
-                <CCard style={{width: '100%'}}>
-                    <CRow>
+                <CRow>
                         {
                             this.props.data &&
                             this.props.data.map((item: any, index:any) => (
-                                <CCol sm={4} key={index}>
+                                <CCol lg={6} xl={4} key={index} >
                                 <SampleCategoryCard name={item.name} description={item.description} imageName={'sampleCat1.jpg'} sampleCategoryId={item.id} />
                                 </CCol>
                             ))
                          }
-                    </CRow>
-                </CCard>
+                </CRow>
         </CContainer>
         );
     }

@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 
 const AppHomeFooter = () => {
     return (
-        <div>
-            <CContainer fluid style={{backgroundColor:'#e3e4f6'}}>
+        <div style={{backgroundColor:'#999999', height:'100px'}}>
+            <hr style={{backgroundColor:'blue'}}/>
+            <CContainer fluid >
                 <CRow>
                     <CCol>
                         <Link className="d-block" to="/">
