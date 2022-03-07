@@ -2,7 +2,7 @@ import { Component } from "react";
 //import { userActions } from '../_actions';
 import { connect } from 'react-redux';
 import { admindataActions } from "../../../_actions";
-import { AppState } from "../../../_helpers";
+import { AppState, history } from "../../../_helpers";
 
 
 import {
@@ -77,7 +77,11 @@ class OrderRegisterationPage extends Component<any,any> {
             company: this.state.company,
             chemicalAnalysisIds: this.state.chemicalAnalysisIds
           } 
-       this.props.createItem(createOrder,inputData,"/")
+       this.props.createItem(createOrder,inputData,(success: boolean)=> {
+           if (success) {
+               history.push("/");
+           }
+       })
     }
     
     render(){

@@ -7,8 +7,7 @@ import { admindataActions } from '../../../_actions';
 import { connect } from 'react-redux';
 import { AppState } from '../../../_helpers';
 import TestGroupCard from '../subcomponents/TestGroupCard';
-import { sampleCategoryDetailsQuery } from '../../../graphql/customQueries';
-
+const queryIdentifier = "SampleCatergoryDetails"
 class SampleCatergoryDetailsPage extends Component<any,any> {
     constructor(props: any){
         super(props);
@@ -22,7 +21,7 @@ class SampleCatergoryDetailsPage extends Component<any,any> {
                 eq: this.props.location.state.id // filter priority = 1
             }
         };
-        this.props.getDataList(sampleCategoryDetailsQuery,filter,this.props.auth.isSignedIn);
+        this.props.getDataList(queryIdentifier,listData,filter,this.props.auth.isSignedIn);
       }
       
     render(){
@@ -40,7 +39,7 @@ class SampleCatergoryDetailsPage extends Component<any,any> {
                         <CCard style={{width: '100%'}}>
                             <CRow>
                                 {
-                                    this.props.data &&
+                                    this.props.queryUdentifier === queryIdentifier && this.props.data &&
                                     this.props.data[0]?.items.map((item: any, index:any) => (
                                         <CCol sm={4} key={index}>
                                             <TestGroupCard 
@@ -69,6 +68,7 @@ const mapStateToProps = (state: AppState) => {
       isLoadingFailed:state.package_admin.dataListState.isLoadingFailed,
       isLoadedSuccessfully: state.package_admin.dataListState.isLoadedSuccessfully,
       data: state.package_admin.dataListState.data,
+      queryUdentifier: state.package_admin.dataListState.QueryIdentifier
     }
   };
   
@@ -79,3 +79,94 @@ const mapStateToProps = (state: AppState) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(SampleCatergoryDetailsPage);
 
+const listData = /* GraphQL */ `
+  query ListTestGroups(
+    $filter: ModelTestGroupFilterInput
+    $limit: Int
+    $nextToken: String
+    $filter2: ModelTestGroupTestPackFilterInput
+    $limit2: Int
+    $nextToken2: String
+    $filter3: ModelTestPackChemicalAnalysisFilterInput
+    $limit3: Int
+    $nextToken3: String
+  ) {
+    listTestGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        description
+        includedTestsDesc
+        includedReportsDesc
+        sampleCategoryId
+        createdAt
+        updatedAt
+        testGroupTestPack {
+          nextToken
+        }
+      }
+      nextToken
+    },
+    listTestGroupTestPacks(
+      filter: $filter2
+      limit: $limit2
+      nextToken: $nextToken2
+    ) {
+      items {
+        id
+        testPackId
+        testGroupId
+        createdAt
+        updatedAt
+        testgroup {
+          id
+          name
+          description
+          includedTestsDesc
+          includedReportsDesc
+          sampleCategoryId
+          createdAt
+          updatedAt
+        }
+        testpack {
+          id
+          name
+          description
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    },
+    listTestPackChemicalAnalysiss(
+      filter: $filter3
+      limit: $limit3
+      nextToken: $nextToken3
+    ) {
+      items {
+        id
+        testPackId
+        chemicalAnalysisId
+        createdAt
+        updatedAt
+        testpack {
+          id
+          name
+          description
+          createdAt
+          updatedAt
+        }
+        chemicalAnalysis {
+          id
+          name
+          price
+          discount
+          description
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;

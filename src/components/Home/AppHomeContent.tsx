@@ -7,7 +7,7 @@ import { admindataActions } from '../../_actions';
 import { connect } from 'react-redux';
 import { AppState } from '../../_helpers';
 import { listSampleCategorys } from '../../graphql/queries';
-
+const queryIdentifier = "listSampleCategorys";
 class AppHomeContent extends Component<any,any> {
     constructor(props: any){
         console.log("Hi from AppHomeContent");
@@ -17,7 +17,7 @@ class AppHomeContent extends Component<any,any> {
       }
   
     componentDidMount(){
-      this.props.getDataList(listSampleCategorys,null,this.props.auth.isSignedIn);
+      this.props.getDataList(queryIdentifier,listSampleCategorys,null,this.props.auth.isSignedIn);
     }
       
     render(){
@@ -44,8 +44,8 @@ class AppHomeContent extends Component<any,any> {
                 </CCard>
                 <CRow>
                         {
-                            this.props.data &&
-                            this.props.data.map((item: any, index:any) => (
+                            this.props.queryIdentifier === queryIdentifier && this.props.data &&
+                            this.props.data[0].items.map((item: any, index:any) => (
                                 <CCol lg={6} xl={4} key={index} >
                                 <SampleCategoryCard name={item.name} description={item.description} imageName={'sampleCat1.jpg'} sampleCategoryId={item.id} />
                                 </CCol>
@@ -64,6 +64,7 @@ const mapStateToProps = (state: AppState) => {
       isLoadingFailed:state.package_admin.dataListState.isLoadingFailed,
       isLoadedSuccessfully: state.package_admin.dataListState.isLoadedSuccessfully,
       data: state.package_admin.dataListState.data,
+      queryIdentifier: state.package_admin.dataListState.QueryIdentifier
     }
   };
   

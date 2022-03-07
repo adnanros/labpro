@@ -8,15 +8,13 @@ import { admindataActions } from "../../../_actions";
 import { AppState } from "../../../_helpers";
 import { ProgressbarSt } from "../../ui/ProgressbarSt";
 
-
+const queryIdentifier = "ChemicalAnalysisResults";
 class ResultListPage extends Component<any,any> {
     constructor(props: any) {
         super(props)
         this.state = {
-            chemicalAnalysisIds: props.location.state.chemicalAnalysisIds,
-            orderId: props.location.state.orderId,
-            orderLoadState: 0,//0: unknown, 1: suuccess,2 failure
-            chemicalAnalysisResultsStatus: 0//0: unknown, 1: suuccess,2 failure
+            order: props.location.state.order,
+            chemicalAnalysisResultsStatus: 0//0: loading, 1: not ready,2 loaded
         }
     }
 
@@ -27,52 +25,42 @@ class ResultListPage extends Component<any,any> {
     progressBarContainer = 200;
 
     loadData() {
-        this.props.getItem(getOrder,this.state.orderId, (success: Boolean) => {
-            if(success) {
-                this.setState({orderLoadState: 1})
-                var order = this.props.data2["getOrder"]
-                
-                var chemicalAnalysisOrdersIds = order.chemicalAnalysisOrder.items.map((x:any)=> {return x.id})
-                if (Array.isArray(chemicalAnalysisOrdersIds) && chemicalAnalysisOrdersIds.length > 0) {
-                    var ors: any[] = []
-                    // export type ModelChemicalAnalysisResultFilterInput = {
-                    //     id?: ModelIDInput | null,
-                    //     chemicalAnalysisOrderId?: ModelIDInput | null,
-                    //     chemicalId?: ModelIDInput | null,
-                    //     detection?: ModelFloatInput | null,
-                    //     resultType?: ModelStringInput | null,
-                    //     and?: Array< ModelChemicalAnalysisResultFilterInput | null > | null,
-                    //     or?: Array< ModelChemicalAnalysisResultFilterInput | null > | null,
-                    //     not?: ModelChemicalAnalysisResultFilterInput | null,
-                    //   };
-                    chemicalAnalysisOrdersIds.forEach((element:any) => {
-                        ors.push(
-                            {
-                                chemicalAnalysisOrderId: {eq: element}
-                            }
-                        );
-                    });
-                    var filter: any = {or: ors };
-                    this.props.getDataList(listChemicalAnalysisResults,filter,this.props.auth.isSignedIn,(succes: boolean)=> {
-                        if(succes) {
-                            if(this.props.data.length === 0) {
-                                this.setState({chemicalAnalysisResultsStatus: 2})
-                            }else {
-                                this.setState({chemicalAnalysisResultsStatus: 1})
-                            }
-                            
-                        }else {
-                            this.setState({chemicalAnalysisResultsStatus: 2})
-                        }
-                    })
+        if(this.state.order.chemicalAnalysisOrder.items.length === 0) {
+            this.setState({chemicalAnalysisResultsStatus: 1 })
+        }else {
+            var chemicalAnalysisOrdersIds = this.state.order.chemicalAnalysisOrder.items.map((x:any)=> {return x.id})
+            var ors: any[] = []
+            // export type ModelChemicalAnalysisResultFilterInput = {
+            //     id?: ModelIDInput | null,
+            //     chemicalAnalysisOrderId?: ModelIDInput | null,
+            //     chemicalId?: ModelIDInput | null,
+            //     detection?: ModelFloatInput | null,
+            //     resultType?: ModelStringInput | null,
+            //     and?: Array< ModelChemicalAnalysisResultFilterInput | null > | null,
+            //     or?: Array< ModelChemicalAnalysisResultFilterInput | null > | null,
+            //     not?: ModelChemicalAnalysisResultFilterInput | null,
+            //   };
+            chemicalAnalysisOrdersIds.forEach((element:any) => {
+                ors.push(
+                    {
+                        chemicalAnalysisOrderId: {eq: element}
+                    }
+                );
+            });
+            var filter: any = {or: ors };
+            this.props.getDataList(queryIdentifier,listChemicalAnalysisResults,filter,this.props.auth.isSignedIn,(succes: boolean)=> {
+                if(succes) {
+                    if(this.props.data.length === 0) {
+                        this.setState({chemicalAnalysisResultsStatus: 1})
+                    }else {
+                        this.setState({chemicalAnalysisResultsStatus: 2})
+                    }
+                    
                 }else {
-                    //no data. show user that no data is ready
-                    this.setState({chemicalAnalysisResultsStatus: 2})
+                    this.setState({chemicalAnalysisResultsStatus: 1})
                 }
-            }else {
-                this.setState({orderLoadState: 2})
-            }
-       })
+            })
+        }
     }
 
     render(){
@@ -82,8 +70,8 @@ class ResultListPage extends Component<any,any> {
                     
                 <CCard className='p-4' style={{width: '100%'}}>
                 {(this.state.chemicalAnalysisResultsStatus === 0) && <div> loading</div>}
-                {(this.state.chemicalAnalysisResultsStatus === 2) && <div> your results is not ready</div>}
-                {(this.state.chemicalAnalysisResultsStatus === 1) && <div>
+                {(this.state.chemicalAnalysisResultsStatus === 1) && <div> your results is not ready</div>}
+                {(this.state.chemicalAnalysisResultsStatus === 2) && <div>
                     <table className="table table-hover">
                         <thead>
                             <tr>
@@ -96,8 +84,8 @@ class ResultListPage extends Component<any,any> {
                         </thead>
                         <tbody>
                             {
-                                this.props.data &&
-                                this.props.data.map((item: any, index:any) => (
+                                this.props.queryIdentifier === queryIdentifier && this.props.data &&
+                                this.props.data[0].items.map((item: any, index:any) => (
                                     <tr key={index} className="clickable-row">
                                         <th scope="row">{item.chemical.name}</th>
                                         <td>{item.detection}</td>
@@ -138,16 +126,12 @@ const mapStateToProps = (state: AppState) => {
       isLoadingFailed:state.package_admin.dataListState.isLoadingFailed,
       isLoadedSuccessfully: state.package_admin.dataListState.isLoadedSuccessfully,
       data: state.package_admin.dataListState.data,
-      
-      isGettingData: state.package_admin.dataDetailState.isLoaingItemDetail,
-      isGetSuccessfully: state.package_admin.dataDetailState.isLoadedItemDetailSuccessfully,
-      data2: state.package_admin.dataDetailState.loadedItemDetailData
+      queryIdentifier: state.package_admin.dataListState.QueryIdentifier
     }
   };
   
   const mapDispatchToProps  = {
-    getDataList: admindataActions.getDataList,
-    getItem: admindataActions.getItemDetail2
+    getDataList: admindataActions.getDataList
   };
 
 
