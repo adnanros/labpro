@@ -3,6 +3,7 @@ import { Component } from "react";
 import { connect } from 'react-redux';
 import { admindataActions } from "../../../_actions";
 import { AppState, history } from "../../../_helpers";
+import ChemicalIcon from '../../../Assets/icons/chemicalAnalysis/chemicals.png'
 
 
 import {
@@ -96,11 +97,9 @@ class OrderRegisterationPage extends Component<any,any> {
                       <CCard className="p-4">
                         {
                             this.state.chemicalAnalysis.map((item: any,index: any) => (
-                                <div key={index} className="align-middle d-flex align-items-center">
-                                   <span className="material-icons-outlined d-block ">
-                                    check_circle
-                                    </span> 
-                                    <span className="d-block m-1">{item.chemicalAnalysis.name}</span>
+                                <div key={index} className="align-middle d-flex align-items-center mb-1 border-bottom">
+                                    <div className="p-1"><img src={ChemicalIcon} alt="" height={30} width={30}/></div>
+                                    <div className="p-1">{item.chemicalAnalysis.name}</div>
                                 </div>
                         )
                         )

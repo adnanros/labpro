@@ -26,7 +26,7 @@ class SampleCatergoryDetailsPage extends Component<any,any> {
       
     render(){
         return (
-            <div>
+            <div className=''>
             {this.props.isDataLoading && 
             <button className="btn btn-primary" type="button" disabled>
                 <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -36,7 +36,7 @@ class SampleCatergoryDetailsPage extends Component<any,any> {
             {this.props.isLoadedSuccessfully && <div>
                 <CContainer fluid>
                     
-                        <CCard style={{width: '100%'}}>
+                        <CCard style={{width: '100%'}} className='p-3'>
                             <CRow>
                                 {
                                     this.props.queryUdentifier === queryIdentifier && this.props.data &&

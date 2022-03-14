@@ -7,6 +7,7 @@ import { getOrder, listChemicalAnalysisResults } from "../../../graphql/queries"
 import { admindataActions } from "../../../_actions";
 import { AppState } from "../../../_helpers";
 import { ProgressbarSt } from "../../ui/ProgressbarSt";
+import ChemicalIcon from '../../../Assets/icons/chemicals/chemicals.png'
 
 const queryIdentifier = "ChemicalAnalysisResults";
 class ResultListPage extends Component<any,any> {
@@ -76,6 +77,7 @@ class ResultListPage extends Component<any,any> {
                         <thead>
                             <tr>
                             <th scope="col">Chemical Title</th>
+                            <th>Icon</th>
                             <th scope="col">Detection</th>
                             <th scope="col">Comparison</th>
                             <th scope="col">Impacts</th>
@@ -88,6 +90,11 @@ class ResultListPage extends Component<any,any> {
                                 this.props.data[0].items.map((item: any, index:any) => (
                                     <tr key={index} className="clickable-row">
                                         <th scope="row">{item.chemical.name}</th>
+                                        <td>
+                                            <div>
+                                                <img src={ChemicalIcon} width={20} height={20} alt="" />
+                                            </div>
+                                        </td>
                                         <td>{item.detection}</td>
                                         <td>
                                             <ProgressbarSt 

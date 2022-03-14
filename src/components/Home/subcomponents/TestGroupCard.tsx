@@ -37,7 +37,12 @@ class TestGroupCard extends Component<IProps,any> {
                       {this.state.testPacks.map((item: any, index:any) => (
                         <CRow  key={index}>
                             <CCol>
-                                {item.testpack.name}
+                              <div key={index} className="align-middle d-flex align-items-center">
+                                  <span className="material-icons-outlined d-block ">
+                                      check_circle
+                                  </span> 
+                                  <span className="d-block m-1">{item.testpack.name}</span>
+                                </div>
                             </CCol>
                        </CRow>
                         ))

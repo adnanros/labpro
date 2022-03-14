@@ -22,8 +22,8 @@ class AppHomeContent extends Component<any,any> {
       
     render(){
         return (
-            <CContainer fluid className='py-2'>
-            <CCard className="mb-3"  style={{width: '100%'}}>
+            <CContainer className='py-2 '>
+            <CCard className="mb-3 "  style={{width: '100%'}}>
                 <CRow className="g-0">
                     <CCol md={8}>
                     <img alt='main' width={'100%'} height={'100%'} src={require('../../Assets/images/mainImage.jpg').default} />
@@ -42,16 +42,19 @@ class AppHomeContent extends Component<any,any> {
                     </CCol>
                 </CRow>
                 </CCard>
+                <CCard className="mb-3 p-2 "  style={{width: '100%'}}>
                 <CRow>
                         {
                             this.props.queryIdentifier === queryIdentifier && this.props.data &&
                             this.props.data[0].items.map((item: any, index:any) => (
-                                <CCol lg={6} xl={4} key={index} >
+                                <CCol sm={6} xl={4} key={index} >
                                 <SampleCategoryCard name={item.name} description={item.description} imageName={'sampleCat1.jpg'} sampleCategoryId={item.id} />
                                 </CCol>
                             ))
                          }
                 </CRow>
+                </CCard>
+
         </CContainer>
         );
     }

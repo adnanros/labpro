@@ -1,18 +1,21 @@
 import { CCard, CCol, CContainer, CRow } from "@coreui/react";
 import React from "react";
 import {ProgressbarSt} from "./ProgressbarSt";
+import ChemicalIcon from '../../Assets/icons/chemicals/chemicals.png';
 
 const ResultDetail: React.FC = () => {
     
     return(
         <CContainer>
-            <CCard>
+            <CCard className="p-5">
                 <CRow>
-                    <CCol sm={3}>
-                        <img src="" alt="" />
-
+                    <CCol lg={3}>
+                        <div
+                        style={{height:''}}>
+                            <img src={ChemicalIcon} width={'60%'} height={'100%'} alt="" />
+                        </div>
                     </CCol>
-                    <CCol sm={9}>
+                    <CCol lg={9}>
                         <CRow>
                             <CCol sm={10}>
                                 <h1>Arsenic</h1>
@@ -24,8 +27,14 @@ const ResultDetail: React.FC = () => {
                             </CCol>
                         </CRow>
                         <CRow>
-                            <ProgressbarSt width={200} height={20} standard={3.1} amount={2.2}/>
+                            <ProgressbarSt width={300} height={20} standard={3.1} amount={2.2}/>
                         </CRow>
+                    </CCol>
+                </CRow>
+                <CRow>
+                    <CCol sm={9}>
+                        
+                        
                     </CCol>
                 </CRow>
                 <CRow>
