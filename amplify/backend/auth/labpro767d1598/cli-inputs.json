@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "labpro767d1598_identitypool_767d1598",
-    "allowUnauthenticatedIdentities": true,
+    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "labpro767d1598",
     "userPoolName": "labpro767d1598_userpool_767d1598",
     "autoVerifiedAttributes": [
@@ -36,7 +36,7 @@
     "authSelections": "identityPoolAndUserPool",
     "resourceName": "labpro767d1598",
     "serviceName": "Cognito",
-    "useDefault": "manual",
+    "useDefault": "defaultSocial",
     "sharedId": "767d1598",
     "userPoolGroupList": [
       "PackagesAdmin"
@@ -47,7 +47,7 @@
     ],
     "usernameCaseSensitive": false,
     "adminQueries": false,
-    "hostedUI": false,
+    "hostedUI": true,
     "triggers": {},
     "authRoleArn": {
       "Fn::GetAtt": [
@@ -64,11 +64,16 @@
     "breakCircularDependency": true,
     "useEnabledMfas": false,
     "dependsOn": [],
-    "authProviders": [],
     "parentStack": {
       "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "thirdPartyAuth": false
+    "hostedUIDomainName": "labproaad40254-aad40254",
+    "authProvidersUserPool": [
+      "Google"
+    ],
+    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}",
+    "authProviders": []
   }
 }

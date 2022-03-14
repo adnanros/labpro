@@ -22,6 +22,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { userActions } from '../_actions';
 import { AppState } from '../_helpers';
+import google_btn from '../Assets/images/google_signin_button.png';
+import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth/lib-esm/types/Auth';
 
 interface IState {
   email: string;
@@ -106,6 +108,11 @@ const LoginPage: React.FC<any> = (props) => {
                       </CCol>
                     </CRow>
                   </CForm>
+                  <CButton color="link" className="px-0" disabled={loggingIn} onClick={()=> props.federatedLogin(CognitoHostedUIIdentityProvider.Google)}>
+                    <img src={google_btn} alt="Google Sign In button"
+                          className="googleSignIn"
+                          style={{height:"45px", width:"190px"}}/>
+                  </CButton>
                 </CCardBody>
               </CCard>
               <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
@@ -139,7 +146,8 @@ const mapStateToProps = (state: AppState) => {
 };
 
 const mapDispatchToProps  = {
-  login: userActions.login
+  login: userActions.login,
+  federatedLogin: userActions.federationLogin
 };
 
 export default connect(mapStateToProps,mapDispatchToProps)(LoginPage);

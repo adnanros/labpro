@@ -10,4 +10,4 @@ export * from './resetPasswordPage';
 
 export * from '../components/Home/pages/resultListPage';
 export * from '../components/ui/ResultDetail';
-export * from '../components/Home/pages/orderRegisterationPage';
+export * from '../components/Home/pages/OrderRegisterationPage';

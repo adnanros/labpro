@@ -3,9 +3,11 @@ import { alertActions } from './';
 import { history } from '../_helpers';
 import isPackageAdmin from '../_helpers/authentication';
 import {Auth} from 'aws-amplify';
+import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth/lib-esm/types/Auth';
 
 export const userActions = {
     login,
+    federationLogin,
     logout,
     register,
     confirmRegister,
@@ -74,6 +76,19 @@ function login(username: string, password: string) {
     //we send email to be used by confirm register page.
     function failureNonConfirmedUser(email:string, error: string) { return { type: userConstants.LOGIN_FAILURE_NON_CONFIRMED_USER, email, error } }
 }
+
+//Note: to merge username from cognito and from federated sign ins, we need lambda triggers. see: https://github.com/aws-amplify/amplify-cli/issues/4208
+function federationLogin(provid: CognitoHostedUIIdentityProvider) {
+
+    return (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
+        dispatch(request());
+        Auth.federatedSignIn({
+            provider: provid
+          })
+    } 
+
+    function request() { return { type: userConstants.LOGIN_REQUEST } }
+    }
 
 function logout() {
     return (dispatch: (arg0: { type: string; user?: any; error?: string; message?: string; }) => void) => {
