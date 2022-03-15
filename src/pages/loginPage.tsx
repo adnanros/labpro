@@ -23,6 +23,7 @@ import { connect } from 'react-redux';
 import { userActions } from '../_actions';
 import { AppState } from '../_helpers';
 import google_btn from '../Assets/images/google_signin_button.png';
+import facebook_btn from '../Assets/images/facebook_signin_button.png';
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth/lib-esm/types/Auth';
 
 interface IState {
@@ -111,6 +112,11 @@ const LoginPage: React.FC<any> = (props) => {
                   <CButton color="link" className="px-0" disabled={loggingIn} onClick={()=> props.federatedLogin(CognitoHostedUIIdentityProvider.Google)}>
                     <img src={google_btn} alt="Google Sign In button"
                           className="googleSignIn"
+                          style={{height:"45px", width:"190px"}}/>
+                  </CButton>
+                  <CButton color="link" className="px-0" disabled={loggingIn} onClick={()=> props.federatedLogin(CognitoHostedUIIdentityProvider.Facebook)}>
+                    <img src={facebook_btn} alt="Facebook Sign In button"
+                          className="facebookSignIn"
                           style={{height:"45px", width:"190px"}}/>
                   </CButton>
                 </CCardBody>

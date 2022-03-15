@@ -36,7 +36,7 @@
     "authSelections": "identityPoolAndUserPool",
     "resourceName": "labpro767d1598",
     "serviceName": "Cognito",
-    "useDefault": "defaultSocial",
+    "useDefault": "manual",
     "sharedId": "767d1598",
     "userPoolGroupList": [
       "PackagesAdmin"
@@ -48,7 +48,11 @@
     "usernameCaseSensitive": false,
     "adminQueries": false,
     "hostedUI": true,
-    "triggers": {},
+    "triggers": {
+      "PreSignup": [
+        "custom"
+      ]
+    },
     "authRoleArn": {
       "Fn::GetAtt": [
         "AuthRole",
@@ -63,17 +67,33 @@
     },
     "breakCircularDependency": true,
     "useEnabledMfas": false,
-    "dependsOn": [],
+    "dependsOn": [
+      {
+        "category": "function",
+        "resourceName": "labpro767d1598PreSignup",
+        "triggerProvider": "Cognito",
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
+      }
+    ],
     "parentStack": {
       "Ref": "AWS::StackId"
     },
     "permissions": [],
     "hostedUIDomainName": "labproaad40254-aad40254",
     "authProvidersUserPool": [
+      "Facebook",
       "Google"
     ],
-    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
+    "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"id\"}},{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
+    "authProviders": [
+      "graph.facebook.com",
+      "accounts.google.com"
+    ],
+    "thirdPartyAuth": true,
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}",
-    "authProviders": []
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PreSignUp\",\n    \"lambdaFunctionName\": \"labpro767d1598PreSignup\"\n  }\n]"
   }
 }

@@ -9,12 +9,22 @@
       "UnauthRoleName": "amplify-labpro-dev-63116-unauthRole",
       "StackName": "amplify-labpro-dev-63116",
       "StackId": "arn:aws:cloudformation:us-east-1:670277671745:stack/amplify-labpro-dev-63116/667b4ce0-37f3-11ec-a932-0a86ab779153",
-      "AmplifyAppId": "d1i7ikthsrnb59"
+      "AmplifyAppId": "d1i7ikthsrnb59",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-labpro-dev-63116-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
       "auth": {
-        "labpro767d1598": {},
+        "labpro767d1598": {
+          "facebookAppId": "1581649772213650",
+          "googleClientId": "521210721958-c8ttm8too11vdd71me9528ch0a03rkmr.apps.googleusercontent.com"
+        },
         "userPoolGroups": {}
+      },
+      "function": {
+        "labpro767d1598PreSignup": {
+          "deploymentBucketName": "amplify-labpro-dev-63116-deployment",
+          "s3Key": "amplify-builds/labpro767d1598PreSignup-3748465479495a755143-build.zip"
+        }
       }
     }
   },
